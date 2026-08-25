@@ -1,0 +1,58 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/Presentation/StartupFailurePanel.cs" id="1_script"]
+
+[node name="StartupFailurePanel" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.09, 0.02, 0.02, 1)
+
+[node name="SafeArea" type="MarginContainer" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_top = 64
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 64
+
+[node name="Layout" type="VBoxContainer" parent="Background/SafeArea"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Background/SafeArea/Layout"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.65, 0.55, 1)
+theme_override_font_sizes/font_size = 30
+text = "Startup configuration error"
+
+[node name="Explanation" type="Label" parent="Background/SafeArea/Layout"]
+layout_mode = 2
+text = "The application could not start safely. Correct or remove the invalid user settings, then restart."
+autowrap_mode = 2
+
+[node name="Source" type="Label" parent="Background/SafeArea/Layout"]
+layout_mode = 2
+text = "Source: unavailable"
+
+[node name="Details" type="Label" parent="Background/SafeArea/Layout"]
+layout_mode = 2
+text = "• No safe details were provided."
+autowrap_mode = 2
+

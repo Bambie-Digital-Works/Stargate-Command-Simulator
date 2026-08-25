@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "logging": {
+    "minimumLevel": "information",
+    "maxFiles": 5,
+    "maxFileBytes": 1048576
+  },
+  "diagnostics": {
+    "overlayVisibleOnStartup": false,
+    "recentLogEntries": 20
+  }
+}

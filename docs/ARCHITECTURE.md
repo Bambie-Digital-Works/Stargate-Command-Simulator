@@ -45,4 +45,5 @@ Scenes own layout, visual state, focus order, and signal wiring. A scene may cal
 - Content uses stable identifiers rather than scene paths or display names.
 - Reference assets never appear beneath production `content/` or future distributable `assets/` paths.
 - `assets/reference/.gdignore` keeps research-only material outside Godot's import and export pipeline.
+- `tools/.gdignore` and `tests/.gdignore` keep auxiliary C# projects outside Godot's resource and export pipeline.
 - New architectural exceptions require a short decision record in `docs/decisions/`.

@@ -1,8 +1,10 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://src/Bootstrap/Boot.cs" id="1_boot"]
 [ext_resource type="PackedScene" path="res://scenes/ui/OperatorShell.tscn" id="2_shell"]
+[ext_resource type="PackedScene" path="res://scenes/ui/StartupFailurePanel.tscn" id="3_failure"]
 
 [node name="Boot" type="Node"]
 script = ExtResource("1_boot")
 OperatorShellScene = ExtResource("2_shell")
+StartupFailureScene = ExtResource("3_failure")
