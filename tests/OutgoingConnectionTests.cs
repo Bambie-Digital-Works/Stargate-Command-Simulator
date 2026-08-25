@@ -1,0 +1,103 @@
+using FacilityCommand.Core.Destinations;
+using FacilityCommand.Core.Transit;
+using FacilityCommand.Infrastructure.Content;
+
+namespace FacilityCommand.Tests;
+
+public sealed class OutgoingConnectionTests
+{
+    private static readonly DestinationRecord Destination = new(
+        "test_site",
+        "Test Site",
+        ["alpha", "bravo", "charlie", "delta"],
+        40,
+        25);
+
+    [Fact]
+    public void RegisteredVectorReachesStableLinkAndReleasesResourcesAfterClosure()
+    {
+        FacilityResourcePool resources = new(100, 100);
+        OutgoingConnection connection = Create(resources);
+
+        Assert.True(connection.Prepare(Destination.Id, Destination.Vector, At(1)).IsAccepted);
+        Assert.True(connection.BeginSequence(At(2)).IsAccepted);
+        foreach (string element in Destination.Vector)
+        {
+            Assert.True(connection.LockNext(element).IsAccepted);
+        }
+
+        Assert.True(connection.BeginStabilization(At(3)).IsAccepted);
+        Assert.True(connection.ConfirmStable(At(4)).IsAccepted);
+        Assert.Equal(TransitArrayPhase.LinkOpen, connection.Snapshot.TransitArray.Phase);
+        Assert.Equal(40, resources.ReservedPower);
+        Assert.True(connection.Close(At(5)).IsAccepted);
+        Assert.True(connection.CompleteClosure(At(6)).IsAccepted);
+        Assert.Equal(0, resources.ReservedPower);
+        Assert.True(connection.CompleteCooldown(At(7)).IsAccepted);
+        Assert.Null(connection.Snapshot.DestinationId);
+    }
+
+    [Fact]
+    public void InvalidVectorAndInsufficientResourcesDoNotReserveAnything()
+    {
+        FacilityResourcePool resources = new(39, 24);
+        OutgoingConnection connection = Create(resources);
+
+        OutgoingOperationResult invalid = connection.Prepare(Destination.Id, ["wrong"], At(1));
+        OutgoingOperationResult unavailable = connection.Prepare(Destination.Id, Destination.Vector, At(2));
+
+        Assert.Equal("destination_vector_invalid", invalid.Rejection?.ReasonCode);
+        Assert.Equal("resources_unavailable", unavailable.Rejection?.ReasonCode);
+        Assert.Equal(0, resources.ReservedPower);
+        Assert.Equal(0, resources.ReservedCooling);
+        Assert.Equal(TransitArrayPhase.Standby, connection.Snapshot.TransitArray.Phase);
+    }
+
+    [Fact]
+    public void PartialSequenceRejectsOutOfOrderLockAndAbortReleasesReservation()
+    {
+        FacilityResourcePool resources = new(100, 100);
+        OutgoingConnection connection = Create(resources);
+        connection.Prepare(Destination.Id, Destination.Vector, At(1));
+        connection.BeginSequence(At(2));
+
+        OutgoingOperationResult wrong = connection.LockNext("bravo");
+        connection.LockNext("alpha");
+        OutgoingOperationResult incomplete = connection.BeginStabilization(At(3));
+        OutgoingOperationResult aborted = connection.Abort(At(4));
+
+        Assert.Equal("vector_lock_out_of_order", wrong.Rejection?.ReasonCode);
+        Assert.Equal("sequence_incomplete", incomplete.Rejection?.ReasonCode);
+        Assert.Equal(TransitArrayPhase.Recovering, aborted.Snapshot.TransitArray.Phase);
+        Assert.Equal(0, resources.ReservedPower);
+        Assert.Equal(0, resources.ReservedCooling);
+    }
+
+    [Fact]
+    public void CurrentDestinationContentLoadsStrictly()
+    {
+        string root = FindRepositoryRoot();
+        string json = File.ReadAllText(Path.Combine(root, "content", "destinations.v1.json"));
+
+        DestinationRegistry registry = new DestinationRegistryLoader().Load(json);
+
+        Assert.Equal(2, registry.Records.Count);
+        Assert.Throws<InvalidDataException>(() => new DestinationRegistryLoader().Load(json.Replace("\"schemaVersion\"", "\"unknown\"")));
+    }
+
+    private static OutgoingConnection Create(FacilityResourcePool resources) =>
+        new(new DestinationRegistry([Destination]), resources);
+
+    private static SimulationInstant At(long milliseconds) => new(milliseconds);
+
+    private static string FindRepositoryRoot()
+    {
+        DirectoryInfo? current = new(AppContext.BaseDirectory);
+        while (current is not null && !File.Exists(Path.Combine(current.FullName, "project.godot")))
+        {
+            current = current.Parent;
+        }
+
+        return current?.FullName ?? throw new InvalidOperationException("Repository root was not found.");
+    }
+}

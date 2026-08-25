@@ -40,7 +40,9 @@ The installer verifies the pinned editor and export-template SHA-256 values befo
 
 ## Local configuration and diagnostics
 
-`config/defaults.json` contains the required, versioned defaults. A developer may create `user://settings.json` with schema version 1 and partial `logging` or `diagnostics` overrides. Unknown fields and invalid ranges stop startup with a field-level message so configuration mistakes cannot silently change behaviour.
+`config/defaults.json` contains the required, versioned defaults. A developer may create `user://settings.json` with schema version 1 and partial `logging`, `diagnostics`, or `simulation` overrides. Unknown fields and invalid ranges stop startup with a field-level message so configuration mistakes cannot silently change behaviour.
+
+The same configuration document tracks prototype simulation timeouts and facility power/cooling capacity. User overrides may provide a partial `simulation` object; all durations and capacity values are range-checked before startup.
 
 Local structured logs use JSON Lines under `user://logs`. Diagnostics expose build and runtime identity without showing usernames, credentials, or sensitive paths. Logging and diagnostics are local only; the project sends no telemetry.
 

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "destinations": [
+    {
+      "id": "survey_site_aurora",
+      "displayName": "Aurora Survey Site",
+      "vector": ["north_arc", "ember", "tidal", "verdant", "crown", "horizon"],
+      "requiredPowerUnits": 40,
+      "requiredCoolingUnits": 25
+    },
+    {
+      "id": "relay_station_kestrel",
+      "displayName": "Kestrel Relay Station",
+      "vector": ["harbour", "silver", "zenith", "keystone", "delta", "lantern"],
+      "requiredPowerUnits": 55,
+      "requiredCoolingUnits": 35
+    }
+  ]
+}

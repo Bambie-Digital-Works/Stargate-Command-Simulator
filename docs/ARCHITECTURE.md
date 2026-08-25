@@ -49,3 +49,5 @@ Scenes own layout, visual state, focus order, and signal wiring. A scene may cal
 - New architectural exceptions require a short decision record in `docs/decisions/`.
 
 The deterministic Transit Array phase and safety rules are specified in [the state-machine document](TRANSIT_ARRAY_STATE_MACHINE.md). Core transitions receive explicit simulation timestamps and never read wall-clock time.
+
+Destination validation, sequential locks, and atomic power/cooling behavior are specified in [the outgoing-connection rules](OUTGOING_CONNECTION_RULES.md).

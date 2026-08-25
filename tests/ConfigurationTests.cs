@@ -17,6 +17,15 @@ public sealed class ConfigurationTests
           "diagnostics": {
             "overlayVisibleOnStartup": false,
             "recentLogEntries": 20
+          },
+          "simulation": {
+            "preparationTimeoutMs": 10000,
+            "vectorLockTimeoutMs": 5000,
+            "stabilizationTimeoutMs": 8000,
+            "closingTimeoutMs": 5000,
+            "cooldownTimeoutMs": 3000,
+            "availablePowerUnits": 100,
+            "availableCoolingUnits": 100
           }
         }
         """;
@@ -38,6 +47,7 @@ public sealed class ConfigurationTests
         Assert.Equal(5, result.Logging.MaxFiles);
         Assert.True(result.Diagnostics.OverlayVisibleOnStartup);
         Assert.Equal(20, result.Diagnostics.RecentLogEntries);
+        Assert.Equal(100, result.Simulation.AvailablePowerUnits);
     }
 
     [Fact]
@@ -60,5 +70,15 @@ public sealed class ConfigurationTests
         ConfigurationException exception = Assert.Throws<ConfigurationException>(() => new ConfigurationLoader().Load(invalid));
 
         Assert.Contains("logging.maxFiles", exception.Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void RejectsInvalidSimulationCapacity()
+    {
+        string invalid = ValidDefaults.Replace("\"availablePowerUnits\": 100", "\"availablePowerUnits\": 0");
+
+        ConfigurationException exception = Assert.Throws<ConfigurationException>(() => new ConfigurationLoader().Load(invalid));
+
+        Assert.Contains("simulation.availablePowerUnits", exception.Message, StringComparison.Ordinal);
     }
 }
