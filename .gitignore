@@ -1,0 +1,18 @@
+# Godot-generated imports and editor state
+.godot/
+
+# .NET build output
+bin/
+obj/
+
+# IDE-local state
+.idea/
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Local export output
+build/
+dist/
+
