@@ -1,0 +1,54 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/Presentation/InputSettingsPanel.cs" id="1_script"]
+
+[node name="InputSettingsPanel" type="PanelContainer"]
+custom_minimum_size = Vector2(960, 500)
+script = ExtResource("1_script")
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
+
+[node name="Layout" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Heading" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Input settings"
+
+[node name="Instructions" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+text = "Choose a binding, then press the replacement input. Duplicate inputs are rejected."
+autowrap_mode = 2
+
+[node name="Status" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+text = "Select a binding to change it."
+
+[node name="ActionScroll" type="ScrollContainer" parent="Margin/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="ActionRows" type="VBoxContainer" parent="Margin/Layout/ActionScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Footer" type="HBoxContainer" parent="Margin/Layout"]
+layout_mode = 2
+alignment = 2
+
+[node name="ResetButton" type="Button" parent="Margin/Layout/Footer"]
+layout_mode = 2
+text = "Restore defaults"
+
+[node name="CloseButton" type="Button" parent="Margin/Layout/Footer"]
+layout_mode = 2
+text = "Close"
+
