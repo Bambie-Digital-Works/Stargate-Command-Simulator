@@ -8,5 +8,8 @@
     <AssemblyName>FacilityCommand</AssemblyName>
     <EnableDynamicLoading>true</EnableDynamicLoading>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="tests/**/*.cs;tools/**/*.cs" />
+  </ItemGroup>
 </Project>
 

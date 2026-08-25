@@ -45,6 +45,8 @@ See the [project overview](docs/PROJECT_OVERVIEW.md) for the vertical-slice defi
 
 Developers should start with the [architecture](docs/ARCHITECTURE.md) and [development setup](docs/DEVELOPMENT.md) documents. The repository pins the Godot .NET and .NET SDK versions needed to open and build the project.
 
+All retained visual and audio material follows the [asset policy](docs/ASSET_POLICY.md) and must pass the version-controlled licence-ledger validation before distribution.
+
 ## Ownership and contributions
 
 Copyright © 2026 `bambiejomurphy-ux`. Original project materials are proprietary and all rights are reserved. Public visibility of this repository does not make its contents open source and does not grant permission to copy, modify, redistribute, sublicense, or commercially exploit them. See [LICENSE](LICENSE) and [NOTICE](NOTICE.md) for the precise scope and third-party exclusions.
