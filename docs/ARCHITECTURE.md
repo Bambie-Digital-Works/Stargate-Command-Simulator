@@ -53,3 +53,5 @@ The deterministic Transit Array phase and safety rules are specified in [the sta
 Destination validation, sequential locks, and atomic power/cooling behavior are specified in [the outgoing-connection rules](OUTGOING_CONNECTION_RULES.md).
 
 Clock, seeded randomness, and privacy-safe replay contracts are specified in [the determinism and replay document](DETERMINISM_AND_REPLAYS.md).
+
+Return Credential assessment and fail-secure Containment Shutter interlocks are specified in [the return security rules](RETURN_SECURITY_RULES.md).
