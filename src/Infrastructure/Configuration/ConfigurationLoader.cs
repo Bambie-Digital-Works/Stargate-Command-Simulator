@@ -35,7 +35,15 @@ public sealed class ConfigurationLoader
                 userOverride.Logging?.MaxFileBytes ?? defaults.Logging.MaxFileBytes),
             new DiagnosticsOptions(
                 userOverride.Diagnostics?.OverlayVisibleOnStartup ?? defaults.Diagnostics.OverlayVisibleOnStartup,
-                userOverride.Diagnostics?.RecentLogEntries ?? defaults.Diagnostics.RecentLogEntries));
+                userOverride.Diagnostics?.RecentLogEntries ?? defaults.Diagnostics.RecentLogEntries),
+            new SimulationOptions(
+                userOverride.Simulation?.PreparationTimeoutMs ?? defaults.Simulation.PreparationTimeoutMs,
+                userOverride.Simulation?.VectorLockTimeoutMs ?? defaults.Simulation.VectorLockTimeoutMs,
+                userOverride.Simulation?.StabilizationTimeoutMs ?? defaults.Simulation.StabilizationTimeoutMs,
+                userOverride.Simulation?.ClosingTimeoutMs ?? defaults.Simulation.ClosingTimeoutMs,
+                userOverride.Simulation?.CooldownTimeoutMs ?? defaults.Simulation.CooldownTimeoutMs,
+                userOverride.Simulation?.AvailablePowerUnits ?? defaults.Simulation.AvailablePowerUnits,
+                userOverride.Simulation?.AvailableCoolingUnits ?? defaults.Simulation.AvailableCoolingUnits));
 
         Validate(merged, "user configuration");
         return merged;
@@ -94,10 +102,31 @@ public sealed class ConfigurationLoader
             errors.Add("diagnostics.recentLogEntries must be between 1 and 100.");
         }
 
+        if (configuration.Simulation is null)
+        {
+            errors.Add("simulation is required.");
+        }
+        else
+        {
+            ValidateRange(configuration.Simulation.PreparationTimeoutMs, 100, 120000, "simulation.preparationTimeoutMs", errors);
+            ValidateRange(configuration.Simulation.VectorLockTimeoutMs, 100, 120000, "simulation.vectorLockTimeoutMs", errors);
+            ValidateRange(configuration.Simulation.StabilizationTimeoutMs, 100, 120000, "simulation.stabilizationTimeoutMs", errors);
+            ValidateRange(configuration.Simulation.ClosingTimeoutMs, 100, 120000, "simulation.closingTimeoutMs", errors);
+            ValidateRange(configuration.Simulation.CooldownTimeoutMs, 100, 120000, "simulation.cooldownTimeoutMs", errors);
+            ValidateRange(configuration.Simulation.AvailablePowerUnits, 1, 10000, "simulation.availablePowerUnits", errors);
+            ValidateRange(configuration.Simulation.AvailableCoolingUnits, 1, 10000, "simulation.availableCoolingUnits", errors);
+        }
         if (errors.Count > 0)
         {
             throw new ConfigurationException(sourceLabel, errors);
         }
     }
-}
 
+    private static void ValidateRange(int value, int minimum, int maximum, string field, List<string> errors)
+    {
+        if (value < minimum || value > maximum)
+        {
+            errors.Add($"{field} must be between {minimum} and {maximum}.");
+        }
+    }
+}

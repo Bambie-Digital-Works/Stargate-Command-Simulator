@@ -8,5 +8,14 @@
   "diagnostics": {
     "overlayVisibleOnStartup": false,
     "recentLogEntries": 20
+  },
+  "simulation": {
+    "preparationTimeoutMs": 10000,
+    "vectorLockTimeoutMs": 5000,
+    "stabilizationTimeoutMs": 8000,
+    "closingTimeoutMs": 5000,
+    "cooldownTimeoutMs": 3000,
+    "availablePowerUnits": 100,
+    "availableCoolingUnits": 100
   }
 }
