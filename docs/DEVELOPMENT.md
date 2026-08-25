@@ -32,3 +32,5 @@ Godot imports project resources and builds the managed assembly during the edito
 `config/defaults.json` contains the required, versioned defaults. A developer may create `user://settings.json` with schema version 1 and partial `logging` or `diagnostics` overrides. Unknown fields and invalid ranges stop startup with a field-level message so configuration mistakes cannot silently change behaviour.
 
 Local structured logs use JSON Lines under `user://logs`. Diagnostics expose build and runtime identity without showing usernames, credentials, or sensitive paths. Logging and diagnostics are local only; the project sends no telemetry.
+
+Input bindings are rebuilt from semantic actions at startup and stored atomically in `user://input_bindings.v1.json`. Invalid or future-schema files are preserved with a `.corrupt-<UTC timestamp>.json` suffix while the game safely restores defaults. The in-app Input settings panel supports keyboard/mouse and controller rebinding, clearing optional bindings, and restoring defaults.

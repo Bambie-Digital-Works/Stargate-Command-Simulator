@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://src/Presentation/OperatorShell.cs" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/ui/DiagnosticsOverlay.tscn" id="2_diagnostics"]
+[ext_resource type="PackedScene" path="res://scenes/ui/InputSettingsPanel.tscn" id="3_input"]
+[ext_resource type="Script" path="res://src/Presentation/FocusCoordinator.cs" id="4_focus"]
 
 [node name="OperatorShell" type="Control"]
 layout_mode = 3
@@ -63,6 +65,18 @@ layout_mode = 2
 layout_mode = 2
 text = "Show diagnostics"
 
+[node name="InputSettingsButton" type="Button" parent="SafeArea/Layout/Toolbar"]
+layout_mode = 2
+text = "Input settings"
+
+[node name="Spacer" type="Control" parent="SafeArea/Layout/Toolbar"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="InputModeLabel" type="Label" parent="SafeArea/Layout/Toolbar"]
+layout_mode = 2
+text = "Active input: Keyboard / mouse"
+
 [node name="Workspace" type="HBoxContainer" parent="SafeArea/Layout"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -75,4 +89,11 @@ vertical_alignment = 1
 
 [node name="DiagnosticsOverlay" parent="SafeArea/Layout/Workspace" instance=ExtResource("2_diagnostics")]
 layout_mode = 2
+
+[node name="InputSettingsPanel" parent="SafeArea/Layout/Workspace" instance=ExtResource("3_input")]
+visible = false
+layout_mode = 2
+
+[node name="FocusCoordinator" type="Node" parent="."]
+script = ExtResource("4_focus")
 

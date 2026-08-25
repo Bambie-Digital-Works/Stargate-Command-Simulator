@@ -4,6 +4,7 @@ using FacilityCommand.Application.Logging;
 using FacilityCommand.Infrastructure.Configuration;
 using FacilityCommand.Infrastructure.Diagnostics;
 using FacilityCommand.Infrastructure.Logging;
+using FacilityCommand.Infrastructure.Input;
 using FacilityCommand.Presentation;
 
 namespace FacilityCommand.Bootstrap;
@@ -47,6 +48,10 @@ public partial class Boot : Node
                 configuration.Logging.MaxFileBytes,
                 configuration.Diagnostics.RecentLogEntries);
 
+            InputBindingStore inputBindingStore = new(ProjectSettings.GlobalizePath("user://input_bindings.v1.json"));
+            GodotInputBindingService inputBindings = new(inputBindingStore, logger);
+            inputBindings.Initialize();
+
             logger.Log(
                 ApplicationLogLevel.Information,
                 "application.started",
@@ -67,7 +72,7 @@ public partial class Boot : Node
 
             shell.Name = "OperatorShell";
             AddChild(shell);
-            shell.Initialize(metadata, configuration, logger);
+            shell.Initialize(metadata, configuration, logger, inputBindings);
 
             GD.Print("Boot complete: operator shell is ready.");
         }
