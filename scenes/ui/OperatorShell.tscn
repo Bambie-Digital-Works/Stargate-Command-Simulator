@@ -1,4 +1,7 @@
-[gd_scene format=3]
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/Presentation/OperatorShell.cs" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/ui/DiagnosticsOverlay.tscn" id="2_diagnostics"]
 
 [node name="OperatorShell" type="Control"]
 layout_mode = 3
@@ -7,6 +10,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_script")
 
 [node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
@@ -32,6 +36,7 @@ theme_override_constants/margin_bottom = 40
 
 [node name="Layout" type="VBoxContainer" parent="SafeArea"]
 layout_mode = 2
+theme_override_constants/separation = 10
 
 [node name="Eyebrow" type="Label" parent="SafeArea/Layout"]
 layout_mode = 2
@@ -50,4 +55,24 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.584314, 0.658824, 0.678431, 1)
 theme_override_font_sizes/font_size = 18
 text = "No simulation loaded"
+
+[node name="Toolbar" type="HBoxContainer" parent="SafeArea/Layout"]
+layout_mode = 2
+
+[node name="DiagnosticsButton" type="Button" parent="SafeArea/Layout/Toolbar"]
+layout_mode = 2
+text = "Show diagnostics"
+
+[node name="Workspace" type="HBoxContainer" parent="SafeArea/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Placeholder" type="Label" parent="SafeArea/Layout/Workspace"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Operations Board placeholder"
+vertical_alignment = 1
+
+[node name="DiagnosticsOverlay" parent="SafeArea/Layout/Workspace" instance=ExtResource("2_diagnostics")]
+layout_mode = 2
 

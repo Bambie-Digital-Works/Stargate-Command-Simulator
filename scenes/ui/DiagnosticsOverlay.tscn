@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/Presentation/DiagnosticsOverlay.cs" id="1_script"]
+
+[node name="DiagnosticsOverlay" type="PanelContainer"]
+custom_minimum_size = Vector2(560, 0)
+script = ExtResource("1_script")
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
+
+[node name="Layout" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Heading" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Build diagnostics"
+
+[node name="Metadata" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+text = "Metadata unavailable"
+
+[node name="RecentEvents" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+text = "Recent events\nNone"
+

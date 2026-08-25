@@ -7,9 +7,23 @@
     <RootNamespace>FacilityCommand</RootNamespace>
     <AssemblyName>FacilityCommand</AssemblyName>
     <EnableDynamicLoading>true</EnableDynamicLoading>
+    <VersionPrefix>0.1.0</VersionPrefix>
+    <VersionSuffix Condition="'$(VersionSuffix)' == ''">dev</VersionSuffix>
+    <BuildChannel Condition="'$(BuildChannel)' == ''">development</BuildChannel>
+    <BuildId Condition="'$(BuildId)' == ''">local</BuildId>
+    <CommitSha Condition="'$(CommitSha)' == ''">unknown</CommitSha>
+    <ContentSchemaVersion Condition="'$(ContentSchemaVersion)' == ''">1</ContentSchemaVersion>
+    <SaveSchemaVersion Condition="'$(SaveSchemaVersion)' == ''">1</SaveSchemaVersion>
+    <BuildUtc Condition="'$(BuildUtc)' == ''">1970-01-01T00:00:00Z</BuildUtc>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="tests/**/*.cs;tools/**/*.cs" />
+    <AssemblyMetadata Include="BuildChannel" Value="$(BuildChannel)" />
+    <AssemblyMetadata Include="BuildId" Value="$(BuildId)" />
+    <AssemblyMetadata Include="CommitSha" Value="$(CommitSha)" />
+    <AssemblyMetadata Include="ContentSchemaVersion" Value="$(ContentSchemaVersion)" />
+    <AssemblyMetadata Include="SaveSchemaVersion" Value="$(SaveSchemaVersion)" />
+    <AssemblyMetadata Include="BuildUtc" Value="$(BuildUtc)" />
   </ItemGroup>
 </Project>
 
