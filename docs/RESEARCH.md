@@ -2,6 +2,8 @@
 
 > “Stargate Command Simulator” is a temporary working title for an original-IP project. Television and fan-game references in this document are research sources only, not production assets or a claim of affiliation or licence.
 
+Research terms on this page are reference-only. Production specifications, code, content, and UI must use the approved [production terminology](TERMINOLOGY.md).
+
 Research date: 2026-08-25. This is a design reference, not legal advice.
 
 ## Product thesis
@@ -19,18 +21,18 @@ A strong loop is:
 
 The television reference supports this structure. Stargate Command is depicted as a multi-department underground base; its control room monitors incoming and outgoing activity, while the Earth-built dialing system works without a DHD. Episode references also establish hundreds of feedback signals during dialing and an isolated dialing computer—excellent inspiration for diagnostics and security gameplay ([GateWorld: Stargate Command](https://gateworld.net/wiki/Stargate_Command), [“48 Hours”](https://www.gateworld.net/sg1/s5/48-hours/), [“Proving Ground”](https://www.gateworld.net/sg1/s5/proving-ground/)). MGM identifies Stargate as its franchise; assume the names, logos, symbols, characters, footage, sounds, and production designs are protected unless licensed ([MGM](https://www.mgm.com/franchise/stargate)).
 
-## What to model from SG-1
+## Reference study: SG-1 (reference only)
 
 Use these as functional inspiration, then give the shipped game its own terminology and visual language unless an MGM/Amazon licence is secured.
 
 | Fictional element | Useful game system | Player-facing tension |
 |---|---|---|
-| Gate room and blast window | Live camera, room pressure, radiation and barrier state | Opening the room too early risks the base |
-| Dialing computer | Address entry, symbol lock sequence, calibration and feedback channels | Speed versus a safe, verified lock |
-| Iris/barrier | Closed/open/locked/damaged states | Authentication may arrive seconds before impact |
+| Gate room and blast window (reference only) | Live camera, room pressure, radiation and barrier state | Opening the room too early risks the base |
+| Dialing computer (reference only) | Address entry, symbol lock sequence, calibration and feedback channels | Speed versus a safe, verified lock |
+| Iris/barrier (reference only) | Closed/open/locked/damaged states | Authentication may arrive seconds before impact |
 | GDO-style identifier | Challenge-response codes, expiry, duress codes | Friendly, stolen, duplicated, or garbled credentials |
-| MALP/probe | Camera, atmosphere, radiation, motion, sample and signal data | Spend time verifying or risk the team |
-| SG teams | Personnel, specialties, fatigue, equipment, injuries | The ideal team may be unavailable |
+| MALP/probe (reference only) | Camera, atmosphere, radiation, motion, sample and signal data | Spend time verifying or risk the team |
+| SG teams (reference only) | Personnel, specialties, fatigue, equipment, injuries | The ideal team may be unavailable |
 | Base zones | Lockdown doors, ventilation, quarantine, armoury and evacuation | Contain a threat without trapping staff |
 | Command staff | Requests, overrides, political pressure and incomplete intelligence | Obey, challenge, or delay an order |
 | Address database | Known worlds, aliases, drift correction, last contact and risk | Knowledge accumulates across a campaign |

@@ -2,15 +2,15 @@
 
 > **Working title:** “Stargate Command Simulator” is a temporary development name. This is an original, independent game project and is not affiliated with, endorsed by, sponsored by, or licensed by Amazon, Metro-Goldwyn-Mayer, or any other owner of the Stargate franchise.
 
-Stargate Command Simulator is the working title for a Windows command-centre simulation game. The player operates an underground interstellar transit facility: scheduling expeditions, establishing portal connections, reviewing probe telemetry, authenticating returning teams, controlling defensive barriers, and responding to overlapping technical, medical, and security incidents.
+Stargate Command Simulator is the working title for a Windows command-centre simulation game. The player operates an underground interstellar transit facility: scheduling Expedition Units, establishing Transit Links, reviewing Survey Drone telemetry, authenticating returnees, controlling the Containment Shutter, and responding to overlapping technical, medical, and security incidents.
 
 The project is in **pre-production**. Its first playable target is a focused, UI-first vertical slice rather than an explorable 3D base.
 
 ## Core gameplay loop
 
 1. Review the shift briefing, team readiness, facility status, and known destinations.
-2. Select and verify a destination, allocate power, and establish a connection.
-3. Examine remote-probe telemetry before committing personnel.
+2. Select and verify a Destination Vector, allocate power, and establish a Transit Link.
+3. Examine Survey Drone telemetry before committing personnel.
 4. Authenticate incoming travellers and make time-critical containment decisions.
 5. Resolve equipment failures, security alerts, injuries, and incomplete intelligence.
 6. Debrief the shift and carry its discoveries and consequences into later missions.
@@ -36,12 +36,12 @@ The project is in **pre-production**. Its first playable target is a focused, UI
 
 | Version | Target |
 |---|---|
-| `0.1.0` | Core portal state model and operator-console prototype |
+| `0.1.0` | Core Transit Array state model and operator-console prototype |
 | `0.3.0` | Polished vertical slice with five incidents |
 | `0.8.0` | Beta-quality Windows packaging and release pipeline |
 | `1.0.0` | Stable original-IP commercial release target |
 
-See the [project overview](docs/PROJECT_OVERVIEW.md) for the vertical-slice definition and the [research and production brief](docs/RESEARCH.md) for design references, comparable games, visual-source guidance, and Windows release practices.
+See the [project overview](docs/PROJECT_OVERVIEW.md) for the vertical-slice definition, the [production terminology guide](docs/TERMINOLOGY.md) for approved names, and the [research and production brief](docs/RESEARCH.md) for design references, comparable games, visual-source guidance, and Windows release practices.
 
 Developers should start with the [architecture](docs/ARCHITECTURE.md) and [development setup](docs/DEVELOPMENT.md) documents. The repository pins the Godot .NET and .NET SDK versions needed to open and build the project.
 
