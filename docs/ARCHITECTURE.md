@@ -47,3 +47,5 @@ Scenes own layout, visual state, focus order, and signal wiring. A scene may cal
 - `assets/reference/.gdignore` keeps research-only material outside Godot's import and export pipeline.
 - `tools/.gdignore` and `tests/.gdignore` keep auxiliary C# projects outside Godot's resource and export pipeline.
 - New architectural exceptions require a short decision record in `docs/decisions/`.
+
+The deterministic Transit Array phase and safety rules are specified in [the state-machine document](TRANSIT_ARRAY_STATE_MACHINE.md). Core transitions receive explicit simulation timestamps and never read wall-clock time.
