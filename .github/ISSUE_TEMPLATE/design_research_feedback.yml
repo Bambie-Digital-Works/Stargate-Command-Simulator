@@ -8,6 +8,7 @@ body:
     attributes:
       value: |
         Please submit observations and source links only. Do not submit code, art, audio, writing, interface designs, story treatments, confidential information, or third-party copyrighted files.
+        Production-facing suggestions must follow the approved terminology in https://github.com/Bambie-Digital-Works/Stargate-Command-Simulator/blob/main/docs/TERMINOLOGY.md.
   - type: dropdown
     id: category
     attributes:

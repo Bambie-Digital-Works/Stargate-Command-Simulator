@@ -2,7 +2,7 @@
 
 ## Vision
 
-Create an original Windows operations-room game in which the player commands a secret underground facility built around an experimental interstellar transit portal. The interface is the game: players interpret telemetry, follow procedures, coordinate personnel, and choose when incomplete information justifies taking a risk.
+Create an original Windows operations-room game in which the player commands a secret underground Command Facility built around an experimental Transit Array. The interface is the game: players interpret telemetry, follow procedures, coordinate personnel, and choose when incomplete information justifies taking a risk.
 
 “Stargate Command Simulator” is a working title only. Production content will not use protected franchise terminology, symbols, lore, characters, production designs, audio, or other distinctive assets.
 
@@ -15,25 +15,25 @@ Create an original Windows operations-room game in which the player commands a s
 
 ## Vertical slice
 
-The `0.3.0` vertical slice contains one complete shift with:
+The `0.3.0` vertical slice contains one complete shift using the approved names in the [production terminology guide](TERMINOLOGY.md):
 
-- an operations overview;
-- a portal/dialing console;
-- incoming authentication and defensive-barrier controls;
-- a remote-probe telemetry station;
-- a team roster and dispatch workflow;
-- a facility status and alarm view; and
-- shift briefing and chronological debrief screens.
+- an Operations Board;
+- Transit Control;
+- Return Control and Containment Shutter controls;
+- Survey Telemetry;
+- an Expedition Roster and dispatch workflow;
+- a Systems Board; and
+- Shift Brief and chronological Shift Review screens.
 
-The slice demonstrates five escalating incidents: routine reconnaissance, a friendly return with damaged authentication, an unscheduled incoming connection with spoofed credentials, contradictory probe telemetry, and a combined medical emergency and cooling-system fault.
+The slice demonstrates five escalating incidents: routine reconnaissance, a friendly return with a damaged Return Credential, an unscheduled incoming Transit Link with spoofed credentials, contradictory Survey Drone telemetry, and a combined medical emergency and cooling-system fault.
 
 ## Core systems
 
-- A deterministic portal connection state machine with verified transitions and safe aborts.
-- Destination records, address validation, lock sequencing, stability, power, and cooling.
+- A deterministic Transit Array state machine with verified transitions and safe aborts.
+- Destination Registry records, Destination Vector validation, Vector Locks, stability, power, and cooling.
 - Challenge-response authentication with expiry, duress, corruption, and spoofing cases.
 - Barrier and containment controls whose timing has irreversible consequences.
-- Probe telemetry for atmosphere, radiation, biology, terrain, video, and signal quality.
+- Survey Drone telemetry for atmosphere, radiation, biology, terrain, video, and signal quality.
 - Personnel specialties, fatigue, equipment, injuries, mission clocks, and availability.
 - Seeded incidents and an event log that can reproduce a shift for testing and support.
 - Versioned, atomic saves with backups and forward migrations.
@@ -48,8 +48,8 @@ The baseline includes scalable UI, high-contrast and colour-vision-safe states, 
 
 | Version | Completion definition |
 |---|---|
-| `0.1.0` Prototype | Portal state model, overview, dialing, incoming authentication, barrier controls, and roster workflow are interactable. |
-| `0.3.0` Vertical Slice | One polished shift, five incidents, probe station, persistence, debrief, original placeholder identity, and accessibility baseline are playable. |
+| `0.1.0` Prototype | Transit Array state model, Operations Board, Transit Control, Return Control, Containment Shutter, and Expedition Roster are interactable. |
+| `0.3.0` Vertical Slice | One polished shift, five incidents, Survey Telemetry, persistence, Shift Review, original placeholder identity, and accessibility baseline are playable. |
 | `0.8.0` Beta Foundation | Content and save formats are stabilized; signed Windows release candidates, preview/stable channels, migration tests, and rollback procedures exist. |
 | `1.0.0` Stable Release | Original title and branding are cleared; release content, compatibility QA, packaging, support, and legal/asset reviews are complete. |
 
