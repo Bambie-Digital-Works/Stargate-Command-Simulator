@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "assets": [
+    {
+      "id": "reference.missile-warning-center",
+      "path": "assets/reference/public-domain/missile-warning-center.jpg",
+      "category": "reference-image",
+      "scope": "reference",
+      "origin": "public-domain",
+      "creator": "David Dozoretz, U.S. Space Force",
+      "sourceUrl": "https://www.dvidshub.net/image/9810169/missile-warning-center",
+      "licenseExpression": "LicenseRef-USGov-Public-Domain",
+      "acquiredOn": "2026-08-25",
+      "modifications": "None; retained unmodified as a research reference.",
+      "attribution": "U.S. Space Force photo by David Dozoretz; no endorsement implied.",
+      "proofLocation": "https://www.dvidshub.net/image/9810169/missile-warning-center",
+      "reviewStatus": "reference-only",
+      "reviewedBy": "bambiejomurphy-ux",
+      "reviewedOn": "2026-08-25",
+      "distributionAllowed": false
+    },
+    {
+      "id": "reference.cheyenne-tunnel",
+      "path": "assets/reference/public-domain/cheyenne-tunnel.jpg",
+      "category": "reference-image",
+      "scope": "reference",
+      "origin": "public-domain",
+      "creator": "Glenn Fawcett, U.S. Department of Defense",
+      "sourceUrl": "https://www.dvidshub.net/image/1684517/secretary-defense-activity",
+      "licenseExpression": "LicenseRef-USGov-Public-Domain",
+      "acquiredOn": "2026-08-25",
+      "modifications": "None; retained unmodified as a research reference.",
+      "attribution": "U.S. Department of Defense photo by Glenn Fawcett; no endorsement implied.",
+      "proofLocation": "https://www.dvidshub.net/image/1684517/secretary-defense-activity",
+      "reviewStatus": "reference-only",
+      "reviewedBy": "bambiejomurphy-ux",
+      "reviewedOn": "2026-08-25",
+      "distributionAllowed": false
+    }
+  ]
+}

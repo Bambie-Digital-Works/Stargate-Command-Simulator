@@ -1,6 +1,6 @@
 # Public-domain visual references
 
-Downloaded 2026-08-25. Confirm each source page and its restrictions before redistribution. Public-domain status does not imply US Department of Defense endorsement, and visible third-party trademarks or personality/privacy rights may still matter.
+Downloaded 2026-08-25. Confirm each source page and its restrictions before redistribution. Public-domain status does not imply US Department of Defense endorsement, and visible third-party trademarks or personality/privacy rights may still matter. The machine-readable provenance record is maintained in [`assets/asset-ledger.json`](../../asset-ledger.json).
 
 | Local file | Source and credit | Intended reference use |
 |---|---|---|
