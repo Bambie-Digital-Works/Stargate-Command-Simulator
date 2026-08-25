@@ -43,6 +43,8 @@ The project is in **pre-production**. Its first playable target is a focused, UI
 
 See the [project overview](docs/PROJECT_OVERVIEW.md) for the vertical-slice definition and the [research and production brief](docs/RESEARCH.md) for design references, comparable games, visual-source guidance, and Windows release practices.
 
+Developers should start with the [architecture](docs/ARCHITECTURE.md) and [development setup](docs/DEVELOPMENT.md) documents. The repository pins the Godot .NET and .NET SDK versions needed to open and build the project.
+
 ## Ownership and contributions
 
 Copyright © 2026 `bambiejomurphy-ux`. Original project materials are proprietary and all rights are reserved. Public visibility of this repository does not make its contents open source and does not grant permission to copy, modify, redistribute, sublicense, or commercially exploit them. See [LICENSE](LICENSE) and [NOTICE](NOTICE.md) for the precise scope and third-party exclusions.
@@ -51,4 +53,4 @@ Issue feedback is welcome, but unsolicited source code, pull requests, art, audi
 
 ## Status
 
-Pre-production research and backlog development. No playable build is currently published.
+Early implementation. A minimal Godot C# operator shell is present, but no playable build is currently published.

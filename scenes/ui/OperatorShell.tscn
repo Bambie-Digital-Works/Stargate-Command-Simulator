@@ -1,0 +1,53 @@
+[gd_scene format=3]
+
+[node name="OperatorShell" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0196078, 0.0352941, 0.0470588, 1)
+mouse_filter = 2
+
+[node name="SafeArea" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 40
+
+[node name="Layout" type="VBoxContainer" parent="SafeArea"]
+layout_mode = 2
+
+[node name="Eyebrow" type="Label" parent="SafeArea/Layout"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.286275, 0.752941, 0.827451, 1)
+theme_override_font_sizes/font_size = 16
+text = "FACILITY COMMAND // DEVELOPMENT SHELL"
+
+[node name="Title" type="Label" parent="SafeArea/Layout"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.886275, 0.921569, 0.929412, 1)
+theme_override_font_sizes/font_size = 32
+text = "Operator systems standing by"
+
+[node name="Status" type="Label" parent="SafeArea/Layout"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.584314, 0.658824, 0.678431, 1)
+theme_override_font_sizes/font_size = 18
+text = "No simulation loaded"
+
