@@ -51,3 +51,5 @@ Scenes own layout, visual state, focus order, and signal wiring. A scene may cal
 The deterministic Transit Array phase and safety rules are specified in [the state-machine document](TRANSIT_ARRAY_STATE_MACHINE.md). Core transitions receive explicit simulation timestamps and never read wall-clock time.
 
 Destination validation, sequential locks, and atomic power/cooling behavior are specified in [the outgoing-connection rules](OUTGOING_CONNECTION_RULES.md).
+
+Clock, seeded randomness, and privacy-safe replay contracts are specified in [the determinism and replay document](DETERMINISM_AND_REPLAYS.md).
