@@ -8,10 +8,12 @@ namespace FacilityCommand.Infrastructure.Diagnostics;
 public sealed class AssemblyBuildMetadataProvider : IBuildMetadataProvider
 {
     private readonly Assembly _assembly;
+    private readonly RuntimeBuildContext? _runtimeContext;
 
-    public AssemblyBuildMetadataProvider(Assembly? assembly = null)
+    public AssemblyBuildMetadataProvider(Assembly? assembly = null, RuntimeBuildContext? runtimeContext = null)
     {
         _assembly = assembly ?? typeof(AssemblyBuildMetadataProvider).Assembly;
+        _runtimeContext = runtimeContext;
     }
 
     public BuildMetadata Get()
@@ -25,7 +27,11 @@ public sealed class AssemblyBuildMetadataProvider : IBuildMetadataProvider
             .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
             .InformationalVersion.Split('+')[0] ?? "0.0.0-dev";
 
-        string engineVersion = Engine.GetVersionInfo()["string"].AsString();
+        RuntimeBuildContext runtime = _runtimeContext ?? new RuntimeBuildContext(
+            Engine.GetVersionInfo()["string"].AsString(),
+            RuntimeInformation.FrameworkDescription,
+            RuntimeInformation.OSDescription,
+            RuntimeInformation.ProcessArchitecture.ToString().ToLowerInvariant());
 
         return new BuildMetadata(
             productVersion,
@@ -35,10 +41,10 @@ public sealed class AssemblyBuildMetadataProvider : IBuildMetadataProvider
             ParsePositiveInteger(values, "ContentSchemaVersion"),
             ParsePositiveInteger(values, "SaveSchemaVersion"),
             ParseUtc(values, "BuildUtc"),
-            engineVersion,
-            RuntimeInformation.FrameworkDescription,
-            RuntimeInformation.OSDescription,
-            RuntimeInformation.ProcessArchitecture.ToString().ToLowerInvariant());
+            runtime.EngineVersion,
+            runtime.RuntimeVersion,
+            runtime.OperatingSystem,
+            runtime.Architecture);
     }
 
     private static string Required(IReadOnlyDictionary<string, string> values, string key)
@@ -73,4 +79,10 @@ public sealed class AssemblyBuildMetadataProvider : IBuildMetadataProvider
         return parsed;
     }
 }
+
+public sealed record RuntimeBuildContext(
+    string EngineVersion,
+    string RuntimeVersion,
+    string OperatingSystem,
+    string Architecture);
 

@@ -15,4 +15,6 @@ obj/
 # Local export output
 build/
 dist/
+.ci-tools/
+.tools/
 

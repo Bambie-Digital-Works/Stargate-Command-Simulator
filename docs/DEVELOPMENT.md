@@ -19,13 +19,24 @@ The .NET SDK selection is recorded in `global.json`; the Godot SDK is pinned in 
 From a developer shell where the Godot executable is available as `godot`, the non-interactive checks are:
 
 ```powershell
-dotnet restore StargateCommandSimulator.csproj
-dotnet build StargateCommandSimulator.csproj --no-restore
+dotnet restore FacilityCommand.csproj
+dotnet build FacilityCommand.csproj --no-restore
 godot --headless --path . --editor --build-solutions --quit
 godot --headless --path . --quit-after 2
 ```
 
 Godot imports project resources and builds the managed assembly during the editor check. Its `.godot/` cache and all `bin/` and `obj/` output remain local and are ignored by Git.
+
+The complete local CI-equivalent entry point is:
+
+```powershell
+$godot = ./tools/Install-Godot.ps1 -Destination ./.ci-tools/godot -IncludeExportTemplates
+./tools/Verify.ps1 -GodotPath $godot
+```
+
+The installer verifies the pinned editor and export-template SHA-256 values before extraction. Verification performs locked restore, formatting checks, warning-free builds, automated tests, asset validation, Godot import, headless boot, and an unsigned Windows x64 export with a build manifest and hashes.
+
+`FacilityCommand.sln` is the engine-facing solution required by Godot's .NET export plugin. Auxiliary test and validation projects remain outside that solution and are invoked explicitly by the verification script.
 
 ## Local configuration and diagnostics
 

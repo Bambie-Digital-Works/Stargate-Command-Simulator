@@ -1,7 +1,7 @@
 using FacilityCommand.Application.Configuration;
 using FacilityCommand.Application.Diagnostics;
-using FacilityCommand.Application.Logging;
 using FacilityCommand.Application.Input;
+using FacilityCommand.Application.Logging;
 using FacilityCommand.Infrastructure.Input;
 using Godot;
 

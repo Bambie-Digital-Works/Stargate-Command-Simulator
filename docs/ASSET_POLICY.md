@@ -38,6 +38,8 @@ Each entry records:
 
 Dates use `YYYY-MM-DD`. Paths use forward slashes and exact repository casing. An empty value is not evidence.
 
+Licence expressions use the approved SPDX-style identifiers enforced by the validator. Adding another licence requires a reviewed validator update so compatibility is an explicit repository decision rather than free-form ledger text.
+
 ## Review states
 
 | State | Meaning | Distributable |
