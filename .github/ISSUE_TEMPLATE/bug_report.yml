@@ -1,0 +1,51 @@
+name: Bug report
+description: Report a reproducible problem in a published project build.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not include confidential information, personal data, credentials, or third-party copyrighted material. Unsolicited code and creative contributions are not accepted.
+  - type: input
+    id: version
+    attributes:
+      label: Build version
+      description: Include the product version, channel, and build number shown by the game.
+      placeholder: 0.3.0-preview.1, build 317
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Problem
+      description: Describe what happened and what you expected.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      placeholder: |
+        1. Start a new shift
+        2. Open ...
+        3. Select ...
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Windows version, display scaling, input devices, and other relevant non-sensitive details.
+    validations:
+      required: true
+  - type: checkboxes
+    id: rights
+    attributes:
+      label: Submission confirmation
+      options:
+        - label: I have the right to share this information, and it contains no confidential, personal, or unlawfully shared third-party material.
+          required: true
+        - label: I have not attached franchise footage, screenshots, audio, scripts, logos, extracted assets, or other third-party copyrighted material.
+          required: true

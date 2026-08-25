@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Contribution policy
+    url: https://github.com/bambiejomurphy-ux/Stargate-Command-Simulator/blob/main/CONTRIBUTING.md
+    about: Read what feedback is accepted before opening an issue.

@@ -1,0 +1,43 @@
+name: Design or research feedback
+description: Share a high-level observation or a sourced public reference.
+title: "[Feedback]: "
+labels:
+  - feedback
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please submit observations and source links only. Do not submit code, art, audio, writing, interface designs, story treatments, confidential information, or third-party copyrighted files.
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - Gameplay and systems
+        - Usability and accessibility
+        - Technical or operational research
+        - Windows compatibility
+        - Other high-level feedback
+    validations:
+      required: true
+  - type: textarea
+    id: observation
+    attributes:
+      label: Observation
+      description: Explain the issue or opportunity without supplying implementation or creative content.
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Public source
+      description: If applicable, provide the original URL and identify its stated licence.
+  - type: checkboxes
+    id: rights
+    attributes:
+      label: Submission confirmation
+      options:
+        - label: I have the right to share this information, and it contains no confidential or unlawfully shared third-party material.
+          required: true
+        - label: I understand that this issue does not transfer ownership, promise compensation, or guarantee implementation.
+          required: true
