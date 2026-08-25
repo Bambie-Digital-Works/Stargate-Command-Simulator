@@ -1,3 +1,4 @@
+using FacilityCommand.Application.Input;
 using FacilityCommand.Application.Logging;
 using Godot;
 
@@ -8,7 +9,7 @@ public partial class FocusCoordinator : Node
     private Control? _lastFocused;
     private Label? _inputModeLabel;
     private IApplicationLogger? _logger;
-    private string _inputMode = "Keyboard / mouse";
+    private readonly InputDeviceState _deviceState = new();
 
     public override void _Ready()
     {
@@ -24,19 +25,18 @@ public partial class FocusCoordinator : Node
 
     public override void _Input(InputEvent inputEvent)
     {
-        string nextMode = inputEvent switch
+        InputDeviceKind? nextDevice = inputEvent switch
         {
-            InputEventJoypadButton => "Controller",
-            InputEventJoypadMotion motion when Math.Abs(motion.AxisValue) >= 0.5f => "Controller",
-            InputEventKey => "Keyboard / mouse",
-            InputEventMouseButton => "Keyboard / mouse",
-            InputEventMouseMotion => "Keyboard / mouse",
-            _ => _inputMode,
+            InputEventJoypadButton => InputDeviceKind.Controller,
+            InputEventJoypadMotion motion when Math.Abs(motion.AxisValue) >= 0.5f => InputDeviceKind.Controller,
+            InputEventKey => InputDeviceKind.KeyboardMouse,
+            InputEventMouseButton => InputDeviceKind.KeyboardMouse,
+            InputEventMouseMotion => InputDeviceKind.KeyboardMouse,
+            _ => null,
         };
 
-        if (nextMode != _inputMode)
+        if (nextDevice is not null && _deviceState.SetActive(nextDevice.Value))
         {
-            _inputMode = nextMode;
             UpdateInputModeLabel();
         }
     }
@@ -77,6 +77,12 @@ public partial class FocusCoordinator : Node
                 ["state"] = connected ? "connected" : "disconnected",
             });
 
+        if (!connected)
+        {
+            _deviceState.ControllerDisconnected();
+            UpdateInputModeLabel();
+        }
+
         CallDeferred(MethodName.RestoreFocus);
     }
 
@@ -84,7 +90,10 @@ public partial class FocusCoordinator : Node
     {
         if (_inputModeLabel is not null)
         {
-            _inputModeLabel.Text = $"Active input: {_inputMode}";
+            string displayName = _deviceState.ActiveDevice == InputDeviceKind.Controller
+                ? "Controller"
+                : "Keyboard / mouse";
+            _inputModeLabel.Text = $"Active input: {displayName}";
         }
     }
 }

@@ -7,6 +7,9 @@
     <RootNamespace>FacilityCommand</RootNamespace>
     <AssemblyName>FacilityCommand</AssemblyName>
     <EnableDynamicLoading>true</EnableDynamicLoading>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <NuGetLockFilePath Condition="'$(Configuration)' == 'ExportRelease'">$(BaseIntermediateOutputPath)export-packages.lock.json</NuGetLockFilePath>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <VersionPrefix>0.1.0</VersionPrefix>
     <VersionSuffix Condition="'$(VersionSuffix)' == ''">dev</VersionSuffix>
     <BuildChannel Condition="'$(BuildChannel)' == ''">development</BuildChannel>

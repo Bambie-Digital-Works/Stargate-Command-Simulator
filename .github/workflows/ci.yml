@@ -1,0 +1,77 @@
+name: Foundation CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: foundation-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+  DOTNET_NOLOGO: '1'
+  BuildChannel: ${{ github.ref == 'refs/heads/main' && 'nightly' || 'development' }}
+  BuildId: ${{ github.run_number }}
+  CommitSha: ${{ github.sha }}
+
+jobs:
+  validate-and-package:
+    name: Validate and package Windows x64
+    runs-on: windows-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Set up pinned .NET SDK
+        uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5
+        with:
+          global-json-file: global.json
+          cache: true
+          cache-dependency-path: '**/packages.lock.json'
+
+      - name: Set immutable build timestamp
+        shell: pwsh
+        run: '"BuildUtc=$([DateTime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"))" | Add-Content -LiteralPath $env:GITHUB_ENV'
+
+      - name: Cache verified Godot toolchain
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: ${{ runner.temp }}\facility-command-godot
+          key: godot-4.7.2-mono-win64-${{ github.ref == 'refs/heads/main' && 'with-templates' || 'editor' }}
+
+      - name: Install and verify Godot
+        id: godot
+        shell: pwsh
+        run: |
+          $includeTemplates = '${{ github.ref }}' -eq 'refs/heads/main'
+          $godotPath = ./tools/Install-Godot.ps1 -Destination '${{ runner.temp }}\facility-command-godot' -IncludeExportTemplates:$includeTemplates
+          "path=$godotPath" | Add-Content -LiteralPath $env:GITHUB_OUTPUT
+
+      - name: Restore, format, build, test, validate, and smoke test
+        id: verify
+        shell: pwsh
+        run: |
+          if ('${{ github.ref }}' -eq 'refs/heads/main') {
+            ./tools/Verify.ps1 -GodotPath '${{ steps.godot.outputs.path }}' -ExportDirectory 'build/package'
+          } else {
+            ./tools/Verify.ps1 -GodotPath '${{ steps.godot.outputs.path }}' -SkipExport
+          }
+
+      - name: Upload unsigned Windows development artifact
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: ${{ steps.verify.outputs.artifact_name }}
+          path: ${{ steps.verify.outputs.artifact_path }}
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 9

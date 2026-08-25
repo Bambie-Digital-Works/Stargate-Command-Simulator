@@ -32,6 +32,20 @@ public static class AssetLedgerValidation
         "unverified", "approved", "reference-only", "rejected",
     };
 
+    private static readonly HashSet<string> LicenseExpressions = new(StringComparer.Ordinal)
+    {
+        "Apache-2.0",
+        "CC-BY-3.0",
+        "CC-BY-4.0",
+        "CC-BY-SA-3.0",
+        "CC-BY-SA-4.0",
+        "CC0-1.0",
+        "LicenseRef-Proprietary",
+        "LicenseRef-USGov-Public-Domain",
+        "MIT",
+        "OFL-1.1",
+    };
+
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         PropertyNameCaseInsensitive = false,
@@ -139,6 +153,7 @@ public static class AssetLedgerValidation
         ValidateAllowed(asset.Category, Categories, "category", prefix, errors);
         ValidateAllowed(asset.Scope, Scopes, "scope", prefix, errors);
         ValidateAllowed(asset.Origin, Origins, "origin", prefix, errors);
+        ValidateAllowed(asset.LicenseExpression, LicenseExpressions, "licenseExpression", prefix, errors);
         ValidateAllowed(asset.ReviewStatus, ReviewStatuses, "reviewStatus", prefix, errors);
         ValidateDate(asset.AcquiredOn, "acquiredOn", prefix, errors);
         ValidateDate(asset.ReviewedOn, "reviewedOn", prefix, errors);
@@ -236,4 +251,3 @@ public static class AssetLedgerValidation
         }
     }
 }
-

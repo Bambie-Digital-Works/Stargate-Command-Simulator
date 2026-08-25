@@ -1,11 +1,11 @@
-using Godot;
 using FacilityCommand.Application.Configuration;
 using FacilityCommand.Application.Logging;
 using FacilityCommand.Infrastructure.Configuration;
 using FacilityCommand.Infrastructure.Diagnostics;
-using FacilityCommand.Infrastructure.Logging;
 using FacilityCommand.Infrastructure.Input;
+using FacilityCommand.Infrastructure.Logging;
 using FacilityCommand.Presentation;
+using Godot;
 
 namespace FacilityCommand.Bootstrap;
 
