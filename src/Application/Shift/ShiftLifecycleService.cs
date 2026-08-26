@@ -20,6 +20,7 @@ public sealed class ShiftLifecycleService
     private CampaignState _campaign;
     private ShiftPhase _phase = ShiftPhase.Briefing;
     private ShiftReviewSummary? _latestReview;
+    private string? _persistenceGuidance;
 
     public ShiftLifecycleService(
         ShiftBriefDefinition brief,
@@ -35,7 +36,9 @@ public sealed class ShiftLifecycleService
         _resources = resources;
         _store = store;
         _operations = operations;
-        _campaign = store.LoadOrEmpty();
+        CampaignSaveLoadResult load = store.Load();
+        _campaign = load.State;
+        _persistenceGuidance = load.RecoveryGuidance;
         ApplyCarryoverEffects();
         _operations.SetActiveScreen(OperatorConsoleScreen.ShiftBrief);
     }
@@ -43,6 +46,8 @@ public sealed class ShiftLifecycleService
     public ShiftPhase Phase => _phase;
 
     public CampaignState Campaign => _campaign;
+
+    public string? PersistenceGuidance => _persistenceGuidance;
 
     public ShiftBriefReadModel GetBriefReadModel()
     {
@@ -56,7 +61,8 @@ public sealed class ShiftLifecycleService
             _brief.Constraints,
             carryover,
             _phase,
-            _phase == ShiftPhase.Briefing);
+            _phase == ShiftPhase.Briefing,
+            _persistenceGuidance);
     }
 
     public ShiftReviewReadModel GetReviewReadModel()
@@ -127,11 +133,13 @@ public sealed class ShiftLifecycleService
         ShiftScore score = ShiftScoring.Evaluate(facts);
         _latestReview = new ShiftReviewSummary(facts, score, consequences);
         _campaign = new CampaignState(
-            1,
+            _store.SupportedSchemaVersion,
             consequences,
             score.Category,
-            score.CategoryRuleSummary);
+            score.CategoryRuleSummary,
+            DateTimeOffset.UtcNow);
         _store.Save(_campaign);
+        _persistenceGuidance = null;
         _phase = ShiftPhase.Review;
         _operations.SetActiveScreen(OperatorConsoleScreen.ShiftReview);
         return ShiftOperationResult.Accepted();
@@ -173,6 +181,11 @@ public sealed class ShiftLifecycleService
     private List<string> BuildCarryoverLines()
     {
         List<string> lines = [];
+        if (!string.IsNullOrWhiteSpace(_persistenceGuidance))
+        {
+            lines.Add($"Save recovery: {_persistenceGuidance}");
+        }
+
         if (_campaign.LastOutcomeCategory is { } category)
         {
             lines.Add($"Prior outcome: {category}. {_campaign.LastCategoryRuleSummary}");

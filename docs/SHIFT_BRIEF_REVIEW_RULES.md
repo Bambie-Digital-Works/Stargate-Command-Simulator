@@ -24,4 +24,4 @@ No hidden judgments — the category rule summary is shown on Shift Review.
 
 ## Persistence
 
-`CampaignStateStore` writes `user://campaign_state.v1.json` (temp file then replace). Supported consequences (injured staff, residual cooling, command notes, discovery summaries) reload into the next Shift Brief. Full atomic backups and migrations remain issue #30.
+`CampaignStateStore` writes `user://campaign_state.json` with atomic temp validation, `.bak` retention, forward migration from schema 1, and quarantine of corrupt/newer files. Recovery guidance surfaces on the Shift Brief carryover lines. See [SAVE_SCHEMA_RULES.md](SAVE_SCHEMA_RULES.md).

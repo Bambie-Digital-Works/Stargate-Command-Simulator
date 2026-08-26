@@ -16,7 +16,7 @@
     <BuildId Condition="'$(BuildId)' == ''">local</BuildId>
     <CommitSha Condition="'$(CommitSha)' == ''">unknown</CommitSha>
     <ContentSchemaVersion Condition="'$(ContentSchemaVersion)' == ''">1</ContentSchemaVersion>
-    <SaveSchemaVersion Condition="'$(SaveSchemaVersion)' == ''">1</SaveSchemaVersion>
+    <SaveSchemaVersion Condition="'$(SaveSchemaVersion)' == ''">2</SaveSchemaVersion>
     <BuildUtc Condition="'$(BuildUtc)' == ''">1970-01-01T00:00:00Z</BuildUtc>
   </PropertyGroup>
   <ItemGroup>

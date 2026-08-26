@@ -63,3 +63,5 @@ Survey Drone deployment, telemetry qualities, and destination risk decisions are
 Vertical-slice incident scripts and debrief facts are specified in [the incident script rules](INCIDENT_SCRIPT_RULES.md).
 
 Shift Brief, Shift Review scoring, and campaign carryover are specified in [the shift brief and review rules](SHIFT_BRIEF_REVIEW_RULES.md).
+
+Campaign save schema, atomic writes, backups, and forward migrations are specified in [the save schema rules](SAVE_SCHEMA_RULES.md).

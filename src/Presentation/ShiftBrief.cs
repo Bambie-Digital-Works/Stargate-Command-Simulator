@@ -56,7 +56,9 @@ public partial class ShiftBrief : PanelContainer
         _readinessLabel.Text = "Readiness\n" + string.Join('\n', model.ReadinessLines.Select(line => $"• {line}"));
         _constraintsLabel.Text = "Constraints\n" + string.Join('\n', model.Constraints.Select(line => $"• {line}"));
         _carryoverLabel.Text = "Prior-shift carryover\n" + string.Join('\n', model.CarryoverLines.Select(line => $"• {line}"));
-        _feedbackLabel.Text = _feedback;
+        _feedbackLabel.Text = string.IsNullOrWhiteSpace(model.PersistenceGuidance)
+            ? _feedback
+            : $"{_feedback}\n{model.PersistenceGuidance}";
         _startButton.Disabled = !model.CanStartShift;
     }
 

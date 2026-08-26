@@ -11,4 +11,5 @@ public sealed record ShiftBriefReadModel(
     IReadOnlyList<string> Constraints,
     IReadOnlyList<string> CarryoverLines,
     ShiftPhase Phase,
-    bool CanStartShift);
+    bool CanStartShift,
+    string? PersistenceGuidance);
