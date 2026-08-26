@@ -59,9 +59,12 @@ if ($IncludeExportTemplates) {
     $releaseTemplate = Join-Path $installedTemplatesPath 'windows_release_x86_64.exe'
     if (-not (Test-Path -LiteralPath $releaseTemplate)) {
         $templateExtractPath = Join-Path $destinationPath 'templates-extracted'
+        if (Test-Path -LiteralPath $templateExtractPath) {
+            Remove-Item -LiteralPath $templateExtractPath -Recurse -Force
+        }
         New-Item -ItemType Directory -Force -Path $templateExtractPath | Out-Null
         Add-Type -AssemblyName System.IO.Compression.FileSystem
-        [IO.Compression.ZipFile]::ExtractToDirectory($templatesArchive, $templateExtractPath, $true)
+        [IO.Compression.ZipFile]::ExtractToDirectory($templatesArchive, $templateExtractPath)
         $templateSource = Join-Path $templateExtractPath 'templates'
         if (-not (Test-Path -LiteralPath $templateSource)) {
             throw 'The verified export-template archive did not contain a templates directory.'
