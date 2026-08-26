@@ -1,0 +1,103 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/Presentation/ReturnControl.cs" id="1_script"]
+
+[node name="ReturnControl" type="PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_script")
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
+
+[node name="Layout" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Heading" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Return Control"
+
+[node name="ScenarioRow" type="HBoxContainer" parent="Margin/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="ScenarioLabel" type="Label" parent="Margin/Layout/ScenarioRow"]
+layout_mode = 2
+text = "Credential case"
+
+[node name="ScenarioOptions" type="OptionButton" parent="Margin/Layout/ScenarioRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Warning" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+text = "Warning: Unverified"
+autowrap_mode = 3
+
+[node name="Link" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+text = "Transit Link status"
+autowrap_mode = 3
+
+[node name="Credential" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+text = "Credential status"
+autowrap_mode = 3
+
+[node name="Shutter" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+text = "Containment Shutter status"
+autowrap_mode = 3
+
+[node name="Feedback" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+text = "Select a credential case and verify before changing containment."
+autowrap_mode = 3
+
+[node name="Actions" type="GridContainer" parent="Margin/Layout"]
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 8
+columns = 3
+
+[node name="VerifyButton" type="Button" parent="Margin/Layout/Actions"]
+layout_mode = 2
+text = "Verify Return Credential"
+
+[node name="OpenButton" type="Button" parent="Margin/Layout/Actions"]
+layout_mode = 2
+text = "Open shutter"
+
+[node name="ConfirmOpenedButton" type="Button" parent="Margin/Layout/Actions"]
+layout_mode = 2
+text = "Confirm opened"
+
+[node name="CloseButton" type="Button" parent="Margin/Layout/Actions"]
+layout_mode = 2
+text = "Close shutter"
+
+[node name="ConfirmClosedButton" type="Button" parent="Margin/Layout/Actions"]
+layout_mode = 2
+text = "Confirm closed"
+
+[node name="ReportFaultButton" type="Button" parent="Margin/Layout/Actions"]
+layout_mode = 2
+text = "Report shutter fault"
+
+[node name="ResetFaultButton" type="Button" parent="Margin/Layout/Actions"]
+layout_mode = 2
+text = "Reset shutter fault"
+
+[node name="Navigation" type="HBoxContainer" parent="Margin/Layout"]
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="Margin/Layout/Navigation"]
+layout_mode = 2
+text = "Return to Operations Board"

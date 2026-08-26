@@ -9,4 +9,13 @@ public sealed record ReturnSecurityReadModel(
     string StatusCode,
     string CorrectiveAction,
     bool CanOpenShutter,
-    bool HasSecurityAlert);
+    bool HasSecurityAlert,
+    string WarningCategory,
+    string WarningSummary,
+    string ShutterStateLabel,
+    bool LinkIsStable,
+    bool CanConfirmOpened,
+    bool CanCloseShutter,
+    bool CanConfirmClosed,
+    bool CanReportFault,
+    bool CanResetFault);
