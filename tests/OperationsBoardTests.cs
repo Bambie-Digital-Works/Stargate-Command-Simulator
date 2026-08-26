@@ -1,9 +1,11 @@
 using FacilityCommand.Application.Operations;
 using FacilityCommand.Application.Personnel;
 using FacilityCommand.Application.Security;
+using FacilityCommand.Application.Survey;
 using FacilityCommand.Application.Transit;
 using FacilityCommand.Core.Destinations;
 using FacilityCommand.Core.Security;
+using FacilityCommand.Core.Survey;
 using FacilityCommand.Core.Transit;
 using FacilityCommand.Infrastructure.Simulation;
 
@@ -34,6 +36,7 @@ public sealed class OperationsBoardTests
         Assert.Equal(100, model.FreePower);
         Assert.Equal(100, model.FreeCooling);
         Assert.Equal("No Expedition Unit assigned.", model.ExpeditionUnitSummary);
+        Assert.Contains("Survey", model.SurveyTelemetrySummary, StringComparison.Ordinal);
         Assert.Empty(model.ActiveAlarms);
         Assert.Contains("Status nominal", model.AnnouncementSummary, StringComparison.Ordinal);
         Assert.Contains("Transit Array Standby", model.AnnouncementSummary, StringComparison.Ordinal);
@@ -48,12 +51,10 @@ public sealed class OperationsBoardTests
         TransitSimulationService transit = new(outgoing, registry, resources);
         ReturnSecurityService security = new(new ReturnCredentialVerifier(), new ContainmentShutter());
         ManualSimulationClock clock = new();
-        OperationsBoardService board = new(
-            transit,
-            security,
-            ExpeditionRosterService.CreateDefault(clock),
-            clock,
-            resources);
+        ExpeditionRosterService roster = ExpeditionRosterService.CreateDefault(clock);
+        SurveyTelemetryService survey = CreateSurvey(roster, transit, clock);
+        roster.BindSurvey(survey);
+        OperationsBoardService board = new(transit, security, roster, survey, clock, resources);
 
         Assert.True(outgoing.ReportFault(new SimulationInstant(1), "array_fault").IsAccepted);
         security.VerifyCredential(
@@ -80,6 +81,7 @@ public sealed class OperationsBoardTests
 
         Assert.Equal(OperatorConsoleScreen.OperationsBoard, service.ActiveScreen);
         Assert.Equal(OperatorConsoleScreen.TransitControl, service.CycleScreen(1));
+        Assert.Equal(OperatorConsoleScreen.SurveyTelemetry, service.CycleScreen(1));
         Assert.Equal(OperatorConsoleScreen.ReturnControl, service.CycleScreen(1));
         Assert.Equal(OperatorConsoleScreen.ExpeditionRoster, service.CycleScreen(1));
         Assert.Equal(OperatorConsoleScreen.OperationsBoard, service.CycleScreen(1));
@@ -96,13 +98,37 @@ public sealed class OperationsBoardTests
         transit = new TransitSimulationService(outgoing, new DestinationRegistry([Destination]), resources);
         security = new ReturnSecurityService(new ReturnCredentialVerifier(), new ContainmentShutter());
         clock = new ManualSimulationClock();
-        return new OperationsBoardService(
-            transit,
-            security,
-            ExpeditionRosterService.CreateDefault(clock),
-            clock,
-            resources);
+        ExpeditionRosterService roster = ExpeditionRosterService.CreateDefault(clock);
+        SurveyTelemetryService survey = CreateSurvey(roster, transit, clock);
+        roster.BindSurvey(survey);
+        return new OperationsBoardService(transit, security, roster, survey, clock, resources);
     }
+
+    private static SurveyTelemetryService CreateSurvey(
+        ExpeditionRosterService roster,
+        TransitSimulationService transit,
+        ManualSimulationClock clock) =>
+        new(
+            new SurveyDrone(),
+            new SurveyTelemetryCatalog(
+            [
+                new SurveyTelemetryProfile(
+                    Destination.Id,
+                    0,
+                    SurveyRiskAssessment.Acceptable,
+                    "Test profile",
+                    [
+                        new SurveyChannelReading(
+                            SurveyChannelKind.Atmosphere,
+                            "Atmosphere",
+                            "Clear",
+                            SurveyReadingQuality.Clear,
+                            null),
+                    ]),
+            ]),
+            roster,
+            transit,
+            clock);
 
     private static OutgoingConnection CreateConnection(FacilityResourcePool resources) =>
         new(new DestinationRegistry([Destination]), resources);

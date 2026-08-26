@@ -19,6 +19,7 @@ public partial class OperatorShell : Control
     private FocusCoordinator _focusCoordinator = null!;
     private OperationsBoard _operationsBoard = null!;
     private TransitControl _transitControlPanel = null!;
+    private SurveyTelemetry _surveyTelemetryPanel = null!;
     private ReturnControl _returnControlPanel = null!;
     private ExpeditionRoster _expeditionRosterPanel = null!;
     private OperationsBoardService? _operations;
@@ -34,6 +35,7 @@ public partial class OperatorShell : Control
         _focusCoordinator = GetNode<FocusCoordinator>("FocusCoordinator");
         _operationsBoard = GetNode<OperationsBoard>("SafeArea/Layout/Workspace/NavigationHost/OperationsBoard");
         _transitControlPanel = GetNode<TransitControl>("SafeArea/Layout/Workspace/NavigationHost/TransitControlPanel");
+        _surveyTelemetryPanel = GetNode<SurveyTelemetry>("SafeArea/Layout/Workspace/NavigationHost/SurveyTelemetryPanel");
         _returnControlPanel = GetNode<ReturnControl>("SafeArea/Layout/Workspace/NavigationHost/ReturnControlPanel");
         _expeditionRosterPanel = GetNode<ExpeditionRoster>("SafeArea/Layout/Workspace/NavigationHost/ExpeditionRosterPanel");
 
@@ -43,6 +45,8 @@ public partial class OperatorShell : Control
         _operationsBoard.ScreenRequested += NavigateTo;
         _transitControlPanel.BackRequested += () => NavigateTo(OperatorConsoleScreen.OperationsBoard);
         _transitControlPanel.StateChanged += RefreshShellStatus;
+        _surveyTelemetryPanel.BackRequested += () => NavigateTo(OperatorConsoleScreen.OperationsBoard);
+        _surveyTelemetryPanel.StateChanged += RefreshShellStatus;
         _returnControlPanel.BackRequested += () => NavigateTo(OperatorConsoleScreen.OperationsBoard);
         _returnControlPanel.StateChanged += RefreshShellStatus;
         _expeditionRosterPanel.BackRequested += () => NavigateTo(OperatorConsoleScreen.OperationsBoard);
@@ -104,6 +108,7 @@ public partial class OperatorShell : Control
         _focusCoordinator.Initialize(GetNode<Label>("SafeArea/Layout/Toolbar/InputModeLabel"), logger);
         _operationsBoard.Initialize(operations);
         _transitControlPanel.Initialize(operations.Transit, operations.Clock);
+        _surveyTelemetryPanel.Initialize(operations.Survey, operations.Clock);
         _returnControlPanel.Initialize(operations.Security, operations.Transit, operations.Clock);
         _expeditionRosterPanel.Initialize(operations.Roster, operations.Transit, operations.Clock);
         _titleLabel.Text = "Operations Board online";
@@ -131,6 +136,7 @@ public partial class OperatorShell : Control
 
         _operationsBoard.Visible = screen == OperatorConsoleScreen.OperationsBoard;
         _transitControlPanel.Visible = screen == OperatorConsoleScreen.TransitControl;
+        _surveyTelemetryPanel.Visible = screen == OperatorConsoleScreen.SurveyTelemetry;
         _returnControlPanel.Visible = screen == OperatorConsoleScreen.ReturnControl;
         _expeditionRosterPanel.Visible = screen == OperatorConsoleScreen.ExpeditionRoster;
 
@@ -141,6 +147,10 @@ public partial class OperatorShell : Control
         else if (screen == OperatorConsoleScreen.TransitControl)
         {
             _transitControlPanel.Refresh();
+        }
+        else if (screen == OperatorConsoleScreen.SurveyTelemetry)
+        {
+            _surveyTelemetryPanel.Refresh();
         }
         else if (screen == OperatorConsoleScreen.ReturnControl)
         {
@@ -156,6 +166,7 @@ public partial class OperatorShell : Control
         {
             OperatorConsoleScreen.OperationsBoard => "Operations Board online",
             OperatorConsoleScreen.TransitControl => "Transit Control",
+            OperatorConsoleScreen.SurveyTelemetry => "Survey Telemetry",
             OperatorConsoleScreen.ReturnControl => "Return Control",
             OperatorConsoleScreen.ExpeditionRoster => "Expedition Roster",
             _ => "Operator systems standing by",
@@ -173,6 +184,9 @@ public partial class OperatorShell : Control
                 break;
             case OperatorConsoleScreen.TransitControl:
                 _transitControlPanel.FocusPrimaryAction();
+                break;
+            case OperatorConsoleScreen.SurveyTelemetry:
+                _surveyTelemetryPanel.FocusPrimaryAction();
                 break;
             case OperatorConsoleScreen.ReturnControl:
                 _returnControlPanel.FocusPrimaryAction();
@@ -194,6 +208,11 @@ public partial class OperatorShell : Control
         if (_operationsBoard.Visible)
         {
             _operationsBoard.Refresh();
+        }
+
+        if (_surveyTelemetryPanel.Visible)
+        {
+            _surveyTelemetryPanel.Refresh();
         }
 
         if (_returnControlPanel.Visible)

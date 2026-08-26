@@ -4,6 +4,7 @@ public enum OperatorConsoleScreen
 {
     OperationsBoard,
     TransitControl,
+    SurveyTelemetry,
     ReturnControl,
     ExpeditionRoster,
 }

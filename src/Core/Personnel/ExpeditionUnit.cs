@@ -174,7 +174,7 @@ public sealed class ExpeditionUnit
         return Accept();
     }
 
-    public ExpeditionOperationResult Dispatch(TransitArraySnapshot transit)
+    public ExpeditionOperationResult Dispatch(TransitArraySnapshot transit, bool riskDecisionRecorded)
     {
         if (_snapshot.State != ExpeditionDispatchState.Equipped)
         {
@@ -184,6 +184,13 @@ public sealed class ExpeditionUnit
         if (transit.Phase != TransitArrayPhase.LinkOpen)
         {
             return Reject("link_not_stable", "Wait for an active stable Transit Link before dispatching the Expedition Unit.");
+        }
+
+        if (!riskDecisionRecorded)
+        {
+            return Reject(
+                "risk_decision_required",
+                "Record a Survey Telemetry risk decision before dispatching the Expedition Unit.");
         }
 
         _snapshot = _snapshot with { State = ExpeditionDispatchState.Dispatched };

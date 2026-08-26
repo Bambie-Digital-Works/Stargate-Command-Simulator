@@ -14,8 +14,10 @@ public partial class OperationsBoard : PanelContainer
     private Label _powerLabel = null!;
     private Label _coolingLabel = null!;
     private Label _expeditionLabel = null!;
+    private Label _surveyLabel = null!;
     private Label _alarmsLabel = null!;
     private Button _transitControlButton = null!;
+    private Button _surveyTelemetryButton = null!;
     private Button _returnControlButton = null!;
     private Button _expeditionRosterButton = null!;
     private OperationsBoardService? _operations;
@@ -33,12 +35,15 @@ public partial class OperationsBoard : PanelContainer
         _powerLabel = GetNode<Label>("Margin/Layout/StatusGrid/PowerValue");
         _coolingLabel = GetNode<Label>("Margin/Layout/StatusGrid/CoolingValue");
         _expeditionLabel = GetNode<Label>("Margin/Layout/StatusGrid/ExpeditionValue");
+        _surveyLabel = GetNode<Label>("Margin/Layout/StatusGrid/SurveyValue");
         _alarmsLabel = GetNode<Label>("Margin/Layout/Alarms");
         _transitControlButton = GetNode<Button>("Margin/Layout/Navigation/TransitControlButton");
+        _surveyTelemetryButton = GetNode<Button>("Margin/Layout/Navigation/SurveyTelemetryButton");
         _returnControlButton = GetNode<Button>("Margin/Layout/Navigation/ReturnControlButton");
         _expeditionRosterButton = GetNode<Button>("Margin/Layout/Navigation/ExpeditionRosterButton");
 
         _transitControlButton.Pressed += () => ScreenRequested?.Invoke(OperatorConsoleScreen.TransitControl);
+        _surveyTelemetryButton.Pressed += () => ScreenRequested?.Invoke(OperatorConsoleScreen.SurveyTelemetry);
         _returnControlButton.Pressed += () => ScreenRequested?.Invoke(OperatorConsoleScreen.ReturnControl);
         _expeditionRosterButton.Pressed += () => ScreenRequested?.Invoke(OperatorConsoleScreen.ExpeditionRoster);
     }
@@ -71,6 +76,7 @@ public partial class OperationsBoard : PanelContainer
         _powerLabel.Text = $"Free {model.FreePower} / {model.PowerCapacity} (reserved {model.ReservedPower})";
         _coolingLabel.Text = $"Free {model.FreeCooling} / {model.CoolingCapacity} (reserved {model.ReservedCooling})";
         _expeditionLabel.Text = model.ExpeditionUnitSummary;
+        _surveyLabel.Text = model.SurveyTelemetrySummary;
         _alarmsLabel.Text = model.ActiveAlarms.Count == 0
             ? "Active alarms\nNone"
             : "Active alarms\n" + string.Join(
