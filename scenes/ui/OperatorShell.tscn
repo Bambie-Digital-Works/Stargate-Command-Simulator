@@ -5,9 +5,9 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/InputSettingsPanel.tscn" id="3_input"]
 [ext_resource type="Script" path="res://src/Presentation/FocusCoordinator.cs" id="4_focus"]
 [ext_resource type="PackedScene" path="res://scenes/ui/OperationsBoard.tscn" id="5_operations"]
-[ext_resource type="PackedScene" path="res://scenes/ui/WorkflowPlaceholderPanel.tscn" id="6_placeholder"]
 [ext_resource type="PackedScene" path="res://scenes/ui/TransitControl.tscn" id="7_transit"]
 [ext_resource type="PackedScene" path="res://scenes/ui/ReturnControl.tscn" id="8_return"]
+[ext_resource type="PackedScene" path="res://scenes/ui/ExpeditionRoster.tscn" id="9_roster"]
 
 [node name="OperatorShell" type="Control"]
 layout_mode = 3
@@ -117,7 +117,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ExpeditionRosterPanel" parent="SafeArea/Layout/Workspace/NavigationHost" instance=ExtResource("6_placeholder")]
+[node name="ExpeditionRosterPanel" parent="SafeArea/Layout/Workspace/NavigationHost" instance=ExtResource("9_roster")]
 visible = false
 layout_mode = 1
 anchors_preset = 15

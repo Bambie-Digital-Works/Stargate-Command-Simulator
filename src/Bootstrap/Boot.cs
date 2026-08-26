@@ -1,6 +1,7 @@
 using FacilityCommand.Application.Configuration;
 using FacilityCommand.Application.Logging;
 using FacilityCommand.Application.Operations;
+using FacilityCommand.Application.Personnel;
 using FacilityCommand.Application.Security;
 using FacilityCommand.Application.Transit;
 using FacilityCommand.Core.Destinations;
@@ -69,7 +70,8 @@ public partial class Boot : Node
             TransitSimulationService transit = new(outgoing, destinations, resources);
             ReturnSecurityService security = new(new ReturnCredentialVerifier(), new ContainmentShutter());
             ManualSimulationClock clock = new();
-            OperationsBoardService operations = new(transit, security, clock, resources);
+            ExpeditionRosterService roster = ExpeditionRosterService.CreateDefault(clock);
+            OperationsBoardService operations = new(transit, security, roster, clock, resources);
 
             logger.Log(
                 ApplicationLogLevel.Information,

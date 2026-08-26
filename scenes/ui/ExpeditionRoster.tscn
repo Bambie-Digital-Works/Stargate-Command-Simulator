@@ -1,0 +1,86 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/Presentation/ExpeditionRoster.cs" id="1_script"]
+
+[node name="ExpeditionRoster" type="PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_script")
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
+
+[node name="Layout" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Heading" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Expedition Roster"
+
+[node name="State" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+text = "Expedition Unit status"
+
+[node name="Clock" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+text = "Mission clock: T+00:00"
+
+[node name="Link" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+text = "Transit Link status"
+autowrap_mode = 3
+
+[node name="PersonnelList" type="ItemList" parent="Margin/Layout"]
+custom_minimum_size = Vector2(0, 180)
+layout_mode = 2
+size_flags_vertical = 3
+select_mode = 1
+
+[node name="Assigned" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+text = "Assigned: none"
+autowrap_mode = 3
+
+[node name="Equipment" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+text = "Equipment: none"
+autowrap_mode = 3
+
+[node name="Feedback" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+text = "Select available staff covering commander, medic, engineer, and security."
+autowrap_mode = 3
+
+[node name="Actions" type="HBoxContainer" parent="Margin/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="AssembleButton" type="Button" parent="Margin/Layout/Actions"]
+layout_mode = 2
+text = "Assemble"
+
+[node name="EquipButton" type="Button" parent="Margin/Layout/Actions"]
+layout_mode = 2
+text = "Equip required kit"
+
+[node name="DispatchButton" type="Button" parent="Margin/Layout/Actions"]
+layout_mode = 2
+text = "Dispatch"
+
+[node name="RecallButton" type="Button" parent="Margin/Layout/Actions"]
+layout_mode = 2
+text = "Recall"
+
+[node name="Navigation" type="HBoxContainer" parent="Margin/Layout"]
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="Margin/Layout/Navigation"]
+layout_mode = 2
+text = "Return to Operations Board"
