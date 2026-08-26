@@ -74,9 +74,7 @@ try {
 
         $processInfo = [Diagnostics.ProcessStartInfo]::new()
         $processInfo.FileName = $executablePath
-        $processInfo.ArgumentList.Add('--headless')
-        $processInfo.ArgumentList.Add('--quit-after')
-        $processInfo.ArgumentList.Add('2')
+        $processInfo.Arguments = '--headless --quit-after 2'
         $processInfo.UseShellExecute = $false
         $processInfo.RedirectStandardOutput = $true
         $processInfo.RedirectStandardError = $true
@@ -115,7 +113,7 @@ try {
             Sort-Object FullName |
             ForEach-Object {
                 $hash = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
-                $relativePath = [IO.Path]::GetRelativePath($exportPath, $_.FullName).Replace('\', '/')
+                $relativePath = $_.FullName.Substring($exportPath.Length).TrimStart('\', '/').Replace('\', '/')
                 "$hash  $relativePath"
             }
         $hashLines | Set-Content -LiteralPath (Join-Path $exportPath 'SHA256SUMS.txt') -Encoding ascii
