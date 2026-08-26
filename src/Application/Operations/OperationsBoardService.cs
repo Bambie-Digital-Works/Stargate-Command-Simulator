@@ -1,3 +1,4 @@
+using FacilityCommand.Application.Personnel;
 using FacilityCommand.Application.Security;
 using FacilityCommand.Application.Simulation;
 using FacilityCommand.Application.Transit;
@@ -10,19 +11,21 @@ public sealed class OperationsBoardService
 {
     private readonly TransitSimulationService _transit;
     private readonly ReturnSecurityService _security;
+    private readonly ExpeditionRosterService _roster;
     private readonly ISimulationClock _clock;
     private readonly FacilityResourcePool _resources;
     private OperatorConsoleScreen _activeScreen = OperatorConsoleScreen.OperationsBoard;
-    private string _expeditionUnitSummary = "No Expedition Unit assigned.";
 
     public OperationsBoardService(
         TransitSimulationService transit,
         ReturnSecurityService security,
+        ExpeditionRosterService roster,
         ISimulationClock clock,
         FacilityResourcePool resources)
     {
         _transit = transit;
         _security = security;
+        _roster = roster;
         _clock = clock;
         _resources = resources;
     }
@@ -32,6 +35,8 @@ public sealed class OperationsBoardService
     public TransitSimulationService Transit => _transit;
 
     public ReturnSecurityService Security => _security;
+
+    public ExpeditionRosterService Roster => _roster;
 
     public ISimulationClock Clock => _clock;
 
@@ -61,18 +66,12 @@ public sealed class OperationsBoardService
         return _activeScreen;
     }
 
-    public void SetExpeditionUnitSummary(string summary)
-    {
-        _expeditionUnitSummary = string.IsNullOrWhiteSpace(summary)
-            ? "No Expedition Unit assigned."
-            : summary.Trim();
-    }
-
     public OperationsBoardReadModel GetReadModel()
     {
         TransitControlReadModel transit = _transit.GetTransitControl();
         TransitArraySnapshot transitSnapshot = _transit.GetTransitArraySnapshot();
         ReturnSecurityReadModel security = _security.GetReadModel(transitSnapshot);
+        ExpeditionRosterReadModel roster = _roster.GetReadModel(transitSnapshot);
         List<OperationsAlarm> alarms = BuildAlarms(transit.Phase, security);
         string announcement = BuildAnnouncement(transit, security, alarms);
 
@@ -91,7 +90,7 @@ public sealed class OperationsBoardService
             transit.ReservedCooling,
             _resources.PowerCapacity - transit.ReservedPower,
             _resources.CoolingCapacity - transit.ReservedCooling,
-            _expeditionUnitSummary,
+            roster.Summary,
             alarms,
             announcement,
             _activeScreen);

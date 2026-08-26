@@ -1,4 +1,5 @@
 using FacilityCommand.Application.Operations;
+using FacilityCommand.Application.Personnel;
 using FacilityCommand.Application.Security;
 using FacilityCommand.Application.Transit;
 using FacilityCommand.Core.Destinations;
@@ -46,7 +47,13 @@ public sealed class OperationsBoardTests
         DestinationRegistry registry = new([Destination]);
         TransitSimulationService transit = new(outgoing, registry, resources);
         ReturnSecurityService security = new(new ReturnCredentialVerifier(), new ContainmentShutter());
-        OperationsBoardService board = new(transit, security, new ManualSimulationClock(), resources);
+        ManualSimulationClock clock = new();
+        OperationsBoardService board = new(
+            transit,
+            security,
+            ExpeditionRosterService.CreateDefault(clock),
+            clock,
+            resources);
 
         Assert.True(outgoing.ReportFault(new SimulationInstant(1), "array_fault").IsAccepted);
         security.VerifyCredential(
@@ -89,7 +96,12 @@ public sealed class OperationsBoardTests
         transit = new TransitSimulationService(outgoing, new DestinationRegistry([Destination]), resources);
         security = new ReturnSecurityService(new ReturnCredentialVerifier(), new ContainmentShutter());
         clock = new ManualSimulationClock();
-        return new OperationsBoardService(transit, security, clock, resources);
+        return new OperationsBoardService(
+            transit,
+            security,
+            ExpeditionRosterService.CreateDefault(clock),
+            clock,
+            resources);
     }
 
     private static OutgoingConnection CreateConnection(FacilityResourcePool resources) =>
