@@ -24,4 +24,5 @@ public sealed record OperationsBoardReadModel(
     string IncidentObjective,
     IReadOnlyList<OperationsAlarm> ActiveAlarms,
     string AnnouncementSummary,
-    OperatorConsoleScreen ActiveScreen);
+    OperatorConsoleScreen ActiveScreen,
+    bool CanEndShift);

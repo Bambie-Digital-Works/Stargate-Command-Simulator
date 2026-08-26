@@ -4,11 +4,13 @@ using FacilityCommand.Application.Logging;
 using FacilityCommand.Application.Operations;
 using FacilityCommand.Application.Personnel;
 using FacilityCommand.Application.Security;
+using FacilityCommand.Application.Shift;
 using FacilityCommand.Application.Survey;
 using FacilityCommand.Application.Transit;
 using FacilityCommand.Core.Destinations;
 using FacilityCommand.Core.Incidents;
 using FacilityCommand.Core.Security;
+using FacilityCommand.Core.Shift;
 using FacilityCommand.Core.Survey;
 using FacilityCommand.Core.Transit;
 using FacilityCommand.Infrastructure.Configuration;
@@ -16,6 +18,7 @@ using FacilityCommand.Infrastructure.Content;
 using FacilityCommand.Infrastructure.Diagnostics;
 using FacilityCommand.Infrastructure.Input;
 using FacilityCommand.Infrastructure.Logging;
+using FacilityCommand.Infrastructure.Persistence;
 using FacilityCommand.Infrastructure.Simulation;
 using FacilityCommand.Presentation;
 using Godot;
@@ -71,6 +74,8 @@ public partial class Boot : Node
             SurveyTelemetryCatalog surveyCatalog = new SurveyTelemetryCatalogLoader().Load(surveyJson);
             string incidentsJson = Godot.FileAccess.GetFileAsString("res://content/incidents.v1.json");
             IncidentCatalog incidentCatalog = new IncidentCatalogLoader().Load(incidentsJson);
+            string briefJson = Godot.FileAccess.GetFileAsString("res://content/shift_brief.v1.json");
+            ShiftBriefDefinition shiftBrief = new ShiftBriefLoader().Load(briefJson);
             FacilityResourcePool resources = new(
                 configuration.Simulation.AvailablePowerUnits,
                 configuration.Simulation.AvailableCoolingUnits);
@@ -83,6 +88,9 @@ public partial class Boot : Node
             roster.BindSurvey(survey);
             ShiftIncidentService incidents = new(incidentCatalog, transit, security, roster, survey, resources);
             OperationsBoardService operations = new(transit, security, roster, survey, incidents, clock, resources);
+            CampaignStateStore campaignStore = new(ProjectSettings.GlobalizePath("user://campaign_state.v1.json"));
+            ShiftLifecycleService lifecycle = new(shiftBrief, incidents, roster, resources, campaignStore, operations);
+            operations.BindLifecycle(lifecycle);
 
             logger.Log(
                 ApplicationLogLevel.Information,

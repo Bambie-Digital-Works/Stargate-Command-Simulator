@@ -7,4 +7,6 @@ public enum OperatorConsoleScreen
     SurveyTelemetry,
     ReturnControl,
     ExpeditionRoster,
+    ShiftBrief,
+    ShiftReview,
 }

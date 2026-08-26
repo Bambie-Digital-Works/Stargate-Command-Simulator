@@ -24,9 +24,11 @@ public partial class OperationsBoard : PanelContainer
     private Button _returnControlButton = null!;
     private Button _expeditionRosterButton = null!;
     private Button _resolveCoolingFaultButton = null!;
+    private Button _endShiftButton = null!;
     private OperationsBoardService? _operations;
 
     public event Action<OperatorConsoleScreen>? ScreenRequested;
+    public event Action? ShiftEnded;
 
     public override void _Ready()
     {
@@ -48,12 +50,14 @@ public partial class OperationsBoard : PanelContainer
         _returnControlButton = GetNode<Button>("Margin/Layout/Navigation/ReturnControlButton");
         _expeditionRosterButton = GetNode<Button>("Margin/Layout/Navigation/ExpeditionRosterButton");
         _resolveCoolingFaultButton = GetNode<Button>("Margin/Layout/Navigation/ResolveCoolingFaultButton");
+        _endShiftButton = GetNode<Button>("Margin/Layout/Navigation/EndShiftButton");
 
         _transitControlButton.Pressed += () => ScreenRequested?.Invoke(OperatorConsoleScreen.TransitControl);
         _surveyTelemetryButton.Pressed += () => ScreenRequested?.Invoke(OperatorConsoleScreen.SurveyTelemetry);
         _returnControlButton.Pressed += () => ScreenRequested?.Invoke(OperatorConsoleScreen.ReturnControl);
         _expeditionRosterButton.Pressed += () => ScreenRequested?.Invoke(OperatorConsoleScreen.ExpeditionRoster);
         _resolveCoolingFaultButton.Pressed += OnResolveCoolingFaultPressed;
+        _endShiftButton.Pressed += OnEndShiftPressed;
     }
 
     public void Initialize(OperationsBoardService operations)
@@ -95,6 +99,7 @@ public partial class OperationsBoard : PanelContainer
         _resolveCoolingFaultButton.Disabled =
             model.IncidentSummary.Contains("cooling", StringComparison.OrdinalIgnoreCase) == false
             && model.IncidentObjective.Contains("cooling", StringComparison.OrdinalIgnoreCase) == false;
+        _endShiftButton.Disabled = !model.CanEndShift;
     }
 
     private void OnResolveCoolingFaultPressed()
@@ -105,6 +110,21 @@ public partial class OperationsBoard : PanelContainer
         }
 
         _operations.ResolveCoolingFault();
+        Refresh();
+    }
+
+    private void OnEndShiftPressed()
+    {
+        if (_operations is null)
+        {
+            return;
+        }
+
+        if (_operations.EndShift().IsAccepted)
+        {
+            ShiftEnded?.Invoke();
+        }
+
         Refresh();
     }
 }

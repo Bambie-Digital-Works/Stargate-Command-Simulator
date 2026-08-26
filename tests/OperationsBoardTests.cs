@@ -81,6 +81,7 @@ public sealed class OperationsBoardTests
     public void NavigationCyclesThroughPrototypeWorkflows()
     {
         OperationsBoardService service = CreateService(out _, out _, out _);
+        service.SetActiveScreen(OperatorConsoleScreen.OperationsBoard);
 
         Assert.Equal(OperatorConsoleScreen.OperationsBoard, service.ActiveScreen);
         Assert.Equal(OperatorConsoleScreen.TransitControl, service.CycleScreen(1));

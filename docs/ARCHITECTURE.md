@@ -61,3 +61,5 @@ Expedition Unit assemble, equip, and dispatch rules are specified in [the expedi
 Survey Drone deployment, telemetry qualities, and destination risk decisions are specified in [the survey telemetry rules](SURVEY_TELEMETRY_RULES.md).
 
 Vertical-slice incident scripts and debrief facts are specified in [the incident script rules](INCIDENT_SCRIPT_RULES.md).
+
+Shift Brief, Shift Review scoring, and campaign carryover are specified in [the shift brief and review rules](SHIFT_BRIEF_REVIEW_RULES.md).
