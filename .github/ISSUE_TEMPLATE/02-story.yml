@@ -1,0 +1,91 @@
+name: Story
+description: User-facing outcome with acceptance criteria (As a… I want… so that…).
+title: "[Story]: "
+labels: ["story"]
+type: feature
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A **Story** captures a user outcome. Prefer Given/When/Then acceptance criteria. Nest Tasks underneath.
+  - type: input
+    id: persona
+    attributes:
+      label: Persona / role
+      description: Who benefits (player, admin, developer, streamer, etc.).
+      placeholder: e.g. Returning player
+    validations:
+      required: true
+  - type: textarea
+    id: user-story
+    attributes:
+      label: User story
+      description: Standard format.
+      value: |
+        As a …
+        I want …
+        So that …
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Prefer Given / When / Then. Each criterion should be independently verifiable.
+      value: |
+        - Given … When … Then …
+        - Given … When … Then …
+    validations:
+      required: true
+  - type: textarea
+    id: ux-notes
+    attributes:
+      label: UX / player experience notes
+      description: Flows, copy, accessibility, feel. Link mocks if any.
+    validations:
+      required: false
+  - type: textarea
+    id: out-of-scope
+    attributes:
+      label: Out of scope
+      description: What this story deliberately does not include.
+    validations:
+      required: false
+  - type: dropdown
+    id: product-area
+    attributes:
+      label: Product area
+      options:
+        - Script / tooling
+        - Application / service
+        - Game systems
+        - Store / commerce
+        - Infra / platform
+        - Cross-cutting
+      default: 0
+    validations:
+      required: true
+  - type: dropdown
+    id: size
+    attributes:
+      label: Size
+      options:
+        - XS
+        - S
+        - M
+        - L
+        - XL
+      default: 2
+    validations:
+      required: true
+  - type: checkboxes
+    id: readiness
+    attributes:
+      label: Story readiness
+      options:
+        - label: Persona and user story are clear
+          required: true
+        - label: Acceptance criteria are testable
+          required: true
+        - label: Parent Epic linked (or N/A for standalone)
+          required: false

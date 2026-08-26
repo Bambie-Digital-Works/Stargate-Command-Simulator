@@ -20,6 +20,7 @@ public sealed record TransitControlReadModel(
     int PowerCapacity,
     int CoolingCapacity,
     bool CanPrepare,
+    bool CanDetectIncoming,
     bool CanConfirmStable,
     bool CanCompleteRecovery,
     bool CanCompleteClosure,

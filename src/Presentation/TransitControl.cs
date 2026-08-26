@@ -13,6 +13,7 @@ public partial class TransitControl : PanelContainer
     private Label _resourcesLabel = null!;
     private Label _feedbackLabel = null!;
     private Button _prepareButton = null!;
+    private Button _detectIncomingButton = null!;
     private Button _beginSequenceButton = null!;
     private Button _lockNextButton = null!;
     private Button _stabilizeButton = null!;
@@ -25,7 +26,7 @@ public partial class TransitControl : PanelContainer
     private TransitSimulationService? _transit;
     private ISimulationClock? _clock;
     private IReadOnlyList<DestinationOption> _destinations = [];
-    private string _feedback = "Select a destination to begin.";
+    private string _feedback = "Select a destination or detect an unscheduled incoming Transit Link.";
 
     public event Action? BackRequested;
     public event Action? StateChanged;
@@ -38,6 +39,7 @@ public partial class TransitControl : PanelContainer
         _resourcesLabel = GetNode<Label>("Margin/Layout/Resources");
         _feedbackLabel = GetNode<Label>("Margin/Layout/Feedback");
         _prepareButton = GetNode<Button>("Margin/Layout/Actions/PrepareButton");
+        _detectIncomingButton = GetNode<Button>("Margin/Layout/Actions/DetectIncomingButton");
         _beginSequenceButton = GetNode<Button>("Margin/Layout/Actions/BeginSequenceButton");
         _lockNextButton = GetNode<Button>("Margin/Layout/Actions/LockNextButton");
         _stabilizeButton = GetNode<Button>("Margin/Layout/Actions/StabilizeButton");
@@ -49,6 +51,7 @@ public partial class TransitControl : PanelContainer
         _backButton = GetNode<Button>("Margin/Layout/Navigation/BackButton");
 
         _prepareButton.Pressed += OnPreparePressed;
+        _detectIncomingButton.Pressed += () => RunTimed(at => _transit!.DetectIncoming(at));
         _beginSequenceButton.Pressed += () => RunTimed(at => _transit!.BeginSequence(at));
         _lockNextButton.Pressed += OnLockNextPressed;
         _stabilizeButton.Pressed += () => RunTimed(at => _transit!.BeginStabilization(at));
@@ -109,6 +112,7 @@ public partial class TransitControl : PanelContainer
         bool selecting = model.CanPrepare;
         _destinationOptions.Disabled = !selecting;
         _prepareButton.Disabled = !selecting || _destinations.Count == 0;
+        _detectIncomingButton.Disabled = !model.CanDetectIncoming;
         _beginSequenceButton.Disabled = !model.CanBeginSequence;
         _lockNextButton.Disabled = !model.CanLockVector;
         _stabilizeButton.Disabled = !model.CanStabilize;

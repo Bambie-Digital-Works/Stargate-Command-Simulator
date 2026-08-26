@@ -1,0 +1,97 @@
+name: Bug
+description: Defect report with repro, expected vs actual, severity, and environment.
+title: "[Bug]: "
+labels: ["bug"]
+type: bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        File a **Bug** when something behaves incorrectly. Include a minimal repro whenever possible.
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - S0 — blocker / data loss / crash loop
+        - S1 — major feature broken, no workaround
+        - S2 — significant issue with workaround
+        - S3 — minor / cosmetic
+      default: 2
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What goes wrong in one or two sentences.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, app/game version, branch, build, device, browser, locale, etc.
+      placeholder: |
+        - OS:
+        - Version / commit:
+        - Platform:
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / stack traces
+      description: Paste relevant output. Formatted as code automatically.
+      render: shell
+    validations:
+      required: false
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Workaround
+      description: Temporary mitigation if any.
+    validations:
+      required: false
+  - type: dropdown
+    id: regression
+    attributes:
+      label: Regression?
+      options:
+        - Unknown
+        - Yes — worked in a previous version
+        - No — never worked
+      default: 0
+    validations:
+      required: true
+  - type: checkboxes
+    id: readiness
+    attributes:
+      label: Bug report completeness
+      options:
+        - label: Repro steps are complete enough for someone else to try
+          required: true
+        - label: Expected and actual are filled in
+          required: true

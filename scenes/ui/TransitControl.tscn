@@ -52,7 +52,7 @@ autowrap_mode = 3
 
 [node name="Feedback" type="Label" parent="Margin/Layout"]
 layout_mode = 2
-text = "Select a destination to begin."
+text = "Select a destination or detect an unscheduled incoming Transit Link."
 autowrap_mode = 3
 
 [node name="Actions" type="GridContainer" parent="Margin/Layout"]
@@ -64,6 +64,10 @@ columns = 3
 [node name="PrepareButton" type="Button" parent="Margin/Layout/Actions"]
 layout_mode = 2
 text = "Prepare Link Sequence"
+
+[node name="DetectIncomingButton" type="Button" parent="Margin/Layout/Actions"]
+layout_mode = 2
+text = "Detect incoming"
 
 [node name="BeginSequenceButton" type="Button" parent="Margin/Layout/Actions"]
 layout_mode = 2

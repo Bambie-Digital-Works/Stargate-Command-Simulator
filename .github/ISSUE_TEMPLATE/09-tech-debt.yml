@@ -1,0 +1,65 @@
+name: Tech Debt
+description: Known shortcuts, refactors, and risk paydown with deferred-cost rationale.
+title: "[Tech Debt]: "
+labels: ["tech-debt"]
+type: task
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Track **Tech Debt** when a shortcut, fragile area, or outdated approach should be paid down deliberately.
+  - type: textarea
+    id: current-pain
+    attributes:
+      label: Current pain
+      description: What is costly, risky, or slow today because of this debt.
+    validations:
+      required: true
+  - type: textarea
+    id: proposed-fix
+    attributes:
+      label: Proposed fix
+      description: Target end state and high-level approach.
+    validations:
+      required: true
+  - type: textarea
+    id: risk-if-deferred
+    attributes:
+      label: Risk if deferred
+      description: What gets worse if we wait (incidents, velocity, security, cost).
+    validations:
+      required: true
+  - type: dropdown
+    id: urgency
+    attributes:
+      label: Urgency
+      options:
+        - Act now — active incidents or hard blocker
+        - Soon — slowing delivery or raising risk
+        - Backlog — affordable to wait
+      default: 1
+    validations:
+      required: true
+  - type: textarea
+    id: blast-radius
+    attributes:
+      label: Blast radius
+      description: Systems, modules, and users/players affected by the change.
+    validations:
+      required: true
+  - type: textarea
+    id: verification
+    attributes:
+      label: Verification
+      description: How we prove the debt is reduced (tests, metrics, simpler ops).
+    validations:
+      required: true
+  - type: checkboxes
+    id: readiness
+    attributes:
+      label: Tech debt readiness
+      options:
+        - label: Pain and deferred risk are documented
+          required: true
+        - label: Proposed fix is actionable (or needs a spike Task first)
+          required: true

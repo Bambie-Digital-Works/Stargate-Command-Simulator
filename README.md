@@ -55,4 +55,4 @@ Issue feedback is welcome, but unsolicited source code, pull requests, art, audi
 
 ## Status
 
-Early implementation. A minimal Godot C# operator shell is present, but no playable build is currently published.
+The **0.1.0 operator-console prototype** is installable locally: Operations Board, Transit Control (outgoing and unscheduled incoming), Return Control with Containment Shutter, and Expedition Roster. Follow [development setup](docs/DEVELOPMENT.md) (`Install-Godot.ps1` + rebuild + Play). No public release build is published yet; the vertical-slice target remains `0.3.0`.

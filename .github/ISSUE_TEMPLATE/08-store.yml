@@ -1,0 +1,124 @@
+name: Store
+description: Shop, IAP, catalog, pricing, entitlements, refunds, and commerce analytics.
+title: "[Store]: "
+labels: ["store"]
+type: feature
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use **Store** for commerce work — catalog, SKUs, pricing, entitlements, refunds, and purchase analytics. Break integration into Task sub-issues.
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      multiple: true
+      options:
+        - Steam
+        - Epic Games Store
+        - iOS App Store / IAP
+        - Google Play Billing
+        - Console storefront
+        - Web / own checkout
+        - In-game shop only (no real-money)
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: store-work-type
+    attributes:
+      label: Store work type
+      options:
+        - New SKU / product
+        - Catalog / offer change
+        - Pricing / promotion
+        - Entitlement / ownership
+        - Purchase flow / UX
+        - Refund / revoke
+        - Analytics / receipt validation
+        - Compliance / regional rules
+        - Other
+      default: 0
+    validations:
+      required: true
+  - type: input
+    id: sku
+    attributes:
+      label: SKU / product ID
+      description: Store product identifier (or draft name if not assigned yet).
+      placeholder: e.g. com.example.game.seasonpass
+    validations:
+      required: true
+  - type: textarea
+    id: offer
+    attributes:
+      label: Offer definition
+      description: What the player receives (items, currency, unlocks, time-limited access).
+    validations:
+      required: true
+  - type: textarea
+    id: pricing
+    attributes:
+      label: Pricing
+      description: Price points, currency, regional notes, discounts, bundles.
+      placeholder: |
+        - Base price:
+        - Promo:
+        - Regions / caveats:
+    validations:
+      required: true
+  - type: textarea
+    id: entitlements
+    attributes:
+      label: Entitlement rules
+      description: Grant, revoke, stack, consume, restore-on-reinstall behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: refunds
+    attributes:
+      label: Refunds / chargebacks
+      description: How ownership and inventory are rolled back.
+    validations:
+      required: true
+  - type: textarea
+    id: analytics
+    attributes:
+      label: Analytics events
+      description: Events and properties for purchase funnel and revenue reporting.
+      value: |
+        - purchase_started
+        - purchase_completed
+        - purchase_failed
+        - entitlement_granted
+    validations:
+      required: true
+  - type: textarea
+    id: edge-cases
+    attributes:
+      label: Edge cases
+      description: Offline, duplicate receipts, clock skew, shared accounts, pending transactions.
+    validations:
+      required: false
+  - type: textarea
+    id: test-plan
+    attributes:
+      label: Test plan
+      value: |
+        - [ ] Sandbox / test purchase succeeds
+        - [ ] Entitlement appears after purchase
+        - [ ] Restore / reinstall path
+        - [ ] Failure and cancel paths
+    validations:
+      required: true
+  - type: checkboxes
+    id: readiness
+    attributes:
+      label: Store readiness
+      options:
+        - label: Platform(s) and SKU are identified
+          required: true
+        - label: Entitlement and refund rules are specified
+          required: true
+        - label: Test plan covers sandbox and failure paths
+          required: true

@@ -1,0 +1,63 @@
+name: Chore
+description: Tooling, dependencies, CI, and repo hygiene (not user-facing product work).
+title: "[Chore]: "
+labels: ["chore"]
+type: task
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A **Chore** covers maintenance that keeps the project healthy but is not a user-facing feature.
+  - type: dropdown
+    id: chore-kind
+    attributes:
+      label: Chore kind
+      options:
+        - Dependencies
+        - CI / CD
+        - Linting / formatting
+        - Repo hygiene / docs structure
+        - Build / packaging
+        - Developer experience
+        - Other
+      default: 0
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What needs doing
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why now
+      description: Risk, cost of delay, or unblocker this chore addresses.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps
+      value: |
+        1.
+        2.
+    validations:
+      required: true
+  - type: textarea
+    id: verification
+    attributes:
+      label: Verification
+      description: How we confirm the chore succeeded (commands, CI green, etc.).
+    validations:
+      required: true
+  - type: checkboxes
+    id: readiness
+    attributes:
+      label: Chore readiness
+      options:
+        - label: Impact on users/players is understood (usually none)
+          required: true
+        - label: Verification steps are listed
+          required: true

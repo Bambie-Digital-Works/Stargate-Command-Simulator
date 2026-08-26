@@ -41,6 +41,11 @@ public sealed class TransitSimulationService
             ? snapshot.Vector[snapshot.LockedElements]
             : null;
 
+        bool canStabilize = phase == TransitArrayPhase.IncomingDetected
+            || (phase == TransitArrayPhase.Sequencing
+                && snapshot.Vector.Count > 0
+                && snapshot.LockedElements == snapshot.Vector.Count);
+
         return new TransitControlReadModel(
             phase,
             snapshot.DestinationId,
@@ -50,8 +55,12 @@ public sealed class TransitSimulationService
             snapshot.ReservedCooling,
             phase == TransitArrayPhase.OutgoingPreparation,
             phase == TransitArrayPhase.Sequencing && snapshot.LockedElements < snapshot.Vector.Count,
-            phase == TransitArrayPhase.Sequencing && snapshot.Vector.Count > 0 && snapshot.LockedElements == snapshot.Vector.Count,
-            phase is TransitArrayPhase.OutgoingPreparation or TransitArrayPhase.Sequencing or TransitArrayPhase.Stabilizing or TransitArrayPhase.LinkOpen,
+            canStabilize,
+            phase is TransitArrayPhase.OutgoingPreparation
+                or TransitArrayPhase.IncomingDetected
+                or TransitArrayPhase.Sequencing
+                or TransitArrayPhase.Stabilizing
+                or TransitArrayPhase.LinkOpen,
             FormatPhase(phase),
             nextLock,
             _resources.PowerCapacity - snapshot.ReservedPower,
@@ -59,12 +68,15 @@ public sealed class TransitSimulationService
             _resources.PowerCapacity,
             _resources.CoolingCapacity,
             phase == TransitArrayPhase.Standby,
+            phase == TransitArrayPhase.Standby,
             phase == TransitArrayPhase.Stabilizing,
             phase == TransitArrayPhase.Recovering,
             phase == TransitArrayPhase.Closing,
             phase == TransitArrayPhase.Cooldown,
             FormatProgress(snapshot, nextLock));
     }
+
+    public OutgoingOperationResult DetectIncoming(SimulationInstant at) => _outgoing.DetectIncoming(at);
 
     public OutgoingOperationResult PrepareSelected(string destinationId, SimulationInstant at)
     {
@@ -127,9 +139,30 @@ public sealed class TransitSimulationService
 
     private static string FormatProgress(OutgoingConnectionSnapshot snapshot, string? nextLock)
     {
+        TransitArrayPhase phase = snapshot.TransitArray.Phase;
+        if (phase == TransitArrayPhase.IncomingDetected)
+        {
+            return "Unscheduled incoming Transit Link detected. Begin stabilization (no Vector Lock sequence).";
+        }
+
+        if (phase == TransitArrayPhase.Standby)
+        {
+            return "Select a destination and prepare the Link Sequence, or detect an unscheduled incoming Transit Link.";
+        }
+
+        if (string.Equals(snapshot.DestinationId, OutgoingConnection.UnscheduledIncoming.Id, StringComparison.Ordinal))
+        {
+            return phase switch
+            {
+                TransitArrayPhase.Stabilizing => "Unscheduled incoming: stabilize and confirm before authentication.",
+                TransitArrayPhase.LinkOpen => "Unscheduled incoming link is open. Authenticate at Return Control.",
+                _ => "Unscheduled incoming Transit Link in progress.",
+            };
+        }
+
         if (snapshot.Vector.Count == 0)
         {
-            return "Select a destination and prepare the Link Sequence.";
+            return "Select a destination and prepare the Link Sequence, or detect an unscheduled incoming Transit Link.";
         }
 
         string destination = snapshot.DestinationId ?? "unknown destination";

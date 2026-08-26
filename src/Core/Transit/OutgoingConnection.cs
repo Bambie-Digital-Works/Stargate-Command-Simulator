@@ -4,6 +4,16 @@ namespace FacilityCommand.Core.Transit;
 
 public sealed class OutgoingConnection
 {
+    /// <summary>
+    /// Prototype budget for unscheduled incoming links (no Destination Vector sequencing).
+    /// </summary>
+    public static readonly DestinationRecord UnscheduledIncoming = new(
+        "unscheduled_incoming",
+        "Unscheduled Incoming",
+        [],
+        30,
+        20);
+
     private readonly TransitArray _transitArray = new();
     private readonly DestinationRegistry _registry;
     private readonly FacilityResourcePool _resources;
@@ -56,6 +66,33 @@ public sealed class OutgoingConnection
         return Accept();
     }
 
+    public OutgoingOperationResult DetectIncoming(SimulationInstant at)
+    {
+        if (!_resources.TryReserve(
+                UnscheduledIncoming.RequiredPowerUnits,
+                UnscheduledIncoming.RequiredCoolingUnits))
+        {
+            return Reject(
+                "resources_unavailable",
+                "Free the required power and cooling capacity before accepting an unscheduled incoming Transit Link.");
+        }
+
+        TransitTransitionResult transition = _transitArray.Execute(
+            new TransitArrayCommand(TransitArrayCommandKind.DetectIncoming, at));
+        if (!transition.IsAccepted)
+        {
+            _resources.Release(
+                UnscheduledIncoming.RequiredPowerUnits,
+                UnscheduledIncoming.RequiredCoolingUnits);
+            return new OutgoingOperationResult(Snapshot, transition.Rejection);
+        }
+
+        _destination = UnscheduledIncoming;
+        _lockedElements = 0;
+        _hasReservation = true;
+        return Accept();
+    }
+
     public OutgoingOperationResult BeginSequence(SimulationInstant at) => Execute(TransitArrayCommandKind.BeginSequence, at);
 
     public OutgoingOperationResult LockNext(string vectorElement)
@@ -81,6 +118,11 @@ public sealed class OutgoingConnection
 
     public OutgoingOperationResult BeginStabilization(SimulationInstant at)
     {
+        if (_transitArray.Snapshot.Phase == TransitArrayPhase.IncomingDetected)
+        {
+            return Execute(TransitArrayCommandKind.BeginStabilization, at);
+        }
+
         if (_destination is null || _lockedElements != _destination.Vector.Count)
         {
             return Reject("sequence_incomplete", "Complete every Vector Lock before stabilization.");

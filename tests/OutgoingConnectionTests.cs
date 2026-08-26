@@ -74,6 +74,39 @@ public sealed class OutgoingConnectionTests
     }
 
     [Fact]
+    public void UnscheduledIncomingSkipsVectorLocksAndReachesStableLink()
+    {
+        FacilityResourcePool resources = new(100, 100);
+        OutgoingConnection connection = Create(resources);
+
+        Assert.True(connection.DetectIncoming(At(1)).IsAccepted);
+        Assert.Equal(TransitArrayPhase.IncomingDetected, connection.Snapshot.TransitArray.Phase);
+        Assert.Equal(TransitLinkDirection.Incoming, connection.Snapshot.TransitArray.Direction);
+        Assert.Equal(OutgoingConnection.UnscheduledIncoming.RequiredPowerUnits, resources.ReservedPower);
+        Assert.True(connection.BeginStabilization(At(2)).IsAccepted);
+        Assert.True(connection.ConfirmStable(At(3)).IsAccepted);
+        Assert.Equal(TransitArrayPhase.LinkOpen, connection.Snapshot.TransitArray.Phase);
+        Assert.Equal(OutgoingConnection.UnscheduledIncoming.Id, connection.Snapshot.DestinationId);
+    }
+
+    [Fact]
+    public void DetectIncomingRejectedWhenResourcesUnavailableOrNotStandby()
+    {
+        FacilityResourcePool starved = new(20, 20);
+        OutgoingConnection starvedConnection = Create(starved);
+        OutgoingOperationResult unavailable = starvedConnection.DetectIncoming(At(1));
+        Assert.Equal("resources_unavailable", unavailable.Rejection?.ReasonCode);
+        Assert.Equal(0, starved.ReservedPower);
+
+        FacilityResourcePool resources = new(100, 100);
+        OutgoingConnection connection = Create(resources);
+        Assert.True(connection.Prepare(Destination.Id, Destination.Vector, At(1)).IsAccepted);
+        OutgoingOperationResult notStandby = connection.DetectIncoming(At(2));
+        Assert.False(notStandby.IsAccepted);
+        Assert.Equal(40, resources.ReservedPower);
+    }
+
+    [Fact]
     public void CurrentDestinationContentLoadsStrictly()
     {
         string root = FindRepositoryRoot();
