@@ -29,6 +29,10 @@ public sealed class OperationsBoardService
 
     public OperatorConsoleScreen ActiveScreen => _activeScreen;
 
+    public TransitSimulationService Transit => _transit;
+
+    public ISimulationClock Clock => _clock;
+
     public IReadOnlyList<OperatorConsoleScreen> NavigationOrder { get; } =
     [
         OperatorConsoleScreen.OperationsBoard,

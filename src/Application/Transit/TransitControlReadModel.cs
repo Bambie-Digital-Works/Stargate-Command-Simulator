@@ -12,4 +12,16 @@ public sealed record TransitControlReadModel(
     bool CanBeginSequence,
     bool CanLockVector,
     bool CanStabilize,
-    bool CanAbort);
+    bool CanAbort,
+    string PhaseLabel,
+    string? NextLockElement,
+    int FreePower,
+    int FreeCooling,
+    int PowerCapacity,
+    int CoolingCapacity,
+    bool CanPrepare,
+    bool CanConfirmStable,
+    bool CanCompleteRecovery,
+    bool CanCompleteClosure,
+    bool CanCompleteCooldown,
+    string ProgressSummary);

@@ -66,7 +66,7 @@ public partial class Boot : Node
                 configuration.Simulation.AvailablePowerUnits,
                 configuration.Simulation.AvailableCoolingUnits);
             OutgoingConnection outgoing = new(destinations, resources);
-            TransitSimulationService transit = new(outgoing);
+            TransitSimulationService transit = new(outgoing, destinations, resources);
             ReturnSecurityService security = new(new ReturnCredentialVerifier(), new ContainmentShutter());
             ManualSimulationClock clock = new();
             OperationsBoardService operations = new(transit, security, clock, resources);
