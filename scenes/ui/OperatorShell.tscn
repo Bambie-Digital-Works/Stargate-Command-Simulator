@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://src/Presentation/OperatorShell.cs" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/ui/DiagnosticsOverlay.tscn" id="2_diagnostics"]
@@ -9,6 +9,8 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/ReturnControl.tscn" id="8_return"]
 [ext_resource type="PackedScene" path="res://scenes/ui/ExpeditionRoster.tscn" id="9_roster"]
 [ext_resource type="PackedScene" path="res://scenes/ui/SurveyTelemetry.tscn" id="10_survey"]
+[ext_resource type="PackedScene" path="res://scenes/ui/ShiftBrief.tscn" id="11_brief"]
+[ext_resource type="PackedScene" path="res://scenes/ui/ShiftReview.tscn" id="12_review"]
 
 [node name="OperatorShell" type="Control"]
 layout_mode = 3
@@ -92,7 +94,25 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="ShiftBriefPanel" parent="SafeArea/Layout/Workspace/NavigationHost" instance=ExtResource("11_brief")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ShiftReviewPanel" parent="SafeArea/Layout/Workspace/NavigationHost" instance=ExtResource("12_review")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="OperationsBoard" parent="SafeArea/Layout/Workspace/NavigationHost" instance=ExtResource("5_operations")]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

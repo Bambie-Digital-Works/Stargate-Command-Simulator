@@ -1,6 +1,7 @@
 using FacilityCommand.Application.Incidents;
 using FacilityCommand.Application.Personnel;
 using FacilityCommand.Application.Security;
+using FacilityCommand.Application.Shift;
 using FacilityCommand.Application.Simulation;
 using FacilityCommand.Application.Survey;
 using FacilityCommand.Application.Transit;
@@ -19,7 +20,8 @@ public sealed class OperationsBoardService
     private readonly ShiftIncidentService _incidents;
     private readonly ISimulationClock _clock;
     private readonly FacilityResourcePool _resources;
-    private OperatorConsoleScreen _activeScreen = OperatorConsoleScreen.OperationsBoard;
+    private OperatorConsoleScreen _activeScreen = OperatorConsoleScreen.ShiftBrief;
+    private ShiftLifecycleService? _lifecycle;
 
     public OperationsBoardService(
         TransitSimulationService transit,
@@ -51,6 +53,8 @@ public sealed class OperationsBoardService
 
     public ShiftIncidentService Incidents => _incidents;
 
+    public ShiftLifecycleService? Lifecycle => _lifecycle;
+
     public ISimulationClock Clock => _clock;
 
     public IReadOnlyList<OperatorConsoleScreen> NavigationOrder { get; } =
@@ -62,9 +66,12 @@ public sealed class OperationsBoardService
         OperatorConsoleScreen.ExpeditionRoster,
     ];
 
+    public void BindLifecycle(ShiftLifecycleService lifecycle) => _lifecycle = lifecycle;
+
     public void SetActiveScreen(OperatorConsoleScreen screen)
     {
-        if (!NavigationOrder.Contains(screen))
+        if (screen is not (OperatorConsoleScreen.ShiftBrief or OperatorConsoleScreen.ShiftReview)
+            && !NavigationOrder.Contains(screen))
         {
             throw new ArgumentOutOfRangeException(nameof(screen), screen, "Unknown operator console screen.");
         }
@@ -74,6 +81,11 @@ public sealed class OperationsBoardService
 
     public OperatorConsoleScreen CycleScreen(int direction)
     {
+        if (_activeScreen is OperatorConsoleScreen.ShiftBrief or OperatorConsoleScreen.ShiftReview)
+        {
+            return _activeScreen;
+        }
+
         int index = NavigationOrder.ToList().IndexOf(_activeScreen);
         int next = (index + Math.Sign(direction) + NavigationOrder.Count) % NavigationOrder.Count;
         _activeScreen = NavigationOrder[next];
@@ -112,10 +124,15 @@ public sealed class OperationsBoardService
             incidents.ObjectiveSummary,
             alarms,
             announcement,
-            _activeScreen);
+            _activeScreen,
+            incidents.SequenceComplete && _lifecycle?.Phase == Core.Shift.ShiftPhase.InProgress);
     }
 
     public IncidentOperationResult ResolveCoolingFault() => _incidents.ResolveCoolingFault();
+
+    public ShiftOperationResult EndShift() =>
+        _lifecycle?.EndShift()
+        ?? ShiftOperationResult.Rejected("lifecycle_missing", "Shift lifecycle is not bound.");
 
     private static List<OperationsAlarm> BuildAlarms(
         TransitArrayPhase phase,

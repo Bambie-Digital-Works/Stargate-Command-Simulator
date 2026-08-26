@@ -14,13 +14,13 @@ public sealed class ShiftIncidentService
 {
     private const int CoolingFaultUnits = 40;
 
-    private readonly IncidentScript _script;
     private readonly IncidentCatalog _catalog;
     private readonly TransitSimulationService _transit;
     private readonly ReturnSecurityService _security;
     private readonly ExpeditionRosterService _roster;
     private readonly SurveyTelemetryService _survey;
     private readonly FacilityResourcePool _resources;
+    private IncidentScript _script;
     private string? _activatedSideEffectFor;
 
     public ShiftIncidentService(
@@ -38,6 +38,12 @@ public sealed class ShiftIncidentService
         _roster = roster;
         _survey = survey;
         _resources = resources;
+    }
+
+    public void Reset()
+    {
+        _script = new IncidentScript(_catalog);
+        _activatedSideEffectFor = null;
     }
 
     public IncidentProgressSnapshot Snapshot

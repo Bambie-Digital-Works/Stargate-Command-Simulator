@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "shiftName": "vertical_slice_duty",
+  "title": "Shift Brief — Vertical-slice duty",
+  "summary": "Complete one escalating duty shift: reconnaissance, return authentication pressure, spoofed incoming, contradictory survey, and overlapping medical/cooling fault.",
+  "objectives": [
+    "Establish outgoing Transit Links, review Survey Telemetry, and dispatch Expedition Unit Alpha when risk is recorded.",
+    "Authenticate returns with fail-secure containment — withhold damaged credentials and escalate spoofed challenges.",
+    "Contain the combined medical emergency and cooling fault before ending the shift."
+  ],
+  "knownRisks": [
+    "Survey Site Aurora produces contradictory Survey Drone readings.",
+    "Unscheduled incoming Transit Links may present spoofed Return Credentials.",
+    "Facility cooling can fault under overlapping personnel medical pressure."
+  ],
+  "readinessLines": [
+    "Transit Array standby with budgeted power and cooling.",
+    "Expedition Unit Alpha roster available; equip survey_kit before probe deployment.",
+    "Return Control challenge scenarios are loaded for damaged and spoofed credentials."
+  ],
+  "constraints": [
+    "Do not open containment on security alerts.",
+    "Dispatch requires a recorded Survey risk decision.",
+    "End the shift only after the five authored incidents resolve or fail."
+  ]
+}

@@ -3,6 +3,7 @@ using FacilityCommand.Application.Diagnostics;
 using FacilityCommand.Application.Input;
 using FacilityCommand.Application.Logging;
 using FacilityCommand.Application.Operations;
+using FacilityCommand.Application.Shift;
 using FacilityCommand.Infrastructure.Input;
 using Godot;
 
@@ -17,6 +18,8 @@ public partial class OperatorShell : Control
     private Button _inputSettingsButton = null!;
     private InputSettingsPanel _inputSettingsPanel = null!;
     private FocusCoordinator _focusCoordinator = null!;
+    private ShiftBrief _shiftBriefPanel = null!;
+    private ShiftReview _shiftReviewPanel = null!;
     private OperationsBoard _operationsBoard = null!;
     private TransitControl _transitControlPanel = null!;
     private SurveyTelemetry _surveyTelemetryPanel = null!;
@@ -33,6 +36,8 @@ public partial class OperatorShell : Control
         _inputSettingsButton = GetNode<Button>("SafeArea/Layout/Toolbar/InputSettingsButton");
         _inputSettingsPanel = GetNode<InputSettingsPanel>("SafeArea/Layout/Workspace/InputSettingsPanel");
         _focusCoordinator = GetNode<FocusCoordinator>("FocusCoordinator");
+        _shiftBriefPanel = GetNode<ShiftBrief>("SafeArea/Layout/Workspace/NavigationHost/ShiftBriefPanel");
+        _shiftReviewPanel = GetNode<ShiftReview>("SafeArea/Layout/Workspace/NavigationHost/ShiftReviewPanel");
         _operationsBoard = GetNode<OperationsBoard>("SafeArea/Layout/Workspace/NavigationHost/OperationsBoard");
         _transitControlPanel = GetNode<TransitControl>("SafeArea/Layout/Workspace/NavigationHost/TransitControlPanel");
         _surveyTelemetryPanel = GetNode<SurveyTelemetry>("SafeArea/Layout/Workspace/NavigationHost/SurveyTelemetryPanel");
@@ -42,7 +47,10 @@ public partial class OperatorShell : Control
         _diagnosticsButton.Pressed += ToggleDiagnostics;
         _inputSettingsButton.Pressed += ShowInputSettings;
         _inputSettingsPanel.CloseRequested += HideInputSettings;
+        _shiftBriefPanel.ShiftStarted += () => ApplyScreen(OperatorConsoleScreen.OperationsBoard, grabFocus: true);
+        _shiftReviewPanel.NextShiftRequested += () => ApplyScreen(OperatorConsoleScreen.ShiftBrief, grabFocus: true);
         _operationsBoard.ScreenRequested += NavigateTo;
+        _operationsBoard.ShiftEnded += () => ApplyScreen(OperatorConsoleScreen.ShiftReview, grabFocus: true);
         _transitControlPanel.BackRequested += () => NavigateTo(OperatorConsoleScreen.OperationsBoard);
         _transitControlPanel.StateChanged += RefreshShellStatus;
         _surveyTelemetryPanel.BackRequested += () => NavigateTo(OperatorConsoleScreen.OperationsBoard);
@@ -71,6 +79,11 @@ public partial class OperatorShell : Control
         }
 
         if (_operations is null || _inputSettingsPanel.Visible)
+        {
+            return;
+        }
+
+        if (_operations.ActiveScreen is OperatorConsoleScreen.ShiftBrief or OperatorConsoleScreen.ShiftReview)
         {
             return;
         }
@@ -106,12 +119,19 @@ public partial class OperatorShell : Control
         _inputSettingsPanel.Initialize(inputBindings);
         _inputSettingsPanel.Visible = false;
         _focusCoordinator.Initialize(GetNode<Label>("SafeArea/Layout/Toolbar/InputModeLabel"), logger);
+        if (operations.Lifecycle is null)
+        {
+            throw new InvalidOperationException("Shift lifecycle must be bound before initializing the operator shell.");
+        }
+
+        _shiftBriefPanel.Initialize(operations.Lifecycle);
+        _shiftReviewPanel.Initialize(operations.Lifecycle);
         _operationsBoard.Initialize(operations);
         _transitControlPanel.Initialize(operations.Transit, operations.Clock);
         _surveyTelemetryPanel.Initialize(operations.Survey, operations.Clock);
         _returnControlPanel.Initialize(operations.Security, operations.Transit, operations.Clock);
         _expeditionRosterPanel.Initialize(operations.Roster, operations.Transit, operations.Clock);
-        _titleLabel.Text = "Operations Board online";
+        _titleLabel.Text = "Shift Brief";
         ApplyScreen(operations.ActiveScreen, grabFocus: false);
         UpdateDiagnosticsButtonText();
     }
@@ -134,13 +154,23 @@ public partial class OperatorShell : Control
             return;
         }
 
+        _shiftBriefPanel.Visible = screen == OperatorConsoleScreen.ShiftBrief;
+        _shiftReviewPanel.Visible = screen == OperatorConsoleScreen.ShiftReview;
         _operationsBoard.Visible = screen == OperatorConsoleScreen.OperationsBoard;
         _transitControlPanel.Visible = screen == OperatorConsoleScreen.TransitControl;
         _surveyTelemetryPanel.Visible = screen == OperatorConsoleScreen.SurveyTelemetry;
         _returnControlPanel.Visible = screen == OperatorConsoleScreen.ReturnControl;
         _expeditionRosterPanel.Visible = screen == OperatorConsoleScreen.ExpeditionRoster;
 
-        if (screen == OperatorConsoleScreen.OperationsBoard)
+        if (screen == OperatorConsoleScreen.ShiftBrief)
+        {
+            _shiftBriefPanel.Refresh();
+        }
+        else if (screen == OperatorConsoleScreen.ShiftReview)
+        {
+            _shiftReviewPanel.Refresh();
+        }
+        else if (screen == OperatorConsoleScreen.OperationsBoard)
         {
             _operationsBoard.Refresh();
         }
@@ -164,6 +194,8 @@ public partial class OperatorShell : Control
         RefreshShellStatus();
         _titleLabel.Text = screen switch
         {
+            OperatorConsoleScreen.ShiftBrief => "Shift Brief",
+            OperatorConsoleScreen.ShiftReview => "Shift Review",
             OperatorConsoleScreen.OperationsBoard => "Operations Board online",
             OperatorConsoleScreen.TransitControl => "Transit Control",
             OperatorConsoleScreen.SurveyTelemetry => "Survey Telemetry",
@@ -179,6 +211,12 @@ public partial class OperatorShell : Control
 
         switch (screen)
         {
+            case OperatorConsoleScreen.ShiftBrief:
+                _shiftBriefPanel.FocusPrimaryAction();
+                break;
+            case OperatorConsoleScreen.ShiftReview:
+                _shiftReviewPanel.FocusPrimaryAction();
+                break;
             case OperatorConsoleScreen.OperationsBoard:
                 _operationsBoard.FocusPrimaryAction();
                 break;
@@ -201,6 +239,28 @@ public partial class OperatorShell : Control
     {
         if (_operations is null)
         {
+            return;
+        }
+
+        if (_operations.ActiveScreen is OperatorConsoleScreen.ShiftBrief)
+        {
+            _statusLabel.Text = "Acknowledge the Shift Brief to open Operations Board.";
+            if (_shiftBriefPanel.Visible)
+            {
+                _shiftBriefPanel.Refresh();
+            }
+
+            return;
+        }
+
+        if (_operations.ActiveScreen is OperatorConsoleScreen.ShiftReview)
+        {
+            _statusLabel.Text = "Shift Review lists recorded facts and consequences.";
+            if (_shiftReviewPanel.Visible)
+            {
+                _shiftReviewPanel.Refresh();
+            }
+
             return;
         }
 

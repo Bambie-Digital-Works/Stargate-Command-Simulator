@@ -164,3 +164,7 @@ text = "Open Expedition Roster"
 [node name="ResolveCoolingFaultButton" type="Button" parent="Margin/Layout/Navigation"]
 layout_mode = 2
 text = "Clear cooling fault"
+
+[node name="EndShiftButton" type="Button" parent="Margin/Layout/Navigation"]
+layout_mode = 2
+text = "End shift"
