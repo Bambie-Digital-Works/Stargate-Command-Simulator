@@ -43,7 +43,8 @@ public sealed class OperationsBoardTests
     {
         FacilityResourcePool resources = new(100, 100);
         OutgoingConnection outgoing = CreateConnection(resources);
-        TransitSimulationService transit = new(outgoing);
+        DestinationRegistry registry = new([Destination]);
+        TransitSimulationService transit = new(outgoing, registry, resources);
         ReturnSecurityService security = new(new ReturnCredentialVerifier(), new ContainmentShutter());
         OperationsBoardService board = new(transit, security, new ManualSimulationClock(), resources);
 
@@ -85,7 +86,7 @@ public sealed class OperationsBoardTests
     {
         FacilityResourcePool resources = new(100, 100);
         OutgoingConnection outgoing = CreateConnection(resources);
-        transit = new TransitSimulationService(outgoing);
+        transit = new TransitSimulationService(outgoing, new DestinationRegistry([Destination]), resources);
         security = new ReturnSecurityService(new ReturnCredentialVerifier(), new ContainmentShutter());
         clock = new ManualSimulationClock();
         return new OperationsBoardService(transit, security, clock, resources);

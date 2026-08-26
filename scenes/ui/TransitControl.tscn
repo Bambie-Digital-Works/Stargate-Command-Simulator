@@ -1,0 +1,105 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/Presentation/TransitControl.cs" id="1_script"]
+
+[node name="TransitControl" type="PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_script")
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
+
+[node name="Layout" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Heading" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Transit Control"
+
+[node name="DestinationRow" type="HBoxContainer" parent="Margin/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="DestinationLabel" type="Label" parent="Margin/Layout/DestinationRow"]
+layout_mode = 2
+text = "Destination"
+
+[node name="DestinationOptions" type="OptionButton" parent="Margin/Layout/DestinationRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Phase" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+text = "Transit Array: Standby"
+
+[node name="Progress" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+text = "Select a destination and prepare the Link Sequence."
+autowrap_mode = 3
+
+[node name="Resources" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+text = "Power and cooling"
+autowrap_mode = 3
+
+[node name="Feedback" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+text = "Select a destination to begin."
+autowrap_mode = 3
+
+[node name="Actions" type="GridContainer" parent="Margin/Layout"]
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 8
+columns = 3
+
+[node name="PrepareButton" type="Button" parent="Margin/Layout/Actions"]
+layout_mode = 2
+text = "Prepare Link Sequence"
+
+[node name="BeginSequenceButton" type="Button" parent="Margin/Layout/Actions"]
+layout_mode = 2
+text = "Begin sequence"
+
+[node name="LockNextButton" type="Button" parent="Margin/Layout/Actions"]
+layout_mode = 2
+text = "Lock next vector element"
+
+[node name="StabilizeButton" type="Button" parent="Margin/Layout/Actions"]
+layout_mode = 2
+text = "Begin stabilization"
+
+[node name="ConfirmStableButton" type="Button" parent="Margin/Layout/Actions"]
+layout_mode = 2
+text = "Confirm stable link"
+
+[node name="AbortButton" type="Button" parent="Margin/Layout/Actions"]
+layout_mode = 2
+text = "Abort"
+
+[node name="CompleteRecoveryButton" type="Button" parent="Margin/Layout/Actions"]
+layout_mode = 2
+text = "Complete recovery"
+
+[node name="CompleteClosureButton" type="Button" parent="Margin/Layout/Actions"]
+layout_mode = 2
+text = "Complete closure"
+
+[node name="CompleteCooldownButton" type="Button" parent="Margin/Layout/Actions"]
+layout_mode = 2
+text = "Complete cooldown"
+
+[node name="Navigation" type="HBoxContainer" parent="Margin/Layout"]
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="Margin/Layout/Navigation"]
+layout_mode = 2
+text = "Return to Operations Board"

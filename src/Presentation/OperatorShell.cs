@@ -18,7 +18,7 @@ public partial class OperatorShell : Control
     private InputSettingsPanel _inputSettingsPanel = null!;
     private FocusCoordinator _focusCoordinator = null!;
     private OperationsBoard _operationsBoard = null!;
-    private WorkflowPlaceholderPanel _transitControlPanel = null!;
+    private TransitControl _transitControlPanel = null!;
     private WorkflowPlaceholderPanel _returnControlPanel = null!;
     private WorkflowPlaceholderPanel _expeditionRosterPanel = null!;
     private OperationsBoardService? _operations;
@@ -33,13 +33,10 @@ public partial class OperatorShell : Control
         _inputSettingsPanel = GetNode<InputSettingsPanel>("SafeArea/Layout/Workspace/InputSettingsPanel");
         _focusCoordinator = GetNode<FocusCoordinator>("FocusCoordinator");
         _operationsBoard = GetNode<OperationsBoard>("SafeArea/Layout/Workspace/NavigationHost/OperationsBoard");
-        _transitControlPanel = GetNode<WorkflowPlaceholderPanel>("SafeArea/Layout/Workspace/NavigationHost/TransitControlPanel");
+        _transitControlPanel = GetNode<TransitControl>("SafeArea/Layout/Workspace/NavigationHost/TransitControlPanel");
         _returnControlPanel = GetNode<WorkflowPlaceholderPanel>("SafeArea/Layout/Workspace/NavigationHost/ReturnControlPanel");
         _expeditionRosterPanel = GetNode<WorkflowPlaceholderPanel>("SafeArea/Layout/Workspace/NavigationHost/ExpeditionRosterPanel");
 
-        _transitControlPanel.Configure(
-            WorkflowPlaceholderPanel.TitleFor(OperatorConsoleScreen.TransitControl),
-            WorkflowPlaceholderPanel.Describe(OperatorConsoleScreen.TransitControl));
         _returnControlPanel.Configure(
             WorkflowPlaceholderPanel.TitleFor(OperatorConsoleScreen.ReturnControl),
             WorkflowPlaceholderPanel.Describe(OperatorConsoleScreen.ReturnControl));
@@ -52,6 +49,7 @@ public partial class OperatorShell : Control
         _inputSettingsPanel.CloseRequested += HideInputSettings;
         _operationsBoard.ScreenRequested += NavigateTo;
         _transitControlPanel.BackRequested += () => NavigateTo(OperatorConsoleScreen.OperationsBoard);
+        _transitControlPanel.StateChanged += RefreshShellStatus;
         _returnControlPanel.BackRequested += () => NavigateTo(OperatorConsoleScreen.OperationsBoard);
         _expeditionRosterPanel.BackRequested += () => NavigateTo(OperatorConsoleScreen.OperationsBoard);
         _diagnosticsButton.GrabFocus();
@@ -110,6 +108,7 @@ public partial class OperatorShell : Control
         _inputSettingsPanel.Visible = false;
         _focusCoordinator.Initialize(GetNode<Label>("SafeArea/Layout/Toolbar/InputModeLabel"), logger);
         _operationsBoard.Initialize(operations);
+        _transitControlPanel.Initialize(operations.Transit, operations.Clock);
         _titleLabel.Text = "Operations Board online";
         ApplyScreen(operations.ActiveScreen, grabFocus: false);
         UpdateDiagnosticsButtonText();
@@ -142,9 +141,12 @@ public partial class OperatorShell : Control
         {
             _operationsBoard.Refresh();
         }
+        else if (screen == OperatorConsoleScreen.TransitControl)
+        {
+            _transitControlPanel.Refresh();
+        }
 
-        OperationsBoardReadModel model = _operations.GetReadModel();
-        _statusLabel.Text = model.AnnouncementSummary;
+        RefreshShellStatus();
         _titleLabel.Text = screen switch
         {
             OperatorConsoleScreen.OperationsBoard => "Operations Board online",
@@ -173,6 +175,20 @@ public partial class OperatorShell : Control
             case OperatorConsoleScreen.ExpeditionRoster:
                 _expeditionRosterPanel.FocusPrimaryAction();
                 break;
+        }
+    }
+
+    private void RefreshShellStatus()
+    {
+        if (_operations is null)
+        {
+            return;
+        }
+
+        _statusLabel.Text = _operations.GetReadModel().AnnouncementSummary;
+        if (_operationsBoard.Visible)
+        {
+            _operationsBoard.Refresh();
         }
     }
 
