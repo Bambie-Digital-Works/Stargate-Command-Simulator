@@ -83,7 +83,7 @@ public sealed class TransitSimulationService
 
     public OutgoingOperationResult LockNext(string vectorElement) => _outgoing.LockNext(vectorElement);
 
-    public OutgoingOperationResult LockNextExpected() 
+    public OutgoingOperationResult LockNextExpected()
     {
         TransitControlReadModel model = GetTransitControl();
         if (model.NextLockElement is null)
