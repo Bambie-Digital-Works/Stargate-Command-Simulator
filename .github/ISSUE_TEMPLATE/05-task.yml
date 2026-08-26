@@ -1,0 +1,66 @@
+name: Task
+description: Concrete implementation unit with steps and definition of done.
+title: "[Task]: "
+labels: ["task"]
+type: task
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A **Task** is a finishable implementation unit. Prefer linking it as a sub-issue of a Story, Feature, or Store.
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Why this task exists and what parent issue/epic it supports.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Implementation steps
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: dod
+    attributes:
+      label: Definition of done
+      value: |
+        - [ ] Code complete and reviewed (if applicable)
+        - [ ] Tests or manual verification done
+        - [ ] Docs / changelog updated (if needed)
+    validations:
+      required: true
+  - type: dropdown
+    id: size
+    attributes:
+      label: Size
+      options:
+        - XS (< 1h)
+        - S (1–4h)
+        - M (~1 day)
+        - L (multi-day)
+      default: 1
+    validations:
+      required: true
+  - type: input
+    id: touches
+    attributes:
+      label: Primary paths / modules
+      description: Key files, packages, or systems this task will change.
+      placeholder: e.g. src/auth/, scripts/build.ps1
+    validations:
+      required: false
+  - type: checkboxes
+    id: readiness
+    attributes:
+      label: Task readiness
+      options:
+        - label: Steps are specific enough to start without more design
+          required: true
+        - label: Definition of done is clear
+          required: true

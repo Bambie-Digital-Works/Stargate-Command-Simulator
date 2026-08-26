@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
   - name: Contribution policy
-    url: https://github.com/bambiejomurphy-ux/Stargate-Command-Simulator/blob/main/CONTRIBUTING.md
+    url: https://github.com/Bambie-Digital-Works/Stargate-Command-Simulator/blob/main/CONTRIBUTING.md
     about: Read what feedback is accepted before opening an issue.
+  - name: Security concerns
+    url: https://docs.github.com/en/code-security/getting-started/adding-a-security-policy-to-your-repository
+    about: Do not file security vulnerabilities as public issues if this repo has a security policy.

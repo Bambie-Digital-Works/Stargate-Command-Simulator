@@ -1,0 +1,82 @@
+name: Game Design
+description: Mechanics, balance, content, and player fantasy — design-first work.
+title: "[Game Design]: "
+labels: ["game-design"]
+type: feature
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use **Game Design** for mechanics, balance, content, and feel. Spawn Story/Feature sub-issues when implementation starts.
+  - type: input
+    id: pillar
+    attributes:
+      label: Design pillar
+      description: Which pillar or fantasy this supports.
+      placeholder: e.g. Meaningful exploration, fair PvP, cozy progression
+    validations:
+      required: true
+  - type: textarea
+    id: player-fantasy
+    attributes:
+      label: Player fantasy
+      description: What the player should feel or be able to express.
+    validations:
+      required: true
+  - type: textarea
+    id: rules
+    attributes:
+      label: Rules / mechanics
+      description: Concrete rules, formulas, state machines, or content specs.
+      value: |
+        ## Core loop
+        …
+
+        ## Rules
+        - …
+    validations:
+      required: true
+  - type: textarea
+    id: edge-cases
+    attributes:
+      label: Edge cases
+      description: Exploits, failure modes, stacking interactions, soft-locks.
+    validations:
+      required: true
+  - type: textarea
+    id: content-deps
+    attributes:
+      label: Content / art / audio dependencies
+      description: Assets, levels, copy, localization needed.
+    validations:
+      required: false
+  - type: textarea
+    id: success
+    attributes:
+      label: Design success criteria
+      description: How we evaluate the design in playtests or metrics.
+    validations:
+      required: true
+  - type: dropdown
+    id: maturity
+    attributes:
+      label: Design maturity
+      options:
+        - Spike / exploration
+        - Draft for review
+        - Ready to implement
+        - Live tuning / balance pass
+      default: 1
+    validations:
+      required: true
+  - type: checkboxes
+    id: readiness
+    attributes:
+      label: Design readiness
+      options:
+        - label: Rules are specific enough to implement or prototype
+          required: true
+        - label: Edge cases are listed
+          required: true
+        - label: Follow-up Story/Feature issues identified (or N/A)
+          required: false

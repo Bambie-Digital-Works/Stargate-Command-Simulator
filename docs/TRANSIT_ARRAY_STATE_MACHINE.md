@@ -40,6 +40,10 @@ stateDiagram-v2
 
 `ReportFault` requires a stable reason code. Commands also carry an explicit non-negative simulation timestamp; a timestamp older than the current phase entry is rejected. Rejected commands never mutate state or advance event sequence numbers.
 
+## Unscheduled incoming
+
+`DetectIncoming` moves Standby directly to `IncomingDetected`. Unscheduled incoming links skip Destination Vector sequencing and Vector Locks: the operator begins stabilization from `IncomingDetected`, confirms a stable link, then authenticates at Return Control. Application and Core connection guards reserve a fixed prototype power/cooling budget for that session (see `OutgoingConnection.UnscheduledIncoming`).
+
 ## Safety rules
 
 - Abort before a stable link enters Recovering. Resource reservations added by issue #18 must be released atomically with that transition.

@@ -1,5 +1,7 @@
+using FacilityCommand.Application.Security;
 using FacilityCommand.Application.Transit;
 using FacilityCommand.Core.Destinations;
+using FacilityCommand.Core.Security;
 using FacilityCommand.Core.Transit;
 using FacilityCommand.Infrastructure.Simulation;
 
@@ -77,6 +79,35 @@ public sealed class TransitControlConsoleTests
         Assert.True(service.CompleteRecovery(clock.Advance(1000)).IsAccepted);
         Assert.Equal(TransitArrayPhase.Standby, service.GetTransitControl().Phase);
         Assert.True(service.GetTransitControl().CanPrepare);
+        Assert.True(service.GetTransitControl().CanDetectIncoming);
+    }
+
+    [Fact]
+    public void UnscheduledIncomingReachesLinkOpenAndEnablesReturnAuthentication()
+    {
+        TransitSimulationService transit = CreateService(out ManualSimulationClock clock, out FacilityResourcePool resources);
+        ReturnSecurityService security = new(new ReturnCredentialVerifier(), new ContainmentShutter());
+
+        Assert.True(transit.GetTransitControl().CanDetectIncoming);
+        Assert.True(transit.DetectIncoming(clock.Advance(1000)).IsAccepted);
+        Assert.Equal(TransitArrayPhase.IncomingDetected, transit.GetTransitControl().Phase);
+        Assert.True(transit.GetTransitControl().CanStabilize);
+        Assert.True(transit.GetTransitControl().CanAbort);
+        Assert.False(transit.GetTransitControl().CanPrepare);
+
+        Assert.True(transit.BeginStabilization(clock.Advance(1000)).IsAccepted);
+        Assert.True(transit.ConfirmStable(clock.Advance(1000)).IsAccepted);
+        Assert.Equal(TransitArrayPhase.LinkOpen, transit.GetTransitControl().Phase);
+        Assert.Equal(OutgoingConnection.UnscheduledIncoming.RequiredPowerUnits, resources.ReservedPower);
+        Assert.Equal(TransitLinkDirection.Incoming, transit.GetTransitArraySnapshot().Direction);
+
+        Assert.True(security.GetReadModel(transit.GetTransitArraySnapshot()).LinkIsStable);
+        security.VerifyScenario("friendly", clock.Advance(1000));
+        Assert.True(security.GetReadModel(transit.GetTransitArraySnapshot()).CanOpenShutter);
+        Assert.True(security.ExecuteShutter(
+            ContainmentShutterCommandKind.Open,
+            clock.Advance(1000),
+            transit.GetTransitArraySnapshot()).IsAccepted);
     }
 
     [Fact]

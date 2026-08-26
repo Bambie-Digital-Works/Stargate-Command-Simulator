@@ -1,0 +1,97 @@
+name: Epic
+description: Multi-week initiative spanning stories, features, or store work.
+title: "[Epic]: "
+labels: ["epic"]
+type: feature
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use an **Epic** for a large initiative. Break it into Story, Feature, Store, and Task sub-issues after creating this issue.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: One paragraph on what this epic delivers and why it matters now.
+      placeholder: We need …
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / opportunity
+      description: Current pain, market/user need, or game-system gap.
+    validations:
+      required: true
+  - type: textarea
+    id: success-metrics
+    attributes:
+      label: Success metrics
+      description: How we know this epic is done (measurable outcomes).
+      placeholder: |
+        - Metric 1
+        - Metric 2
+    validations:
+      required: true
+  - type: textarea
+    id: non-goals
+    attributes:
+      label: Non-goals
+      description: Explicitly out of scope for this epic.
+    validations:
+      required: true
+  - type: textarea
+    id: child-breakdown
+    attributes:
+      label: Planned child work
+      description: Draft Stories / Features / Store / Tasks (convert to sub-issues after create).
+      value: |
+        - [ ] Story/Feature: …
+        - [ ] Story/Feature: …
+        - [ ] Store (if applicable): …
+    validations:
+      required: true
+  - type: dropdown
+    id: product-area
+    attributes:
+      label: Product area
+      options:
+        - Script / tooling
+        - Application / service
+        - Game systems
+        - Store / commerce
+        - Infra / platform
+        - Cross-cutting
+      default: 0
+    validations:
+      required: true
+  - type: textarea
+    id: risks
+    attributes:
+      label: Risks and dependencies
+      description: Blockers, external deps, unknowns, mitigation.
+    validations:
+      required: false
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - P0 — critical
+        - P1 — high
+        - P2 — medium
+        - P3 — low
+      default: 2
+    validations:
+      required: true
+  - type: checkboxes
+    id: readiness
+    attributes:
+      label: Epic readiness
+      options:
+        - label: Success metrics are specific and testable
+          required: true
+        - label: Non-goals are listed
+          required: true
+        - label: Child breakdown is ready to turn into sub-issues
+          required: true
