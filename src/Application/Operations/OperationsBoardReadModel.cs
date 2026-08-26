@@ -20,6 +20,8 @@ public sealed record OperationsBoardReadModel(
     int FreeCooling,
     string ExpeditionUnitSummary,
     string SurveyTelemetrySummary,
+    string IncidentSummary,
+    string IncidentObjective,
     IReadOnlyList<OperationsAlarm> ActiveAlarms,
     string AnnouncementSummary,
     OperatorConsoleScreen ActiveScreen);

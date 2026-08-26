@@ -1,9 +1,11 @@
+using FacilityCommand.Application.Incidents;
 using FacilityCommand.Application.Operations;
 using FacilityCommand.Application.Personnel;
 using FacilityCommand.Application.Security;
 using FacilityCommand.Application.Survey;
 using FacilityCommand.Application.Transit;
 using FacilityCommand.Core.Destinations;
+using FacilityCommand.Core.Incidents;
 using FacilityCommand.Core.Personnel;
 using FacilityCommand.Core.Security;
 using FacilityCommand.Core.Survey;
@@ -133,11 +135,20 @@ public sealed class SurveyTelemetryTests
         SurveyTelemetryCatalog catalog = LoadProductionCatalog();
         SurveyTelemetryService survey = new(new SurveyDrone(), catalog, roster, transit, clock);
         roster.BindSurvey(survey);
-        OperationsBoardService board = new(
+        ReturnSecurityService security = new(new ReturnCredentialVerifier(), new ContainmentShutter());
+        ShiftIncidentService incidents = new(
+            new IncidentCatalogLoader().Load(File.ReadAllText(Path.Combine(FindRepositoryRoot(), "content", "incidents.v1.json"))),
             transit,
-            new ReturnSecurityService(new ReturnCredentialVerifier(), new ContainmentShutter()),
+            security,
             roster,
             survey,
+            resources);
+        OperationsBoardService board = new(
+            transit,
+            security,
+            roster,
+            survey,
+            incidents,
             clock,
             resources);
         return (survey, roster, transit, clock, board);

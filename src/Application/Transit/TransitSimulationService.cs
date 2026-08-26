@@ -63,8 +63,8 @@ public sealed class TransitSimulationService
                 or TransitArrayPhase.LinkOpen,
             FormatPhase(phase),
             nextLock,
-            _resources.PowerCapacity - snapshot.ReservedPower,
-            _resources.CoolingCapacity - snapshot.ReservedCooling,
+            _resources.FreePower,
+            _resources.FreeCooling,
             _resources.PowerCapacity,
             _resources.CoolingCapacity,
             phase == TransitArrayPhase.Standby,
@@ -121,6 +121,9 @@ public sealed class TransitSimulationService
     public OutgoingOperationResult CompleteClosure(SimulationInstant at) => _outgoing.CompleteClosure(at);
 
     public OutgoingOperationResult CompleteCooldown(SimulationInstant at) => _outgoing.CompleteCooldown(at);
+
+    public OutgoingOperationResult ReportFault(SimulationInstant at, string reasonCode) =>
+        _outgoing.ReportFault(at, reasonCode);
 
     private static string FormatPhase(TransitArrayPhase phase) => phase switch
     {

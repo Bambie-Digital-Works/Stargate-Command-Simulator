@@ -2,6 +2,8 @@ namespace FacilityCommand.Core.Transit;
 
 public sealed class FacilityResourcePool
 {
+    private int _coolingFaultHold;
+
     public FacilityResourcePool(int powerCapacity, int coolingCapacity)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(powerCapacity);
@@ -18,9 +20,15 @@ public sealed class FacilityResourcePool
 
     public int ReservedCooling { get; private set; }
 
+    public int CoolingFaultHold => _coolingFaultHold;
+
+    public int FreePower => PowerCapacity - ReservedPower;
+
+    public int FreeCooling => CoolingCapacity - ReservedCooling - _coolingFaultHold;
+
     public bool TryReserve(int power, int cooling)
     {
-        if (power <= 0 || cooling <= 0 || power > PowerCapacity - ReservedPower || cooling > CoolingCapacity - ReservedCooling)
+        if (power <= 0 || cooling <= 0 || power > FreePower || cooling > FreeCooling)
         {
             return false;
         }
@@ -39,5 +47,21 @@ public sealed class FacilityResourcePool
 
         ReservedPower -= power;
         ReservedCooling -= cooling;
+    }
+
+    public bool TryApplyCoolingFault(int coolingUnits)
+    {
+        if (coolingUnits <= 0 || coolingUnits > FreeCooling)
+        {
+            return false;
+        }
+
+        _coolingFaultHold += coolingUnits;
+        return true;
+    }
+
+    public void ClearCoolingFault()
+    {
+        _coolingFaultHold = 0;
     }
 }

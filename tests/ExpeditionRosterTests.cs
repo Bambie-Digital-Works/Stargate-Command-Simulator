@@ -1,13 +1,16 @@
+using FacilityCommand.Application.Incidents;
 using FacilityCommand.Application.Operations;
 using FacilityCommand.Application.Personnel;
 using FacilityCommand.Application.Security;
 using FacilityCommand.Application.Survey;
 using FacilityCommand.Application.Transit;
 using FacilityCommand.Core.Destinations;
+using FacilityCommand.Core.Incidents;
 using FacilityCommand.Core.Personnel;
 using FacilityCommand.Core.Security;
 using FacilityCommand.Core.Survey;
 using FacilityCommand.Core.Transit;
+using FacilityCommand.Infrastructure.Content;
 using FacilityCommand.Infrastructure.Simulation;
 
 namespace FacilityCommand.Tests;
@@ -149,11 +152,19 @@ public sealed class ExpeditionRosterTests
             transit,
             clock);
         roster.BindSurvey(survey);
+        ShiftIncidentService incidents = new(
+            new IncidentCatalogLoader().Load(File.ReadAllText(Path.Combine(FindRepositoryRoot(), "content", "incidents.v1.json"))),
+            transit,
+            new ReturnSecurityService(new ReturnCredentialVerifier(), new ContainmentShutter()),
+            roster,
+            survey,
+            resources);
         OperationsBoardService board = new(
             transit,
             new ReturnSecurityService(new ReturnCredentialVerifier(), new ContainmentShutter()),
             roster,
             survey,
+            incidents,
             clock,
             resources);
         return (roster, transit, clock, board, survey);
@@ -170,5 +181,17 @@ public sealed class ExpeditionRosterTests
 
         Assert.True(transit.BeginStabilization(clock.Advance(1000)).IsAccepted);
         Assert.True(transit.ConfirmStable(clock.Advance(1000)).IsAccepted);
+    }
+
+    private static string FindRepositoryRoot()
+    {
+        DirectoryInfo? current = new(AppContext.BaseDirectory);
+        while (current is not null && !File.Exists(Path.Combine(current.FullName, "project.godot")))
+        {
+            current = current.Parent;
+        }
+
+        return current?.FullName
+            ?? throw new InvalidOperationException("Unable to locate repository root from test output.");
     }
 }

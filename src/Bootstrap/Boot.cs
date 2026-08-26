@@ -1,4 +1,5 @@
 using FacilityCommand.Application.Configuration;
+using FacilityCommand.Application.Incidents;
 using FacilityCommand.Application.Logging;
 using FacilityCommand.Application.Operations;
 using FacilityCommand.Application.Personnel;
@@ -6,6 +7,7 @@ using FacilityCommand.Application.Security;
 using FacilityCommand.Application.Survey;
 using FacilityCommand.Application.Transit;
 using FacilityCommand.Core.Destinations;
+using FacilityCommand.Core.Incidents;
 using FacilityCommand.Core.Security;
 using FacilityCommand.Core.Survey;
 using FacilityCommand.Core.Transit;
@@ -67,6 +69,8 @@ public partial class Boot : Node
             DestinationRegistry destinations = new DestinationRegistryLoader().Load(destinationsJson);
             string surveyJson = Godot.FileAccess.GetFileAsString("res://content/survey_profiles.v1.json");
             SurveyTelemetryCatalog surveyCatalog = new SurveyTelemetryCatalogLoader().Load(surveyJson);
+            string incidentsJson = Godot.FileAccess.GetFileAsString("res://content/incidents.v1.json");
+            IncidentCatalog incidentCatalog = new IncidentCatalogLoader().Load(incidentsJson);
             FacilityResourcePool resources = new(
                 configuration.Simulation.AvailablePowerUnits,
                 configuration.Simulation.AvailableCoolingUnits);
@@ -77,7 +81,8 @@ public partial class Boot : Node
             ExpeditionRosterService roster = ExpeditionRosterService.CreateDefault(clock);
             SurveyTelemetryService survey = new(new SurveyDrone(), surveyCatalog, roster, transit, clock);
             roster.BindSurvey(survey);
-            OperationsBoardService operations = new(transit, security, roster, survey, clock, resources);
+            ShiftIncidentService incidents = new(incidentCatalog, transit, security, roster, survey, resources);
+            OperationsBoardService operations = new(transit, security, roster, survey, incidents, clock, resources);
 
             logger.Log(
                 ApplicationLogLevel.Information,
