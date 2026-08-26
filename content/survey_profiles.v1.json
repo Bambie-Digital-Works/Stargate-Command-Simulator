@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "profiles": [
+    {
+      "destinationId": "survey_site_aurora",
+      "deployDelayMs": 1000,
+      "suggestedRisk": "elevated",
+      "riskSummary": "Breathable site with contradictory biology markers and intermittent camera loss.",
+      "readings": [
+        {
+          "channel": "atmosphere",
+          "label": "Atmosphere",
+          "reportedValue": "Breathable, 0.94 atm, O2 nominal",
+          "quality": "clear"
+        },
+        {
+          "channel": "radiation",
+          "label": "Radiation",
+          "reportedValue": "Background 0.12 mSv/h",
+          "quality": "noisy"
+        },
+        {
+          "channel": "biology",
+          "label": "Biology",
+          "reportedValue": "No pathogen markers",
+          "quality": "contradictory",
+          "contradictionNote": "Secondary sampler reports unidentified protein clusters."
+        },
+        {
+          "channel": "terrain",
+          "label": "Terrain",
+          "reportedValue": "Stable basalt shelf, 12° slope",
+          "quality": "clear"
+        },
+        {
+          "channel": "camera",
+          "label": "Camera",
+          "reportedValue": "Partial frame, dust bloom",
+          "quality": "delayed"
+        },
+        {
+          "channel": "signalQuality",
+          "label": "Signal quality",
+          "reportedValue": "72% with packet loss spikes",
+          "quality": "noisy"
+        }
+      ]
+    },
+    {
+      "destinationId": "relay_station_kestrel",
+      "deployDelayMs": 0,
+      "suggestedRisk": "acceptable",
+      "riskSummary": "Hard vacuum approach with clear radiation and sealed docking collar telemetry.",
+      "readings": [
+        {
+          "channel": "atmosphere",
+          "label": "Atmosphere",
+          "reportedValue": "Vacuum outside collar; interior N2/O2 sealed",
+          "quality": "clear"
+        },
+        {
+          "channel": "radiation",
+          "label": "Radiation",
+          "reportedValue": "Shielded bay, 0.04 mSv/h",
+          "quality": "clear"
+        },
+        {
+          "channel": "biology",
+          "label": "Biology",
+          "reportedValue": "No biological signal",
+          "quality": "clear"
+        },
+        {
+          "channel": "terrain",
+          "label": "Terrain",
+          "reportedValue": "Artificial docking lattice",
+          "quality": "clear"
+        },
+        {
+          "channel": "camera",
+          "label": "Camera",
+          "reportedValue": "Docking lights visible",
+          "quality": "clear"
+        },
+        {
+          "channel": "signalQuality",
+          "label": "Signal quality",
+          "reportedValue": "94% stable",
+          "quality": "clear"
+        }
+      ]
+    }
+  ]
+}

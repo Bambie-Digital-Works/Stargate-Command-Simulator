@@ -57,3 +57,5 @@ Clock, seeded randomness, and privacy-safe replay contracts are specified in [th
 Return Credential assessment and fail-secure Containment Shutter interlocks are specified in [the return security rules](RETURN_SECURITY_RULES.md).
 
 Expedition Unit assemble, equip, and dispatch rules are specified in [the expedition roster rules](EXPEDITION_ROSTER_RULES.md).
+
+Survey Drone deployment, telemetry qualities, and destination risk decisions are specified in [the survey telemetry rules](SURVEY_TELEMETRY_RULES.md).

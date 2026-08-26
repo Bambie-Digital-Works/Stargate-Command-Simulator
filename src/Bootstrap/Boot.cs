@@ -3,9 +3,11 @@ using FacilityCommand.Application.Logging;
 using FacilityCommand.Application.Operations;
 using FacilityCommand.Application.Personnel;
 using FacilityCommand.Application.Security;
+using FacilityCommand.Application.Survey;
 using FacilityCommand.Application.Transit;
 using FacilityCommand.Core.Destinations;
 using FacilityCommand.Core.Security;
+using FacilityCommand.Core.Survey;
 using FacilityCommand.Core.Transit;
 using FacilityCommand.Infrastructure.Configuration;
 using FacilityCommand.Infrastructure.Content;
@@ -63,6 +65,8 @@ public partial class Boot : Node
 
             string destinationsJson = Godot.FileAccess.GetFileAsString("res://content/destinations.v1.json");
             DestinationRegistry destinations = new DestinationRegistryLoader().Load(destinationsJson);
+            string surveyJson = Godot.FileAccess.GetFileAsString("res://content/survey_profiles.v1.json");
+            SurveyTelemetryCatalog surveyCatalog = new SurveyTelemetryCatalogLoader().Load(surveyJson);
             FacilityResourcePool resources = new(
                 configuration.Simulation.AvailablePowerUnits,
                 configuration.Simulation.AvailableCoolingUnits);
@@ -71,7 +75,9 @@ public partial class Boot : Node
             ReturnSecurityService security = new(new ReturnCredentialVerifier(), new ContainmentShutter());
             ManualSimulationClock clock = new();
             ExpeditionRosterService roster = ExpeditionRosterService.CreateDefault(clock);
-            OperationsBoardService operations = new(transit, security, roster, clock, resources);
+            SurveyTelemetryService survey = new(new SurveyDrone(), surveyCatalog, roster, transit, clock);
+            roster.BindSurvey(survey);
+            OperationsBoardService operations = new(transit, security, roster, survey, clock, resources);
 
             logger.Log(
                 ApplicationLogLevel.Information,

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://src/Presentation/OperatorShell.cs" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/ui/DiagnosticsOverlay.tscn" id="2_diagnostics"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/TransitControl.tscn" id="7_transit"]
 [ext_resource type="PackedScene" path="res://scenes/ui/ReturnControl.tscn" id="8_return"]
 [ext_resource type="PackedScene" path="res://scenes/ui/ExpeditionRoster.tscn" id="9_roster"]
+[ext_resource type="PackedScene" path="res://scenes/ui/SurveyTelemetry.tscn" id="10_survey"]
 
 [node name="OperatorShell" type="Control"]
 layout_mode = 3
@@ -100,6 +101,15 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="TransitControlPanel" parent="SafeArea/Layout/Workspace/NavigationHost" instance=ExtResource("7_transit")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SurveyTelemetryPanel" parent="SafeArea/Layout/Workspace/NavigationHost" instance=ExtResource("10_survey")]
 visible = false
 layout_mode = 1
 anchors_preset = 15

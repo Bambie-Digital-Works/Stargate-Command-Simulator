@@ -1,5 +1,6 @@
 using System.Text.Json;
 using FacilityCommand.Application.Simulation;
+using FacilityCommand.Application.Survey;
 using FacilityCommand.Core.Personnel;
 using FacilityCommand.Core.Transit;
 
@@ -15,6 +16,7 @@ public sealed class ExpeditionRosterService
 
     private readonly ExpeditionUnit _unit;
     private readonly ISimulationClock _clock;
+    private SurveyTelemetryService? _survey;
 
     public ExpeditionRosterService(ExpeditionUnit unit, ISimulationClock clock)
     {
@@ -24,6 +26,8 @@ public sealed class ExpeditionRosterService
 
     public static ExpeditionRosterService CreateDefault(ISimulationClock clock) =>
         new(CreateDefaultUnit(), clock);
+
+    public void BindSurvey(SurveyTelemetryService survey) => _survey = survey;
 
     public ExpeditionUnitSnapshot Snapshot => _unit.Snapshot;
 
@@ -36,7 +40,8 @@ public sealed class ExpeditionRosterService
 
     public ExpeditionOperationResult Equip(IReadOnlyList<string> itemIds) => _unit.Equip(itemIds);
 
-    public ExpeditionOperationResult Dispatch(TransitArraySnapshot transit) => _unit.Dispatch(transit);
+    public ExpeditionOperationResult Dispatch(TransitArraySnapshot transit) =>
+        _unit.Dispatch(transit, _survey?.HasRecordedDecision == true);
 
     public ExpeditionOperationResult Recall() => _unit.Recall();
 
@@ -55,6 +60,7 @@ public sealed class ExpeditionRosterService
     {
         ExpeditionUnitSnapshot snapshot = _unit.Snapshot;
         bool linkStable = transit.Phase == TransitArrayPhase.LinkOpen;
+        bool riskRecorded = _survey?.HasRecordedDecision == true;
         return new ExpeditionRosterReadModel(
             snapshot.UnitId,
             snapshot.DisplayName,
@@ -72,9 +78,9 @@ public sealed class ExpeditionRosterService
             linkStable,
             snapshot.State is ExpeditionDispatchState.Standby or ExpeditionDispatchState.Recalled,
             snapshot.State == ExpeditionDispatchState.Assembled,
-            snapshot.State == ExpeditionDispatchState.Equipped && linkStable,
+            snapshot.State == ExpeditionDispatchState.Equipped && linkStable && riskRecorded,
             snapshot.State == ExpeditionDispatchState.Dispatched,
-            FormatStatus(snapshot, linkStable));
+            FormatStatus(snapshot, linkStable, riskRecorded));
     }
 
     private IReadOnlyList<PersonnelOption> BuildPersonnelOptions(ExpeditionUnitSnapshot snapshot)
@@ -116,11 +122,13 @@ public sealed class ExpeditionRosterService
         _ => $"{snapshot.DisplayName} — {snapshot.State}",
     };
 
-    private static string FormatStatus(ExpeditionUnitSnapshot snapshot, bool linkStable) => snapshot.State switch
+    private static string FormatStatus(ExpeditionUnitSnapshot snapshot, bool linkStable, bool riskRecorded) => snapshot.State switch
     {
         ExpeditionDispatchState.Standby => "Select available staff covering commander, medic, engineer, and security.",
         ExpeditionDispatchState.Assembled => "Issue the required kit before dispatch.",
         ExpeditionDispatchState.Equipped when !linkStable => "Transit Link is not stable. Open a stable link before dispatch.",
+        ExpeditionDispatchState.Equipped when !riskRecorded =>
+            "Record a Survey Telemetry risk decision before dispatching the Expedition Unit.",
         ExpeditionDispatchState.Equipped => "Expedition Unit is ready to dispatch.",
         ExpeditionDispatchState.Dispatched => "Expedition Unit is in the field.",
         ExpeditionDispatchState.Recalled => "Expedition Unit recalled. Assemble a new roster when ready.",

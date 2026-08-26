@@ -1,10 +1,12 @@
 using FacilityCommand.Application.Operations;
 using FacilityCommand.Application.Personnel;
 using FacilityCommand.Application.Security;
+using FacilityCommand.Application.Survey;
 using FacilityCommand.Application.Transit;
 using FacilityCommand.Core.Destinations;
 using FacilityCommand.Core.Personnel;
 using FacilityCommand.Core.Security;
+using FacilityCommand.Core.Survey;
 using FacilityCommand.Core.Transit;
 using FacilityCommand.Infrastructure.Simulation;
 
@@ -30,7 +32,7 @@ public sealed class ExpeditionRosterTests
     [Fact]
     public void ValidTeamCanBeAssembledEquippedDispatchedAndTracked()
     {
-        (ExpeditionRosterService roster, TransitSimulationService transit, ManualSimulationClock clock, OperationsBoardService board) =
+        (ExpeditionRosterService roster, TransitSimulationService transit, ManualSimulationClock clock, OperationsBoardService board, SurveyTelemetryService survey) =
             CreateServices();
 
         Assert.True(roster.Assemble(ValidTeam).IsAccepted);
@@ -39,6 +41,8 @@ public sealed class ExpeditionRosterTests
         Assert.Equal(ExpeditionDispatchState.Equipped, roster.Snapshot.State);
 
         OpenStableLink(transit, clock);
+        Assert.True(survey.Deploy().IsAccepted);
+        Assert.True(survey.RecordRiskDecision(SurveyRiskAssessment.Acceptable).IsAccepted);
         Assert.True(roster.GetReadModel(transit.GetTransitArraySnapshot()).CanDispatch);
         Assert.True(roster.Dispatch(transit.GetTransitArraySnapshot()).IsAccepted);
         Assert.Equal(ExpeditionDispatchState.Dispatched, roster.Snapshot.State);
@@ -62,7 +66,7 @@ public sealed class ExpeditionRosterTests
     [Fact]
     public void DispatchRequiresStableTransitLink()
     {
-        (ExpeditionRosterService roster, TransitSimulationService transit, _, _) = CreateServices();
+        (ExpeditionRosterService roster, TransitSimulationService transit, _, _, _) = CreateServices();
 
         Assert.True(roster.Assemble(ValidTeam).IsAccepted);
         Assert.True(roster.EquipRequiredKit().IsAccepted);
@@ -75,12 +79,30 @@ public sealed class ExpeditionRosterTests
     }
 
     [Fact]
-    public void SnapshotRoundTripPreservesDispatchState()
+    public void DispatchRequiresSurveyRiskDecision()
     {
-        (ExpeditionRosterService roster, TransitSimulationService transit, ManualSimulationClock clock, _) = CreateServices();
+        (ExpeditionRosterService roster, TransitSimulationService transit, ManualSimulationClock clock, _, _) = CreateServices();
+
         Assert.True(roster.Assemble(ValidTeam).IsAccepted);
         Assert.True(roster.EquipRequiredKit().IsAccepted);
         OpenStableLink(transit, clock);
+
+        ExpeditionOperationResult rejected = roster.Dispatch(transit.GetTransitArraySnapshot());
+
+        Assert.Equal("risk_decision_required", rejected.Rejection?.ReasonCode);
+        Assert.False(roster.GetReadModel(transit.GetTransitArraySnapshot()).CanDispatch);
+    }
+
+    [Fact]
+    public void SnapshotRoundTripPreservesDispatchState()
+    {
+        (ExpeditionRosterService roster, TransitSimulationService transit, ManualSimulationClock clock, _, SurveyTelemetryService survey) =
+            CreateServices();
+        Assert.True(roster.Assemble(ValidTeam).IsAccepted);
+        Assert.True(roster.EquipRequiredKit().IsAccepted);
+        OpenStableLink(transit, clock);
+        Assert.True(survey.Deploy().IsAccepted);
+        Assert.True(survey.RecordRiskDecision(SurveyRiskAssessment.Elevated).IsAccepted);
         Assert.True(roster.Dispatch(transit.GetTransitArraySnapshot()).IsAccepted);
 
         string json = roster.ExportSnapshotJson();
@@ -96,7 +118,8 @@ public sealed class ExpeditionRosterTests
         ExpeditionRosterService Roster,
         TransitSimulationService Transit,
         ManualSimulationClock Clock,
-        OperationsBoardService Board) CreateServices()
+        OperationsBoardService Board,
+        SurveyTelemetryService Survey) CreateServices()
     {
         DestinationRegistry registry = new([Destination]);
         FacilityResourcePool resources = new(100, 100);
@@ -104,13 +127,36 @@ public sealed class ExpeditionRosterTests
         TransitSimulationService transit = new(outgoing, registry, resources);
         ManualSimulationClock clock = new();
         ExpeditionRosterService roster = ExpeditionRosterService.CreateDefault(clock);
+        SurveyTelemetryService survey = new(
+            new SurveyDrone(),
+            new SurveyTelemetryCatalog(
+            [
+                new SurveyTelemetryProfile(
+                    Destination.Id,
+                    0,
+                    SurveyRiskAssessment.Acceptable,
+                    "Test profile",
+                    [
+                        new SurveyChannelReading(
+                            SurveyChannelKind.Atmosphere,
+                            "Atmosphere",
+                            "Clear",
+                            SurveyReadingQuality.Clear,
+                            null),
+                    ]),
+            ]),
+            roster,
+            transit,
+            clock);
+        roster.BindSurvey(survey);
         OperationsBoardService board = new(
             transit,
             new ReturnSecurityService(new ReturnCredentialVerifier(), new ContainmentShutter()),
             roster,
+            survey,
             clock,
             resources);
-        return (roster, transit, clock, board);
+        return (roster, transit, clock, board, survey);
     }
 
     private static void OpenStableLink(TransitSimulationService transit, ManualSimulationClock clock)

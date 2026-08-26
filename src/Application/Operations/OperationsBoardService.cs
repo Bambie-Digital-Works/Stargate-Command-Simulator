@@ -1,8 +1,10 @@
 using FacilityCommand.Application.Personnel;
 using FacilityCommand.Application.Security;
 using FacilityCommand.Application.Simulation;
+using FacilityCommand.Application.Survey;
 using FacilityCommand.Application.Transit;
 using FacilityCommand.Core.Security;
+using FacilityCommand.Core.Survey;
 using FacilityCommand.Core.Transit;
 
 namespace FacilityCommand.Application.Operations;
@@ -12,6 +14,7 @@ public sealed class OperationsBoardService
     private readonly TransitSimulationService _transit;
     private readonly ReturnSecurityService _security;
     private readonly ExpeditionRosterService _roster;
+    private readonly SurveyTelemetryService _survey;
     private readonly ISimulationClock _clock;
     private readonly FacilityResourcePool _resources;
     private OperatorConsoleScreen _activeScreen = OperatorConsoleScreen.OperationsBoard;
@@ -20,12 +23,14 @@ public sealed class OperationsBoardService
         TransitSimulationService transit,
         ReturnSecurityService security,
         ExpeditionRosterService roster,
+        SurveyTelemetryService survey,
         ISimulationClock clock,
         FacilityResourcePool resources)
     {
         _transit = transit;
         _security = security;
         _roster = roster;
+        _survey = survey;
         _clock = clock;
         _resources = resources;
     }
@@ -38,12 +43,15 @@ public sealed class OperationsBoardService
 
     public ExpeditionRosterService Roster => _roster;
 
+    public SurveyTelemetryService Survey => _survey;
+
     public ISimulationClock Clock => _clock;
 
     public IReadOnlyList<OperatorConsoleScreen> NavigationOrder { get; } =
     [
         OperatorConsoleScreen.OperationsBoard,
         OperatorConsoleScreen.TransitControl,
+        OperatorConsoleScreen.SurveyTelemetry,
         OperatorConsoleScreen.ReturnControl,
         OperatorConsoleScreen.ExpeditionRoster,
     ];
@@ -72,8 +80,9 @@ public sealed class OperationsBoardService
         TransitArraySnapshot transitSnapshot = _transit.GetTransitArraySnapshot();
         ReturnSecurityReadModel security = _security.GetReadModel(transitSnapshot);
         ExpeditionRosterReadModel roster = _roster.GetReadModel(transitSnapshot);
-        List<OperationsAlarm> alarms = BuildAlarms(transit.Phase, security);
-        string announcement = BuildAnnouncement(transit, security, alarms);
+        SurveyTelemetryReadModel survey = _survey.GetReadModel();
+        List<OperationsAlarm> alarms = BuildAlarms(transit.Phase, security, survey);
+        string announcement = BuildAnnouncement(transit, security, survey, alarms);
 
         return new OperationsBoardReadModel(
             _clock.Current.Milliseconds,
@@ -91,12 +100,16 @@ public sealed class OperationsBoardService
             _resources.PowerCapacity - transit.ReservedPower,
             _resources.CoolingCapacity - transit.ReservedCooling,
             roster.Summary,
+            FormatSurveySummary(survey),
             alarms,
             announcement,
             _activeScreen);
     }
 
-    private static List<OperationsAlarm> BuildAlarms(TransitArrayPhase phase, ReturnSecurityReadModel security)
+    private static List<OperationsAlarm> BuildAlarms(
+        TransitArrayPhase phase,
+        ReturnSecurityReadModel security,
+        SurveyTelemetryReadModel survey)
     {
         List<OperationsAlarm> alarms = [];
         if (phase == TransitArrayPhase.Faulted)
@@ -131,12 +144,21 @@ public sealed class OperationsBoardService
                 security.CorrectiveAction));
         }
 
+        if (survey.HasContradictoryReadings && !survey.HasRecordedDecision)
+        {
+            alarms.Add(new OperationsAlarm(
+                "survey_contradiction",
+                "Warning",
+                "Survey Telemetry contains contradictory readings awaiting a risk decision."));
+        }
+
         return alarms;
     }
 
     private static string BuildAnnouncement(
         TransitControlReadModel transit,
         ReturnSecurityReadModel security,
+        SurveyTelemetryReadModel survey,
         IReadOnlyList<OperationsAlarm> alarms)
     {
         if (alarms.Count > 0)
@@ -145,7 +167,24 @@ public sealed class OperationsBoardService
             return $"{primary.SeverityLabel}: {primary.Message}";
         }
 
-        return $"Status nominal. Transit Array {FormatTransitPhase(transit.Phase)}. Containment {FormatContainment(security.ShutterState)}.";
+        return
+            $"Status nominal. Transit Array {FormatTransitPhase(transit.Phase)}. " +
+            $"Containment {FormatContainment(security.ShutterState)}. Survey {survey.DeployStateLabel}.";
+    }
+
+    private static string FormatSurveySummary(SurveyTelemetryReadModel survey)
+    {
+        if (survey.HasRecordedDecision)
+        {
+            return $"Survey {survey.DeployStateLabel} — decision {survey.RecordedDecisionLabel}";
+        }
+
+        if (survey.HasContradictoryReadings)
+        {
+            return $"Survey {survey.DeployStateLabel} — contradictory readings";
+        }
+
+        return $"Survey {survey.DeployStateLabel}";
     }
 
     private static string FormatMissionClock(long milliseconds)

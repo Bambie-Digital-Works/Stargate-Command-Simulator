@@ -8,7 +8,7 @@ A roster is valid only when assigned staff cover commander, medic, engineer, and
 
 ## Equip and dispatch
 
-Equipping requires the approved kit (`medkit`, `comm_pack`, `survey_kit`, `sidearm`). Dispatch requires an equipped unit and an active `LinkOpen` Transit Array snapshot. Recall returns a dispatched unit to Standby and clears assignments.
+Equipping requires the approved kit (`medkit`, `comm_pack`, `survey_kit`, `sidearm`). Dispatch requires an equipped unit, an active `LinkOpen` Transit Array snapshot, and a recorded Survey Telemetry risk decision (see [survey telemetry rules](SURVEY_TELEMETRY_RULES.md)). Recall returns a dispatched unit to Standby and clears assignments.
 
 ## Persistence stub
 
