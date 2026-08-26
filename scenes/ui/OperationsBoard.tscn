@@ -1,0 +1,133 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/Presentation/OperationsBoard.cs" id="1_script"]
+
+[node name="OperationsBoard" type="PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_script")
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
+
+[node name="Layout" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Heading" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Operations Board"
+
+[node name="Announcement" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Status loading"
+autowrap_mode = 3
+
+[node name="StatusGrid" type="GridContainer" parent="Margin/Layout"]
+layout_mode = 2
+theme_override_constants/h_separation = 24
+theme_override_constants/v_separation = 8
+columns = 2
+
+[node name="ClockHeading" type="Label" parent="Margin/Layout/StatusGrid"]
+layout_mode = 2
+text = "Mission clock"
+
+[node name="ClockValue" type="Label" parent="Margin/Layout/StatusGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "T+00:00"
+
+[node name="TransitHeading" type="Label" parent="Margin/Layout/StatusGrid"]
+layout_mode = 2
+text = "Transit Array"
+
+[node name="TransitValue" type="Label" parent="Margin/Layout/StatusGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Standby"
+
+[node name="DestinationHeading" type="Label" parent="Margin/Layout/StatusGrid"]
+layout_mode = 2
+text = "Destination"
+
+[node name="DestinationValue" type="Label" parent="Margin/Layout/StatusGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "No destination selected."
+autowrap_mode = 3
+
+[node name="ContainmentHeading" type="Label" parent="Margin/Layout/StatusGrid"]
+layout_mode = 2
+text = "Containment Shutter"
+
+[node name="ContainmentValue" type="Label" parent="Margin/Layout/StatusGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Closed / secured"
+
+[node name="CredentialHeading" type="Label" parent="Margin/Layout/StatusGrid"]
+layout_mode = 2
+text = "Return Credential"
+
+[node name="CredentialValue" type="Label" parent="Margin/Layout/StatusGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Return Credential not checked."
+autowrap_mode = 3
+
+[node name="PowerHeading" type="Label" parent="Margin/Layout/StatusGrid"]
+layout_mode = 2
+text = "Power"
+
+[node name="PowerValue" type="Label" parent="Margin/Layout/StatusGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Free 100 / 100"
+
+[node name="CoolingHeading" type="Label" parent="Margin/Layout/StatusGrid"]
+layout_mode = 2
+text = "Cooling"
+
+[node name="CoolingValue" type="Label" parent="Margin/Layout/StatusGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Free 100 / 100"
+
+[node name="ExpeditionHeading" type="Label" parent="Margin/Layout/StatusGrid"]
+layout_mode = 2
+text = "Expedition Unit"
+
+[node name="ExpeditionValue" type="Label" parent="Margin/Layout/StatusGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "No Expedition Unit assigned."
+autowrap_mode = 3
+
+[node name="Alarms" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+text = "Active alarms\nNone"
+autowrap_mode = 3
+
+[node name="Navigation" type="HBoxContainer" parent="Margin/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TransitControlButton" type="Button" parent="Margin/Layout/Navigation"]
+layout_mode = 2
+text = "Open Transit Control"
+
+[node name="ReturnControlButton" type="Button" parent="Margin/Layout/Navigation"]
+layout_mode = 2
+text = "Open Return Control"
+
+[node name="ExpeditionRosterButton" type="Button" parent="Margin/Layout/Navigation"]
+layout_mode = 2
+text = "Open Expedition Roster"
