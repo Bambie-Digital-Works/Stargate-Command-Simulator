@@ -31,6 +31,8 @@ public sealed class OperationsBoardService
 
     public TransitSimulationService Transit => _transit;
 
+    public ReturnSecurityService Security => _security;
+
     public ISimulationClock Clock => _clock;
 
     public IReadOnlyList<OperatorConsoleScreen> NavigationOrder { get; } =
