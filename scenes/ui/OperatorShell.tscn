@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://src/Presentation/OperatorShell.cs" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/ui/DiagnosticsOverlay.tscn" id="2_diagnostics"]
 [ext_resource type="PackedScene" path="res://scenes/ui/InputSettingsPanel.tscn" id="3_input"]
 [ext_resource type="Script" path="res://src/Presentation/FocusCoordinator.cs" id="4_focus"]
+[ext_resource type="PackedScene" path="res://scenes/ui/OperationsBoard.tscn" id="5_operations"]
+[ext_resource type="PackedScene" path="res://scenes/ui/WorkflowPlaceholderPanel.tscn" id="6_placeholder"]
 
 [node name="OperatorShell" type="Control"]
 layout_mode = 3
@@ -57,6 +59,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.584314, 0.658824, 0.678431, 1)
 theme_override_font_sizes/font_size = 18
 text = "No simulation loaded"
+autowrap_mode = 3
 
 [node name="Toolbar" type="HBoxContainer" parent="SafeArea/Layout"]
 layout_mode = 2
@@ -81,11 +84,45 @@ text = "Active input: Keyboard / mouse"
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Placeholder" type="Label" parent="SafeArea/Layout/Workspace"]
+[node name="NavigationHost" type="Control" parent="SafeArea/Layout/Workspace"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Operations Board placeholder"
-vertical_alignment = 1
+size_flags_vertical = 3
+
+[node name="OperationsBoard" parent="SafeArea/Layout/Workspace/NavigationHost" instance=ExtResource("5_operations")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TransitControlPanel" parent="SafeArea/Layout/Workspace/NavigationHost" instance=ExtResource("6_placeholder")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ReturnControlPanel" parent="SafeArea/Layout/Workspace/NavigationHost" instance=ExtResource("6_placeholder")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ExpeditionRosterPanel" parent="SafeArea/Layout/Workspace/NavigationHost" instance=ExtResource("6_placeholder")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="DiagnosticsOverlay" parent="SafeArea/Layout/Workspace" instance=ExtResource("2_diagnostics")]
 layout_mode = 2
@@ -96,4 +133,3 @@ layout_mode = 2
 
 [node name="FocusCoordinator" type="Node" parent="."]
 script = ExtResource("4_focus")
-

@@ -11,6 +11,8 @@ public sealed class TransitSimulationService
         _outgoing = outgoing;
     }
 
+    public TransitArraySnapshot GetTransitArraySnapshot() => _outgoing.Snapshot.TransitArray;
+
     public TransitControlReadModel GetTransitControl()
     {
         OutgoingConnectionSnapshot snapshot = _outgoing.Snapshot;

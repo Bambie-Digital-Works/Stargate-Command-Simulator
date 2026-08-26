@@ -1,9 +1,17 @@
 using FacilityCommand.Application.Configuration;
 using FacilityCommand.Application.Logging;
+using FacilityCommand.Application.Operations;
+using FacilityCommand.Application.Security;
+using FacilityCommand.Application.Transit;
+using FacilityCommand.Core.Destinations;
+using FacilityCommand.Core.Security;
+using FacilityCommand.Core.Transit;
 using FacilityCommand.Infrastructure.Configuration;
+using FacilityCommand.Infrastructure.Content;
 using FacilityCommand.Infrastructure.Diagnostics;
 using FacilityCommand.Infrastructure.Input;
 using FacilityCommand.Infrastructure.Logging;
+using FacilityCommand.Infrastructure.Simulation;
 using FacilityCommand.Presentation;
 using Godot;
 
@@ -52,6 +60,17 @@ public partial class Boot : Node
             GodotInputBindingService inputBindings = new(inputBindingStore, logger);
             inputBindings.Initialize();
 
+            string destinationsJson = Godot.FileAccess.GetFileAsString("res://content/destinations.v1.json");
+            DestinationRegistry destinations = new DestinationRegistryLoader().Load(destinationsJson);
+            FacilityResourcePool resources = new(
+                configuration.Simulation.AvailablePowerUnits,
+                configuration.Simulation.AvailableCoolingUnits);
+            OutgoingConnection outgoing = new(destinations, resources);
+            TransitSimulationService transit = new(outgoing);
+            ReturnSecurityService security = new(new ReturnCredentialVerifier(), new ContainmentShutter());
+            ManualSimulationClock clock = new();
+            OperationsBoardService operations = new(transit, security, clock, resources);
+
             logger.Log(
                 ApplicationLogLevel.Information,
                 "application.started",
@@ -72,7 +91,7 @@ public partial class Boot : Node
 
             shell.Name = "OperatorShell";
             AddChild(shell);
-            shell.Initialize(metadata, configuration, logger, inputBindings);
+            shell.Initialize(metadata, configuration, logger, inputBindings, operations);
 
             GD.Print("Boot complete: operator shell is ready.");
         }
@@ -102,4 +121,3 @@ public partial class Boot : Node
         failurePanel.Initialize(sourceLabel, errors);
     }
 }
-

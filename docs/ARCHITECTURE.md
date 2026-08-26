@@ -33,7 +33,7 @@ Bootstrap composes all layers and starts the first scene.
 
 ## Scene ownership
 
-`project.godot` starts `scenes/boot/Boot.tscn`. Its `Boot` script is the composition root and instantiates the operator shell. Future screens are children of a navigation host within the shell; they communicate with application services instead of locating one another through the scene tree.
+`project.godot` starts `scenes/boot/Boot.tscn`. Its `Boot` script is the composition root and instantiates the operator shell. Operator screens are children of the shell navigation host and bind to Application read models (starting with the Operations Board); they communicate with application services instead of locating one another through the scene tree.
 
 Scenes own layout, visual state, focus order, and signal wiring. A scene may call an application use case, but it must not mutate domain state directly. Domain events return through a presentation-facing adapter so that the same simulation can run headlessly in tests.
 
