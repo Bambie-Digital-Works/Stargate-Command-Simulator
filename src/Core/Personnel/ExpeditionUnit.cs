@@ -20,7 +20,7 @@ public sealed class ExpeditionUnit
         PersonnelSpecialty.Security,
     ];
 
-    private readonly IReadOnlyDictionary<string, PersonnelMember> _pool;
+    private readonly Dictionary<string, PersonnelMember> _pool;
     private ExpeditionUnitSnapshot _snapshot;
 
     public ExpeditionUnit(
@@ -52,6 +52,21 @@ public sealed class ExpeditionUnit
 
     public IReadOnlyCollection<PersonnelMember> Pool => _pool.Values.ToArray();
 
+    public ExpeditionOperationResult MarkInjured(string memberId)
+    {
+        if (!_pool.TryGetValue(memberId, out PersonnelMember? member))
+        {
+            return Reject("personnel_unknown", "Select staff recorded in the Expedition Roster pool.");
+        }
+
+        if (member.IsInjured)
+        {
+            return Reject("personnel_already_injured", $"{member.DisplayName} is already marked injured.");
+        }
+
+        _pool[memberId] = member with { IsInjured = true };
+        return Accept();
+    }
     public void Restore(ExpeditionUnitSnapshot snapshot)
     {
         ArgumentNullException.ThrowIfNull(snapshot);

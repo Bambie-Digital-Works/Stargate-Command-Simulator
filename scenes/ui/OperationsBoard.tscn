@@ -121,6 +121,21 @@ size_flags_horizontal = 3
 text = "Survey Idle"
 autowrap_mode = 3
 
+[node name="IncidentHeading" type="Label" parent="Margin/Layout/StatusGrid"]
+layout_mode = 2
+text = "Active incident"
+
+[node name="IncidentValue" type="Label" parent="Margin/Layout/StatusGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Incident 1/5"
+autowrap_mode = 3
+
+[node name="IncidentObjective" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+text = "Shift incident objective"
+autowrap_mode = 3
+
 [node name="Alarms" type="Label" parent="Margin/Layout"]
 layout_mode = 2
 text = "Active alarms\nNone"
@@ -145,3 +160,7 @@ text = "Open Return Control"
 [node name="ExpeditionRosterButton" type="Button" parent="Margin/Layout/Navigation"]
 layout_mode = 2
 text = "Open Expedition Roster"
+
+[node name="ResolveCoolingFaultButton" type="Button" parent="Margin/Layout/Navigation"]
+layout_mode = 2
+text = "Clear cooling fault"

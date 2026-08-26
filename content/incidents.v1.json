@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "incidents": [
+    {
+      "id": "routine_reconnaissance",
+      "displayName": "Routine reconnaissance",
+      "sequenceOrder": 1,
+      "objectiveSummary": "Establish an outgoing Transit Link to Kestrel, review Survey Telemetry, record risk, and dispatch Expedition Unit Alpha.",
+      "successEvent": "expedition_dispatched",
+      "failureEvent": "routine_aborted",
+      "successFacts": [
+        "Outgoing reconnaissance link completed with a recorded Survey risk decision and dispatch."
+      ],
+      "failureFacts": [
+        "Routine reconnaissance aborted before Expedition Unit dispatch."
+      ],
+      "activationHint": "Prepare Destination Vector relay_station_kestrel."
+    },
+    {
+      "id": "credential_damage",
+      "displayName": "Damaged friendly return",
+      "sequenceOrder": 2,
+      "objectiveSummary": "Authenticate a friendly return presenting a damaged Return Credential and keep containment decisions fail-secure.",
+      "successEvent": "credential_damaged_verified",
+      "failureEvent": "credential_damage_bypass",
+      "successFacts": [
+        "Damaged Return Credential was verified and withheld; containment remained under operator control."
+      ],
+      "failureFacts": [
+        "Damaged-credential incident ended without a withheld damaged assessment."
+      ],
+      "activationHint": "Use Return Control scenario 'damaged' while a Transit Link is open."
+    },
+    {
+      "id": "spoofed_incoming",
+      "displayName": "Spoofed unscheduled incoming",
+      "sequenceOrder": 3,
+      "objectiveSummary": "Detect an unscheduled incoming Transit Link and expose a spoofed Return Credential challenge.",
+      "successEvent": "credential_spoof_verified",
+      "failureEvent": "spoofed_incoming_missed",
+      "successFacts": [
+        "Unscheduled incoming was paired with a spoofed credential Security Alert."
+      ],
+      "failureFacts": [
+        "Spoofed incoming incident closed without a spoof Security Alert."
+      ],
+      "activationHint": "Detect incoming, then verify Return Control scenario 'spoofed'."
+    },
+    {
+      "id": "survey_contradiction",
+      "displayName": "Contradictory Survey Telemetry",
+      "sequenceOrder": 4,
+      "objectiveSummary": "Open Aurora Survey Site, deploy the Survey Drone, confront contradictory biology markers, and still record a risk decision.",
+      "successEvent": "contradiction_risk_recorded",
+      "failureEvent": "contradiction_ignored",
+      "successFacts": [
+        "Operator recorded a destination risk decision despite contradictory Survey Drone readings."
+      ],
+      "failureFacts": [
+        "Contradictory Survey Telemetry incident ended without a recorded risk decision."
+      ],
+      "activationHint": "Link to survey_site_aurora and resolve Survey Telemetry."
+    },
+    {
+      "id": "medical_cooling_fault",
+      "displayName": "Medical emergency and cooling fault",
+      "sequenceOrder": 5,
+      "objectiveSummary": "Handle an injured team member while a cooling-capacity fault pressures facility reserves, then recover.",
+      "successEvent": "combined_crisis_contained",
+      "failureEvent": "combined_crisis_unresolved",
+      "successFacts": [
+        "Cooling fault cleared and injured personnel accounted for after the overlapping crisis."
+      ],
+      "failureFacts": [
+        "Medical and cooling crisis ended without containment recovery."
+      ],
+      "activationHint": "Incident activation injures field staff and holds cooling capacity until cleared."
+    }
+  ]
+}

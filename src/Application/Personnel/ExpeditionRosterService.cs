@@ -31,6 +31,8 @@ public sealed class ExpeditionRosterService
 
     public ExpeditionUnitSnapshot Snapshot => _unit.Snapshot;
 
+    public IReadOnlyCollection<PersonnelMember> Pool => _unit.Pool;
+
     public IReadOnlyList<PersonnelOption> ListAvailablePersonnel() =>
         BuildPersonnelOptions(_unit.Snapshot);
 
@@ -45,6 +47,7 @@ public sealed class ExpeditionRosterService
 
     public ExpeditionOperationResult Recall() => _unit.Recall();
 
+    public ExpeditionOperationResult MarkInjured(string memberId) => _unit.MarkInjured(memberId);
     public void RestoreSnapshot(ExpeditionUnitSnapshot snapshot) => _unit.Restore(snapshot);
 
     public string ExportSnapshotJson() => JsonSerializer.Serialize(_unit.Snapshot, SnapshotJsonOptions);
