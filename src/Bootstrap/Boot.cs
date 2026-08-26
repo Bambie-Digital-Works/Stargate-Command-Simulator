@@ -88,9 +88,23 @@ public partial class Boot : Node
             roster.BindSurvey(survey);
             ShiftIncidentService incidents = new(incidentCatalog, transit, security, roster, survey, resources);
             OperationsBoardService operations = new(transit, security, roster, survey, incidents, clock, resources);
-            CampaignStateStore campaignStore = new(ProjectSettings.GlobalizePath("user://campaign_state.v1.json"));
+            CampaignStateStore campaignStore = new(
+                ProjectSettings.GlobalizePath("user://campaign_state.json"),
+                metadata.SaveSchemaVersion);
             ShiftLifecycleService lifecycle = new(shiftBrief, incidents, roster, resources, campaignStore, operations);
             operations.BindLifecycle(lifecycle);
+
+            if (!string.IsNullOrWhiteSpace(lifecycle.PersistenceGuidance))
+            {
+                logger.Log(
+                    ApplicationLogLevel.Warning,
+                    "campaign.save.recovery",
+                    lifecycle.PersistenceGuidance,
+                    new Dictionary<string, string>
+                    {
+                        ["saveSchema"] = metadata.SaveSchemaVersion.ToString(),
+                    });
+            }
 
             logger.Log(
                 ApplicationLogLevel.Information,

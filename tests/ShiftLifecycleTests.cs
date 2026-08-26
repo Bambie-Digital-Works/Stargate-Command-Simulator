@@ -98,7 +98,7 @@ public sealed class ShiftLifecycleTests
         Assert.Contains(review.ConsequenceLines, line => line.Contains("InjuredStaff", StringComparison.Ordinal));
         Assert.Equal(OperatorConsoleScreen.ShiftReview, board.ActiveScreen);
 
-        CampaignState reloaded = new CampaignStateStore(temp.Path).LoadOrEmpty();
+        CampaignState reloaded = new CampaignStateStore(temp.Path, CampaignState.CurrentSchemaVersion).LoadOrEmpty();
         Assert.Equal(ShiftOutcomeCategory.Nominal, reloaded.LastOutcomeCategory);
         Assert.Contains(reloaded.Consequences, item => item.Kind == CampaignConsequenceKind.InjuredStaff);
 
@@ -145,9 +145,9 @@ public sealed class ShiftLifecycleTests
     public void CampaignRoundTripInfluencesNextBriefWithoutLifecycle()
     {
         using TempCampaignPath temp = new();
-        CampaignStateStore store = new(temp.Path);
+        CampaignStateStore store = new(temp.Path, CampaignState.CurrentSchemaVersion);
         store.Save(new CampaignState(
-            1,
+            CampaignState.CurrentSchemaVersion,
             [
                 new CampaignConsequence(
                     "injured_staff_harper",
@@ -156,7 +156,8 @@ public sealed class ShiftLifecycleTests
                     "staff_harper"),
             ],
             ShiftOutcomeCategory.Contested,
-            "Contested: at least one failure fact, and failure facts are fewer than success facts."));
+            "Contested: at least one failure fact, and failure facts are fewer than success facts.",
+            DateTimeOffset.UtcNow));
 
         (ShiftLifecycleService lifecycle, _, _, ExpeditionRosterService roster, _, _, _, _) = CreateLifecycle(temp.Path);
         Assert.Contains(roster.Pool, member => member.Id == "staff_harper" && member.IsInjured);
@@ -251,7 +252,7 @@ public sealed class ShiftLifecycleTests
         OperationsBoardService board = new(transit, security, roster, survey, incidents, clock, resources);
         ShiftBriefDefinition brief = new ShiftBriefLoader().Load(
             File.ReadAllText(Path.Combine(root, "content", "shift_brief.v1.json")));
-        CampaignStateStore store = new(campaignPath);
+        CampaignStateStore store = new(campaignPath, CampaignState.CurrentSchemaVersion);
         ShiftLifecycleService lifecycle = new(brief, incidents, roster, resources, store, board);
         board.BindLifecycle(lifecycle);
         return (lifecycle, board, incidents, roster, transit, security, survey, clock);

@@ -27,7 +27,7 @@ public sealed class DiagnosticsAndLoggingTests
         Assert.Equal(expectedBuildId, metadata.BuildId);
         Assert.Equal(expectedCommit, metadata.CommitSha);
         Assert.Equal(1, metadata.ContentSchemaVersion);
-        Assert.Equal(1, metadata.SaveSchemaVersion);
+        Assert.Equal(2, metadata.SaveSchemaVersion);
         Assert.Equal(TimeSpan.Zero, metadata.BuildUtc.Offset);
         Assert.Equal("4.7.2.stable.mono", metadata.EngineVersion);
         Assert.Equal("x64", metadata.Architecture);
