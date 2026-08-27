@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace FacilityCommand.Application.Simulation;
+namespace WormholeWorlds.Application.Simulation;
 
 public sealed partial class SeededIncidentSelector
 {

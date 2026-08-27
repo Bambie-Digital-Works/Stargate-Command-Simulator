@@ -1,6 +1,6 @@
-using FacilityCommand.Core.Transit;
+using WormholeWorlds.Core.Transit;
 
-namespace FacilityCommand.Application.Simulation;
+namespace WormholeWorlds.Application.Simulation;
 
 public interface ISimulationClock
 {

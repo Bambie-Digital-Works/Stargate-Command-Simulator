@@ -6,6 +6,6 @@
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-    <RootNamespace>FacilityCommand.Tools.AssetLedgerValidator</RootNamespace>
+    <RootNamespace>WormholeWorlds.Tools.AssetLedgerValidator</RootNamespace>
   </PropertyGroup>
 </Project>

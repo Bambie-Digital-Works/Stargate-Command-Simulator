@@ -1,6 +1,6 @@
-using FacilityCommand.Core.Transit;
+using WormholeWorlds.Core.Transit;
 
-namespace FacilityCommand.Application.Transit;
+namespace WormholeWorlds.Application.Transit;
 
 public sealed record TransitControlReadModel(
     TransitArrayPhase Phase,

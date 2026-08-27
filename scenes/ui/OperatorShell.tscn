@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=16 format=3]
 
 [ext_resource type="Script" path="res://src/Presentation/OperatorShell.cs" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/ui/DiagnosticsOverlay.tscn" id="2_diagnostics"]
@@ -11,6 +11,10 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/SurveyTelemetry.tscn" id="10_survey"]
 [ext_resource type="PackedScene" path="res://scenes/ui/ShiftBrief.tscn" id="11_brief"]
 [ext_resource type="PackedScene" path="res://scenes/ui/ShiftReview.tscn" id="12_review"]
+[ext_resource type="PackedScene" path="res://scenes/ui/SystemsBoard.tscn" id="13_systems"]
+[ext_resource type="PackedScene" path="res://scenes/ui/AccessibilityPanel.tscn" id="14_accessibility"]
+[ext_resource type="PackedScene" path="res://scenes/ui/UpdatePanel.tscn" id="15_updates"]
+[ext_resource type="Script" path="res://src/Presentation/OperatorAudioCuePlayer.cs" id="16_audio"]
 
 [node name="OperatorShell" type="Control"]
 layout_mode = 3
@@ -51,7 +55,7 @@ theme_override_constants/separation = 10
 layout_mode = 2
 theme_override_colors/font_color = Color(0.286275, 0.752941, 0.827451, 1)
 theme_override_font_sizes/font_size = 16
-text = "FACILITY COMMAND // DEVELOPMENT SHELL"
+text = "WORMHOLE WORLDS // COMMAND FACILITY"
 
 [node name="Title" type="Label" parent="SafeArea/Layout"]
 layout_mode = 2
@@ -66,6 +70,13 @@ theme_override_font_sizes/font_size = 18
 text = "No simulation loaded"
 autowrap_mode = 3
 
+[node name="CueCaption" type="Label" parent="SafeArea/Layout"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.980392, 0.807843, 0.376471, 1)
+text = "[Alarm tone]"
+autowrap_mode = 3
+
 [node name="Toolbar" type="HBoxContainer" parent="SafeArea/Layout"]
 layout_mode = 2
 
@@ -76,6 +87,18 @@ text = "Show diagnostics"
 [node name="InputSettingsButton" type="Button" parent="SafeArea/Layout/Toolbar"]
 layout_mode = 2
 text = "Input settings"
+
+[node name="AccessibilityButton" type="Button" parent="SafeArea/Layout/Toolbar"]
+layout_mode = 2
+text = "Accessibility"
+
+[node name="PauseButton" type="Button" parent="SafeArea/Layout/Toolbar"]
+layout_mode = 2
+text = "Pause simulation"
+
+[node name="UpdatesButton" type="Button" parent="SafeArea/Layout/Toolbar"]
+layout_mode = 2
+text = "Updates"
 
 [node name="Spacer" type="Control" parent="SafeArea/Layout/Toolbar"]
 layout_mode = 2
@@ -156,6 +179,15 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="SystemsBoardPanel" parent="SafeArea/Layout/Workspace/NavigationHost" instance=ExtResource("13_systems")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="DiagnosticsOverlay" parent="SafeArea/Layout/Workspace" instance=ExtResource("2_diagnostics")]
 layout_mode = 2
 
@@ -163,5 +195,16 @@ layout_mode = 2
 visible = false
 layout_mode = 2
 
+[node name="AccessibilityPanel" parent="SafeArea/Layout/Workspace" instance=ExtResource("14_accessibility")]
+visible = false
+layout_mode = 2
+
+[node name="UpdatePanel" parent="SafeArea/Layout/Workspace" instance=ExtResource("15_updates")]
+visible = false
+layout_mode = 2
+
 [node name="FocusCoordinator" type="Node" parent="."]
 script = ExtResource("4_focus")
+
+[node name="OperatorAudioCuePlayer" type="Node" parent="."]
+script = ExtResource("16_audio")

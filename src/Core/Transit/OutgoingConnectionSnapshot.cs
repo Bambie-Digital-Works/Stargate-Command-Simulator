@@ -1,4 +1,4 @@
-namespace FacilityCommand.Core.Transit;
+namespace WormholeWorlds.Core.Transit;
 
 public sealed record OutgoingConnectionSnapshot(
     TransitArraySnapshot TransitArray,

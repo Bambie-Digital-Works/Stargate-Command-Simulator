@@ -1,7 +1,7 @@
 using System.Text.Json;
-using FacilityCommand.Core.Shift;
+using WormholeWorlds.Core.Shift;
 
-namespace FacilityCommand.Infrastructure.Content;
+namespace WormholeWorlds.Infrastructure.Content;
 
 public sealed class ShiftBriefLoader
 {

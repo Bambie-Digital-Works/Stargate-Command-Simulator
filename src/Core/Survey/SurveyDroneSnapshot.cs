@@ -1,6 +1,6 @@
-using FacilityCommand.Core.Transit;
+using WormholeWorlds.Core.Transit;
 
-namespace FacilityCommand.Core.Survey;
+namespace WormholeWorlds.Core.Survey;
 
 public sealed record SurveyDroneSnapshot(
     SurveyDeployState State,

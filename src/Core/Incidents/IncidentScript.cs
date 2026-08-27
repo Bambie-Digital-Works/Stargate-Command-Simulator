@@ -1,4 +1,4 @@
-namespace FacilityCommand.Core.Incidents;
+namespace WormholeWorlds.Core.Incidents;
 
 /// <summary>
 /// Deterministic sequential director for the authored vertical-slice incident set.

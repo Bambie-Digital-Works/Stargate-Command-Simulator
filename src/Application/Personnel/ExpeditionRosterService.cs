@@ -1,10 +1,10 @@
 using System.Text.Json;
-using FacilityCommand.Application.Simulation;
-using FacilityCommand.Application.Survey;
-using FacilityCommand.Core.Personnel;
-using FacilityCommand.Core.Transit;
+using WormholeWorlds.Application.Simulation;
+using WormholeWorlds.Application.Survey;
+using WormholeWorlds.Core.Personnel;
+using WormholeWorlds.Core.Transit;
 
-namespace FacilityCommand.Application.Personnel;
+namespace WormholeWorlds.Application.Personnel;
 
 public sealed class ExpeditionRosterService
 {

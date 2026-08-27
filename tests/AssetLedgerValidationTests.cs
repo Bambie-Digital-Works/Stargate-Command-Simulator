@@ -1,6 +1,6 @@
-using FacilityCommand.Tools.AssetLedgerValidator;
+using WormholeWorlds.Tools.AssetLedgerValidator;
 
-namespace FacilityCommand.Tests;
+namespace WormholeWorlds.Tests;
 
 public sealed class AssetLedgerValidationTests
 {

@@ -2,6 +2,24 @@
   "schemaVersion": 1,
   "assets": [
     {
+      "id": "production.wormhole-worlds-mark",
+      "path": "assets/production/wormhole-worlds-mark.svg",
+      "category": "image",
+      "scope": "production",
+      "origin": "original",
+      "creator": "Bambie Digital Works project implementation",
+      "sourceUrl": "https://github.com/Bambie-Digital-Works/Stargate-Command-Simulator/blob/main/assets/production/wormhole-worlds-mark.svg",
+      "licenseExpression": "LicenseRef-Proprietary",
+      "acquiredOn": "2026-08-27",
+      "modifications": "Original editable SVG master; no third-party source material.",
+      "attribution": "Copyright 2026 bambiejomurphy-ux. All rights reserved.",
+      "proofLocation": "assets/proof/wormhole-worlds-mark.md",
+      "reviewStatus": "approved",
+      "reviewedBy": "bambiejomurphy-ux",
+      "reviewedOn": "2026-08-27",
+      "distributionAllowed": true
+    },
+    {
       "id": "reference.missile-warning-center",
       "path": "assets/reference/public-domain/missile-warning-center.jpg",
       "category": "reference-image",

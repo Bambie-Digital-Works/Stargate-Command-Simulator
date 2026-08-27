@@ -1,6 +1,6 @@
-using FacilityCommand.Application.Simulation;
+using WormholeWorlds.Application.Simulation;
 
-namespace FacilityCommand.Infrastructure.Simulation;
+namespace WormholeWorlds.Infrastructure.Simulation;
 
 public sealed class XorShiftRandomSource : ISeededRandomSource
 {

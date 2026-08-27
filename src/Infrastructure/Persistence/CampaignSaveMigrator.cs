@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
-namespace FacilityCommand.Infrastructure.Persistence;
+namespace WormholeWorlds.Infrastructure.Persistence;
 
 public static class CampaignSaveMigrator
 {

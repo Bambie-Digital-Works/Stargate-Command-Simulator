@@ -1,7 +1,7 @@
-using FacilityCommand.Application.Shift;
 using Godot;
+using WormholeWorlds.Application.Shift;
 
-namespace FacilityCommand.Presentation;
+namespace WormholeWorlds.Presentation;
 
 public partial class ShiftBrief : PanelContainer
 {

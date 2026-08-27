@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace FacilityCommand.Infrastructure.Logging;
+namespace WormholeWorlds.Infrastructure.Logging;
 
 public sealed partial class SensitiveDataSanitizer
 {

@@ -1,8 +1,8 @@
-using FacilityCommand.Application.Diagnostics;
-using FacilityCommand.Application.Logging;
 using Godot;
+using WormholeWorlds.Application.Diagnostics;
+using WormholeWorlds.Application.Logging;
 
-namespace FacilityCommand.Presentation;
+namespace WormholeWorlds.Presentation;
 
 public partial class DiagnosticsOverlay : PanelContainer
 {
@@ -47,4 +47,3 @@ public partial class DiagnosticsOverlay : PanelContainer
             _logger.Recent.Select(item => $"{item.TimestampUtc:HH:mm:ss} [{item.Level}] {item.EventId}: {item.Message}"));
     }
 }
-

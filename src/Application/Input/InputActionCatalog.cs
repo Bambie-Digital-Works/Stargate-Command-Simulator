@@ -1,4 +1,4 @@
-namespace FacilityCommand.Application.Input;
+namespace WormholeWorlds.Application.Input;
 
 public sealed record InputActionDefinition(string Name, string DisplayName, bool Required);
 

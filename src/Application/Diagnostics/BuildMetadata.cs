@@ -1,4 +1,4 @@
-namespace FacilityCommand.Application.Diagnostics;
+namespace WormholeWorlds.Application.Diagnostics;
 
 public sealed record BuildMetadata(
     string ProductVersion,

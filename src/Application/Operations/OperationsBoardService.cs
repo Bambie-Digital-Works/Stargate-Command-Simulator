@@ -1,15 +1,16 @@
-using FacilityCommand.Application.Incidents;
-using FacilityCommand.Application.Personnel;
-using FacilityCommand.Application.Security;
-using FacilityCommand.Application.Shift;
-using FacilityCommand.Application.Simulation;
-using FacilityCommand.Application.Survey;
-using FacilityCommand.Application.Transit;
-using FacilityCommand.Core.Incidents;
-using FacilityCommand.Core.Security;
-using FacilityCommand.Core.Transit;
+using WormholeWorlds.Application.Incidents;
+using WormholeWorlds.Application.Personnel;
+using WormholeWorlds.Application.Security;
+using WormholeWorlds.Application.Shift;
+using WormholeWorlds.Application.Simulation;
+using WormholeWorlds.Application.Survey;
+using WormholeWorlds.Application.Systems;
+using WormholeWorlds.Application.Transit;
+using WormholeWorlds.Core.Incidents;
+using WormholeWorlds.Core.Security;
+using WormholeWorlds.Core.Transit;
 
-namespace FacilityCommand.Application.Operations;
+namespace WormholeWorlds.Application.Operations;
 
 public sealed class OperationsBoardService
 {
@@ -20,6 +21,7 @@ public sealed class OperationsBoardService
     private readonly ShiftIncidentService _incidents;
     private readonly ISimulationClock _clock;
     private readonly FacilityResourcePool _resources;
+    private readonly SystemsBoardService _systems;
     private OperatorConsoleScreen _activeScreen = OperatorConsoleScreen.ShiftBrief;
     private ShiftLifecycleService? _lifecycle;
 
@@ -31,6 +33,27 @@ public sealed class OperationsBoardService
         ShiftIncidentService incidents,
         ISimulationClock clock,
         FacilityResourcePool resources)
+        : this(
+            transit,
+            security,
+            roster,
+            survey,
+            incidents,
+            clock,
+            resources,
+            new SystemsBoardService(resources, incidents))
+    {
+    }
+
+    public OperationsBoardService(
+        TransitSimulationService transit,
+        ReturnSecurityService security,
+        ExpeditionRosterService roster,
+        SurveyTelemetryService survey,
+        ShiftIncidentService incidents,
+        ISimulationClock clock,
+        FacilityResourcePool resources,
+        SystemsBoardService systems)
     {
         _transit = transit;
         _security = security;
@@ -39,6 +62,7 @@ public sealed class OperationsBoardService
         _incidents = incidents;
         _clock = clock;
         _resources = resources;
+        _systems = systems;
     }
 
     public OperatorConsoleScreen ActiveScreen => _activeScreen;
@@ -57,6 +81,8 @@ public sealed class OperationsBoardService
 
     public ISimulationClock Clock => _clock;
 
+    public SystemsBoardService Systems => _systems;
+
     public IReadOnlyList<OperatorConsoleScreen> NavigationOrder { get; } =
     [
         OperatorConsoleScreen.OperationsBoard,
@@ -64,6 +90,7 @@ public sealed class OperationsBoardService
         OperatorConsoleScreen.SurveyTelemetry,
         OperatorConsoleScreen.ReturnControl,
         OperatorConsoleScreen.ExpeditionRoster,
+        OperatorConsoleScreen.SystemsBoard,
     ];
 
     public void BindLifecycle(ShiftLifecycleService lifecycle) => _lifecycle = lifecycle;
@@ -101,6 +128,7 @@ public sealed class OperationsBoardService
         SurveyTelemetryReadModel survey = _survey.GetReadModel();
         IncidentProgressReadModel incidents = _incidents.GetReadModel();
         List<OperationsAlarm> alarms = BuildAlarms(transit.Phase, security, survey, incidents);
+        _systems.RecordActiveAlarms(alarms);
         string announcement = BuildAnnouncement(transit, security, survey, incidents, alarms);
 
         return new OperationsBoardReadModel(
@@ -122,6 +150,7 @@ public sealed class OperationsBoardService
             FormatSurveySummary(survey),
             FormatIncidentSummary(incidents),
             incidents.ObjectiveSummary,
+            incidents.ActivationHint,
             alarms,
             announcement,
             _activeScreen,

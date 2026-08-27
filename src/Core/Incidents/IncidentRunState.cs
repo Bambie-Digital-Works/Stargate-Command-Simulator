@@ -1,4 +1,4 @@
-namespace FacilityCommand.Core.Incidents;
+namespace WormholeWorlds.Core.Incidents;
 
 public enum IncidentRunState
 {

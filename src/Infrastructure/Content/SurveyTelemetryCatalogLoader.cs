@@ -1,7 +1,7 @@
 using System.Text.Json;
-using FacilityCommand.Core.Survey;
+using WormholeWorlds.Core.Survey;
 
-namespace FacilityCommand.Infrastructure.Content;
+namespace WormholeWorlds.Infrastructure.Content;
 
 public sealed class SurveyTelemetryCatalogLoader
 {

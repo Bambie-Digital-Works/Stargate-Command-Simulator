@@ -1,6 +1,6 @@
-using FacilityCommand.Core.Transit;
+using WormholeWorlds.Core.Transit;
 
-namespace FacilityCommand.Core.Security;
+namespace WormholeWorlds.Core.Security;
 
 public sealed class ContainmentShutter
 {

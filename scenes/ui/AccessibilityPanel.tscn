@@ -1,0 +1,113 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/Presentation/AccessibilityPanel.cs" id="1_script"]
+
+[node name="AccessibilityPanel" type="PanelContainer"]
+custom_minimum_size = Vector2(620, 520)
+script = ExtResource("1_script")
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 20
+
+[node name="Layout" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Heading" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "Accessibility"
+
+[node name="Description" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+text = "Every alarm has a text equivalent. Changes apply without restarting."
+autowrap_mode = 3
+
+[node name="Settings" type="GridContainer" parent="Margin/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/h_separation = 24
+theme_override_constants/v_separation = 12
+columns = 2
+
+[node name="ScaleLabel" type="Label" parent="Margin/Layout/Settings"]
+layout_mode = 2
+text = "Interface scale"
+[node name="ScaleValue" type="OptionButton" parent="Margin/Layout/Settings"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HighContrastLabel" type="Label" parent="Margin/Layout/Settings"]
+layout_mode = 2
+text = "High contrast"
+[node name="HighContrastValue" type="CheckButton" parent="Margin/Layout/Settings"]
+layout_mode = 2
+text = "Use maximum contrast"
+
+[node name="ReducedFlashingLabel" type="Label" parent="Margin/Layout/Settings"]
+layout_mode = 2
+text = "Reduced flashing"
+[node name="ReducedFlashingValue" type="CheckButton" parent="Margin/Layout/Settings"]
+layout_mode = 2
+text = "Disable flashing effects"
+
+[node name="CaptionsLabel" type="Label" parent="Margin/Layout/Settings"]
+layout_mode = 2
+text = "Audio captions"
+[node name="CaptionsValue" type="CheckButton" parent="Margin/Layout/Settings"]
+layout_mode = 2
+text = "Show cue captions"
+
+[node name="MasterVolumeLabel" type="Label" parent="Margin/Layout/Settings"]
+layout_mode = 2
+text = "Master volume"
+[node name="MasterVolumeValue" type="HSlider" parent="Margin/Layout/Settings"]
+layout_mode = 2
+max_value = 100.0
+step = 5.0
+
+[node name="UiVolumeLabel" type="Label" parent="Margin/Layout/Settings"]
+layout_mode = 2
+text = "Interface volume"
+[node name="UiVolumeValue" type="HSlider" parent="Margin/Layout/Settings"]
+layout_mode = 2
+max_value = 100.0
+step = 5.0
+
+[node name="AlarmVolumeLabel" type="Label" parent="Margin/Layout/Settings"]
+layout_mode = 2
+text = "Alarm volume"
+[node name="AlarmVolumeValue" type="HSlider" parent="Margin/Layout/Settings"]
+layout_mode = 2
+max_value = 100.0
+step = 5.0
+
+[node name="TimePressureLabel" type="Label" parent="Margin/Layout/Settings"]
+layout_mode = 2
+text = "Time pressure"
+[node name="TimePressureValue" type="OptionButton" parent="Margin/Layout/Settings"]
+layout_mode = 2
+
+[node name="Status" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+text = "Accessibility preferences are stored locally."
+autowrap_mode = 3
+
+[node name="Footer" type="HBoxContainer" parent="Margin/Layout"]
+layout_mode = 2
+alignment = 2
+theme_override_constants/separation = 10
+
+[node name="DefaultsButton" type="Button" parent="Margin/Layout/Footer"]
+layout_mode = 2
+text = "Restore defaults"
+[node name="ApplyButton" type="Button" parent="Margin/Layout/Footer"]
+layout_mode = 2
+text = "Apply"
+[node name="CloseButton" type="Button" parent="Margin/Layout/Footer"]
+layout_mode = 2
+text = "Close"

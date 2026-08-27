@@ -1,6 +1,6 @@
-# Stargate Command Simulator — research and production brief
+# Wormhole Worlds Simulator — research and production brief
 
-> “Stargate Command Simulator” is a temporary working title for an original-IP project. Television and fan-game references in this document are research sources only, not production assets or a claim of affiliation or licence.
+> Wormhole Worlds Simulator is the original-IP beta title. Television and fan-game references in this document are research sources only, not production assets or a claim of affiliation or licence.
 
 Research terms on this page are reference-only. Production specifications, code, content, and UI must use the approved [production terminology](TERMINOLOGY.md).
 
@@ -184,7 +184,7 @@ MSIX provides clean uninstall, differential downloads, and Store-managed updates
 
 ## Decisions established after research
 
-1. Develop original science-fiction IP; treat the current name as a working title pending rebranding and trademark review.
+1. Develop original science-fiction IP under the Wormhole Worlds Simulator beta title; retain professional trademark review before a commercial stable release.
 2. Build a UI-first desktop simulation rather than an explorable 3D base for the initial release.
 3. Use Godot 4 with C# and target Windows first; choose storefront packaging after the vertical slice.
 4. Implement the five vertical-slice incidents as deterministic, testable event/state models before producing final art.

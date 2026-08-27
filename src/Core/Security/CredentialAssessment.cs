@@ -1,4 +1,4 @@
-namespace FacilityCommand.Core.Security;
+namespace WormholeWorlds.Core.Security;
 
 public sealed record CredentialAssessment(
     ReturnCredentialStatus Status,

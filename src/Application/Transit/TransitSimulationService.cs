@@ -1,7 +1,7 @@
-using FacilityCommand.Core.Destinations;
-using FacilityCommand.Core.Transit;
+using WormholeWorlds.Core.Destinations;
+using WormholeWorlds.Core.Transit;
 
-namespace FacilityCommand.Application.Transit;
+namespace WormholeWorlds.Application.Transit;
 
 public sealed class TransitSimulationService
 {

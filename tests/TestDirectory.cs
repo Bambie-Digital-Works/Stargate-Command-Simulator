@@ -1,10 +1,10 @@
-namespace FacilityCommand.Tests;
+namespace WormholeWorlds.Tests;
 
 internal sealed class TestDirectory : IDisposable
 {
     public TestDirectory()
     {
-        Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"facility-command-tests-{Guid.NewGuid():N}");
+        Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"wormhole-worlds-simulator-tests-{Guid.NewGuid():N}");
         Directory.CreateDirectory(Path);
     }
 

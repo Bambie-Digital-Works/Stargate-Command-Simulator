@@ -1,4 +1,4 @@
-namespace FacilityCommand.Core.Shift;
+namespace WormholeWorlds.Core.Shift;
 
 public enum ShiftPhase
 {

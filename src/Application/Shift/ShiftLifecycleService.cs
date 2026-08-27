@@ -1,13 +1,13 @@
-using FacilityCommand.Application.Incidents;
-using FacilityCommand.Application.Operations;
-using FacilityCommand.Application.Personnel;
-using FacilityCommand.Core.Incidents;
-using FacilityCommand.Core.Personnel;
-using FacilityCommand.Core.Shift;
-using FacilityCommand.Core.Transit;
-using FacilityCommand.Infrastructure.Persistence;
+using WormholeWorlds.Application.Incidents;
+using WormholeWorlds.Application.Operations;
+using WormholeWorlds.Application.Personnel;
+using WormholeWorlds.Core.Incidents;
+using WormholeWorlds.Core.Personnel;
+using WormholeWorlds.Core.Shift;
+using WormholeWorlds.Core.Transit;
+using WormholeWorlds.Infrastructure.Persistence;
 
-namespace FacilityCommand.Application.Shift;
+namespace WormholeWorlds.Application.Shift;
 
 public sealed class ShiftLifecycleService
 {

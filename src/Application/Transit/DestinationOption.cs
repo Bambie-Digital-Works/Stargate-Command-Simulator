@@ -1,4 +1,4 @@
-namespace FacilityCommand.Application.Transit;
+namespace WormholeWorlds.Application.Transit;
 
 public sealed record DestinationOption(
     string Id,

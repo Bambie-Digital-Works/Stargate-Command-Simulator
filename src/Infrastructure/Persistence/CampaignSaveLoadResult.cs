@@ -1,6 +1,6 @@
-using FacilityCommand.Core.Shift;
+using WormholeWorlds.Core.Shift;
 
-namespace FacilityCommand.Infrastructure.Persistence;
+namespace WormholeWorlds.Infrastructure.Persistence;
 
 public sealed record CampaignSaveLoadResult(
     CampaignState State,

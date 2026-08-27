@@ -1,7 +1,7 @@
-using FacilityCommand.Core.Security;
-using FacilityCommand.Core.Transit;
+using WormholeWorlds.Core.Security;
+using WormholeWorlds.Core.Transit;
 
-namespace FacilityCommand.Application.Operations;
+namespace WormholeWorlds.Application.Operations;
 
 public sealed record OperationsBoardReadModel(
     long MissionClockMilliseconds,
@@ -22,6 +22,7 @@ public sealed record OperationsBoardReadModel(
     string SurveyTelemetrySummary,
     string IncidentSummary,
     string IncidentObjective,
+    string IncidentGuidance,
     IReadOnlyList<OperationsAlarm> ActiveAlarms,
     string AnnouncementSummary,
     OperatorConsoleScreen ActiveScreen,

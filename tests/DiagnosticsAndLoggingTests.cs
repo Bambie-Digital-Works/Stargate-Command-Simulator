@@ -1,9 +1,9 @@
 using System.Text.Json;
-using FacilityCommand.Application.Logging;
-using FacilityCommand.Infrastructure.Diagnostics;
-using FacilityCommand.Infrastructure.Logging;
+using WormholeWorlds.Application.Logging;
+using WormholeWorlds.Infrastructure.Diagnostics;
+using WormholeWorlds.Infrastructure.Logging;
 
-namespace FacilityCommand.Tests;
+namespace WormholeWorlds.Tests;
 
 public sealed class DiagnosticsAndLoggingTests
 {

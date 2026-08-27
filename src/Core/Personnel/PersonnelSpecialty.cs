@@ -1,4 +1,4 @@
-namespace FacilityCommand.Core.Personnel;
+namespace WormholeWorlds.Core.Personnel;
 
 public enum PersonnelSpecialty
 {

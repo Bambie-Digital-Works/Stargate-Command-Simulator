@@ -1,8 +1,8 @@
-using FacilityCommand.Application.Security;
-using FacilityCommand.Core.Security;
-using FacilityCommand.Core.Transit;
+using WormholeWorlds.Application.Security;
+using WormholeWorlds.Core.Security;
+using WormholeWorlds.Core.Transit;
 
-namespace FacilityCommand.Tests;
+namespace WormholeWorlds.Tests;
 
 public sealed class ReturnSecurityTests
 {

@@ -1,6 +1,6 @@
-using FacilityCommand.Core.Personnel;
+using WormholeWorlds.Core.Personnel;
 
-namespace FacilityCommand.Application.Personnel;
+namespace WormholeWorlds.Application.Personnel;
 
 public sealed record ExpeditionRosterReadModel(
     string UnitId,

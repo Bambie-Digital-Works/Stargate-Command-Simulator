@@ -1,8 +1,8 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using FacilityCommand.Application.Logging;
+using WormholeWorlds.Application.Logging;
 
-namespace FacilityCommand.Infrastructure.Logging;
+namespace WormholeWorlds.Infrastructure.Logging;
 
 public sealed class JsonLinesApplicationLogger : IApplicationLogger
 {

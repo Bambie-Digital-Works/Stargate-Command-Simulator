@@ -1,8 +1,8 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using FacilityCommand.Core.Shift;
+using WormholeWorlds.Core.Shift;
 
-namespace FacilityCommand.Infrastructure.Persistence;
+namespace WormholeWorlds.Infrastructure.Persistence;
 
 public sealed class CampaignStateStore
 {

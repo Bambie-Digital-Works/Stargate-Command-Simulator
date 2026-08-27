@@ -1,8 +1,8 @@
-using FacilityCommand.Application.Input;
-using FacilityCommand.Application.Logging;
 using Godot;
+using WormholeWorlds.Application.Input;
+using WormholeWorlds.Application.Logging;
 
-namespace FacilityCommand.Presentation;
+namespace WormholeWorlds.Presentation;
 
 public partial class FocusCoordinator : Node
 {

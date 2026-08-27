@@ -7,7 +7,7 @@
     <IsTestProject>true</IsTestProject>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-    <RootNamespace>FacilityCommand.Tests</RootNamespace>
+    <RootNamespace>WormholeWorlds.Tests</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.9.0" />
@@ -18,7 +18,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="../FacilityCommand.csproj" />
+    <ProjectReference Include="../WormholeWorldsSimulator.csproj" />
     <ProjectReference Include="../tools/AssetLedgerValidator/AssetLedgerValidator.csproj" />
   </ItemGroup>
 </Project>

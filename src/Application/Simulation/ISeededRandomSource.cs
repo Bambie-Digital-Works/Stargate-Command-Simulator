@@ -1,4 +1,4 @@
-namespace FacilityCommand.Application.Simulation;
+namespace WormholeWorlds.Application.Simulation;
 
 public interface ISeededRandomSource
 {

@@ -44,7 +44,7 @@ The following terms identify franchise research and must not appear as productio
 - `chevron` when used for a sequence lock; and
 - franchise team designations, glyphs, symbols, names, lore, or quotations.
 
-The repository name and “Stargate Command Simulator” remain a temporary, clearly disclaimed working title until the controlled rename in issue #12. That exception does not authorize the title for shipped product metadata.
+“Wormhole Worlds Simulator” is the approved beta product and repository title. The historical repository slug may remain visible until the external repository rename completes; neither identifier authorizes franchise material.
 
 ## Usage rules
 
@@ -53,4 +53,3 @@ The repository name and “Stargate Command Simulator” remain a temporary, cle
 - Prefer plain descriptions in tutorials, then introduce the approved proper term.
 - Do not create abbreviations until the full term has appeared in the same workflow.
 - Add proposed terms here before introducing them in code or content; owner approval is required to change an approved entry.
-

@@ -1,4 +1,4 @@
-namespace FacilityCommand.Core.Survey;
+namespace WormholeWorlds.Core.Survey;
 
 public sealed class SurveyTelemetryCatalog
 {

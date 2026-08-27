@@ -1,6 +1,6 @@
-using FacilityCommand.Core.Incidents;
+using WormholeWorlds.Core.Incidents;
 
-namespace FacilityCommand.Core.Shift;
+namespace WormholeWorlds.Core.Shift;
 
 /// <summary>
 /// Derives persisted campaign consequences from debrief facts and live facility state.

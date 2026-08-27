@@ -1,9 +1,9 @@
-using FacilityCommand.Application.Simulation;
-using FacilityCommand.Application.Survey;
-using FacilityCommand.Core.Survey;
 using Godot;
+using WormholeWorlds.Application.Simulation;
+using WormholeWorlds.Application.Survey;
+using WormholeWorlds.Core.Survey;
 
-namespace FacilityCommand.Presentation;
+namespace WormholeWorlds.Presentation;
 
 public partial class SurveyTelemetry : PanelContainer
 {

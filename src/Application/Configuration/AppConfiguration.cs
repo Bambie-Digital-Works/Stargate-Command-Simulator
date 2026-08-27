@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
-using FacilityCommand.Application.Logging;
+using WormholeWorlds.Application.Logging;
 
-namespace FacilityCommand.Application.Configuration;
+namespace WormholeWorlds.Application.Configuration;
 
 public sealed record AppConfiguration(
     [property: JsonPropertyName("schemaVersion")] int SchemaVersion,

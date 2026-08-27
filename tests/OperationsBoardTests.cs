@@ -1,18 +1,18 @@
-using FacilityCommand.Application.Incidents;
-using FacilityCommand.Application.Operations;
-using FacilityCommand.Application.Personnel;
-using FacilityCommand.Application.Security;
-using FacilityCommand.Application.Survey;
-using FacilityCommand.Application.Transit;
-using FacilityCommand.Core.Destinations;
-using FacilityCommand.Core.Incidents;
-using FacilityCommand.Core.Security;
-using FacilityCommand.Core.Survey;
-using FacilityCommand.Core.Transit;
-using FacilityCommand.Infrastructure.Content;
-using FacilityCommand.Infrastructure.Simulation;
+using WormholeWorlds.Application.Incidents;
+using WormholeWorlds.Application.Operations;
+using WormholeWorlds.Application.Personnel;
+using WormholeWorlds.Application.Security;
+using WormholeWorlds.Application.Survey;
+using WormholeWorlds.Application.Transit;
+using WormholeWorlds.Core.Destinations;
+using WormholeWorlds.Core.Incidents;
+using WormholeWorlds.Core.Security;
+using WormholeWorlds.Core.Survey;
+using WormholeWorlds.Core.Transit;
+using WormholeWorlds.Infrastructure.Content;
+using WormholeWorlds.Infrastructure.Simulation;
 
-namespace FacilityCommand.Tests;
+namespace WormholeWorlds.Tests;
 
 public sealed class OperationsBoardTests
 {
@@ -78,6 +78,21 @@ public sealed class OperationsBoardTests
     }
 
     [Fact]
+    public void RepeatedRefreshDoesNotDuplicateStillActiveAlarmsInSystemsHistory()
+    {
+        OperationsBoardService service = CreateService(out TransitSimulationService transit, out _, out _);
+        Assert.True(transit.ReportFault(new SimulationInstant(1), "array_fault").IsAccepted);
+
+        service.GetReadModel();
+        IReadOnlyList<string> firstHistory = service.Systems.GetReadModel().AlarmHistory;
+        service.GetReadModel();
+        IReadOnlyList<string> secondHistory = service.Systems.GetReadModel().AlarmHistory;
+
+        Assert.NotEmpty(firstHistory);
+        Assert.Equal(firstHistory, secondHistory);
+    }
+
+    [Fact]
     public void NavigationCyclesThroughPrototypeWorkflows()
     {
         OperationsBoardService service = CreateService(out _, out _, out _);
@@ -88,8 +103,9 @@ public sealed class OperationsBoardTests
         Assert.Equal(OperatorConsoleScreen.SurveyTelemetry, service.CycleScreen(1));
         Assert.Equal(OperatorConsoleScreen.ReturnControl, service.CycleScreen(1));
         Assert.Equal(OperatorConsoleScreen.ExpeditionRoster, service.CycleScreen(1));
+        Assert.Equal(OperatorConsoleScreen.SystemsBoard, service.CycleScreen(1));
         Assert.Equal(OperatorConsoleScreen.OperationsBoard, service.CycleScreen(1));
-        Assert.Equal(OperatorConsoleScreen.ExpeditionRoster, service.CycleScreen(-1));
+        Assert.Equal(OperatorConsoleScreen.SystemsBoard, service.CycleScreen(-1));
     }
 
     private static OperationsBoardService CreateService(

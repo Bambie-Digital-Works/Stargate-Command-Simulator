@@ -23,19 +23,27 @@ $godot = ./tools/Install-Godot.ps1 -Destination ./.ci-tools/godot
 4. Restore and rebuild managed assemblies after every pull or C# change:
 
 ```powershell
-dotnet restore FacilityCommand.csproj
-dotnet build FacilityCommand.csproj --no-restore
+dotnet restore WormholeWorldsSimulator.csproj
+dotnet build WormholeWorldsSimulator.csproj --no-restore
 ```
 
-5. Open `project.godot` in the .NET editor (or run headless import below), then Play (F5). The boot scene should show the **0.1.0 operator shell** (Operations Board with Transit Control, Return Control, and Expedition Roster) and print `Boot complete: operator shell is ready.` without errors.
+5. Open `project.godot` in the .NET editor (or run headless import below), then Play (F5). The boot scene should show the **0.8.0-beta.1 operator shell** with the Shift Brief, six operator consoles, accessibility controls, and preview updates, and print `Boot complete: operator shell is ready.` without errors.
 
 Always rebuild before trusting a run; stale `.godot` assemblies can fail to instantiate new C# panels.
+
+### Codex desktop environment
+
+The repository includes a shared Codex local environment in `.codex/environments/environment.toml`. On Windows, a new Codex worktree runs `tools/Setup-Codex.ps1`, which validates the user-wide pinned .NET SDK, installs the checksum-verified Godot editor without export templates, restores locked dependencies, and performs an initial Debug build.
+
+The Codex toolbar exposes **Build**, **Test**, **Verify**, and **Run** actions. **Verify** is the normal non-packaging completion gate; **Run** rebuilds before launching the pinned Godot .NET editor.
+
+Install the x64 .NET SDK version from `global.json` for the current Windows user before creating a Codex worktree. Restart Codex after installation so new terminals inherit the updated user `PATH`.
 
 ### Non-interactive smoke check
 
 ```powershell
-dotnet restore FacilityCommand.csproj
-dotnet build FacilityCommand.csproj --no-restore
+dotnet restore WormholeWorldsSimulator.csproj
+dotnet build WormholeWorldsSimulator.csproj --no-restore
 & $godot --headless --path . --editor --quit
 & $godot --headless --path . --quit-after 2
 ```
@@ -51,13 +59,18 @@ $godot = ./tools/Install-Godot.ps1 -Destination ./.ci-tools/godot -IncludeExport
 
 Skip packaging with `./tools/Verify.ps1 -GodotPath $godot -SkipExport`.
 
-The installer verifies the pinned editor and export-template SHA-256 values before extraction. Verification performs locked restore, formatting checks, warning-free builds, automated tests, asset validation, Godot import, headless boot, and (unless skipped) an unsigned Windows x64 export with a build manifest and hashes.
+The toolchain installers verify the pinned Godot and Inno Setup SHA-256 values before use. Verification performs locked restore, formatting checks, warning-free builds, automated tests, asset validation, Godot import, headless boot, and (unless skipped) an unsigned Windows x64 export with a build manifest and hashes. `tools/Build-Release.ps1` additionally compiles the per-user installer, portable archive, update manifest, release notes, and release-level hashes.
 
-`FacilityCommand.sln` is the engine-facing solution required by Godot's .NET export plugin. Auxiliary test and validation projects remain outside that solution and are invoked explicitly by the verification script.
+```powershell
+$iscc = ./tools/Install-InnoSetup.ps1 -Destination ./.ci-tools/inno-setup
+./tools/Build-Release.ps1 -GodotPath $godot -DotnetPath (Get-Command dotnet).Source -IsccPath $iscc
+```
+
+`WormholeWorldsSimulator.sln` is the engine-facing solution required by Godot's .NET export plugin. Auxiliary test and validation projects remain outside that solution and are invoked explicitly by the verification script.
 
 ## Foundation CI
 
-[`.github/workflows/ci.yml`](../.github/workflows/ci.yml) runs the same `Install-Godot.ps1` + `Verify.ps1` gate on pull requests (`-SkipExport`) and packages on `main`.
+[`.github/workflows/ci.yml`](../.github/workflows/ci.yml) runs the verification gate on pull requests, packages development artifacts on `main`, and builds a public prerelease from immutable version tags.
 
 If GitHub returns **Actions has been disabled for this user** (HTTP 422) or the organization only allows `selected` / `local_only` actions, workflows will not start even when the repository Actions toggle shows enabled. In that case:
 
@@ -74,3 +87,5 @@ The same configuration document tracks prototype simulation timeouts and facilit
 Local structured logs use JSON Lines under `user://logs`. Diagnostics expose build and runtime identity without showing usernames, credentials, or sensitive paths. Logging and diagnostics are local only; the project sends no telemetry.
 
 Input bindings are rebuilt from semantic actions at startup and stored atomically in `user://input_bindings.v1.json`. Invalid or future-schema files are preserved with a `.corrupt-<UTC timestamp>.json` suffix while the game safely restores defaults. The in-app Input settings panel supports keyboard/mouse and controller rebinding, clearing optional bindings, and restoring defaults.
+
+Accessibility preferences are stored atomically in `user://accessibility_settings.v1.json`. Preview update checks store only their last successful UTC check time, query the public GitHub Releases API at most once per 24 hours, and send no telemetry.

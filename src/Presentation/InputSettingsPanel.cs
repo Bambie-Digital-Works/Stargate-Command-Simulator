@@ -1,8 +1,8 @@
-using FacilityCommand.Application.Input;
-using FacilityCommand.Infrastructure.Input;
 using Godot;
+using WormholeWorlds.Application.Input;
+using WormholeWorlds.Infrastructure.Input;
 
-namespace FacilityCommand.Presentation;
+namespace WormholeWorlds.Presentation;
 
 public partial class InputSettingsPanel : PanelContainer
 {
@@ -170,4 +170,3 @@ public partial class InputSettingsPanel : PanelContainer
         CloseRequested?.Invoke();
     }
 }
-

@@ -1,6 +1,6 @@
-using FacilityCommand.Core.Survey;
+using WormholeWorlds.Core.Survey;
 
-namespace FacilityCommand.Application.Survey;
+namespace WormholeWorlds.Application.Survey;
 
 public sealed record SurveyChannelView(
     string ChannelLabel,

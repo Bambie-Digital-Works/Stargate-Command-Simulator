@@ -1,7 +1,7 @@
 using System.Text.Json;
-using FacilityCommand.Application.Input;
+using WormholeWorlds.Application.Input;
 
-namespace FacilityCommand.Infrastructure.Input;
+namespace WormholeWorlds.Infrastructure.Input;
 
 public sealed class InputBindingStore
 {
