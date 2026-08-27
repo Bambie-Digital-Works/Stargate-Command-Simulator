@@ -1,8 +1,8 @@
-using FacilityCommand.Application.Configuration;
-using FacilityCommand.Application.Logging;
-using FacilityCommand.Infrastructure.Configuration;
+using WormholeWorlds.Application.Configuration;
+using WormholeWorlds.Application.Logging;
+using WormholeWorlds.Infrastructure.Configuration;
 
-namespace FacilityCommand.Tests;
+namespace WormholeWorlds.Tests;
 
 public sealed class ConfigurationTests
 {

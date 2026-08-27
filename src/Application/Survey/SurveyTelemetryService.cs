@@ -1,11 +1,11 @@
-using FacilityCommand.Application.Personnel;
-using FacilityCommand.Application.Simulation;
-using FacilityCommand.Application.Transit;
-using FacilityCommand.Core.Personnel;
-using FacilityCommand.Core.Survey;
-using FacilityCommand.Core.Transit;
+using WormholeWorlds.Application.Personnel;
+using WormholeWorlds.Application.Simulation;
+using WormholeWorlds.Application.Transit;
+using WormholeWorlds.Core.Personnel;
+using WormholeWorlds.Core.Survey;
+using WormholeWorlds.Core.Transit;
 
-namespace FacilityCommand.Application.Survey;
+namespace WormholeWorlds.Application.Survey;
 
 public sealed class SurveyTelemetryService
 {

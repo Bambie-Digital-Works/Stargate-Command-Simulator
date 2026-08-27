@@ -1,7 +1,7 @@
-using FacilityCommand.Application.Input;
-using FacilityCommand.Infrastructure.Input;
+using WormholeWorlds.Application.Input;
+using WormholeWorlds.Infrastructure.Input;
 
-namespace FacilityCommand.Tests;
+namespace WormholeWorlds.Tests;
 
 public sealed class InputBindingTests
 {

@@ -1,19 +1,19 @@
-using FacilityCommand.Application.Incidents;
-using FacilityCommand.Application.Operations;
-using FacilityCommand.Application.Personnel;
-using FacilityCommand.Application.Security;
-using FacilityCommand.Application.Survey;
-using FacilityCommand.Application.Transit;
-using FacilityCommand.Core.Destinations;
-using FacilityCommand.Core.Incidents;
-using FacilityCommand.Core.Personnel;
-using FacilityCommand.Core.Security;
-using FacilityCommand.Core.Survey;
-using FacilityCommand.Core.Transit;
-using FacilityCommand.Infrastructure.Content;
-using FacilityCommand.Infrastructure.Simulation;
+using WormholeWorlds.Application.Incidents;
+using WormholeWorlds.Application.Operations;
+using WormholeWorlds.Application.Personnel;
+using WormholeWorlds.Application.Security;
+using WormholeWorlds.Application.Survey;
+using WormholeWorlds.Application.Transit;
+using WormholeWorlds.Core.Destinations;
+using WormholeWorlds.Core.Incidents;
+using WormholeWorlds.Core.Personnel;
+using WormholeWorlds.Core.Security;
+using WormholeWorlds.Core.Survey;
+using WormholeWorlds.Core.Transit;
+using WormholeWorlds.Infrastructure.Content;
+using WormholeWorlds.Infrastructure.Simulation;
 
-namespace FacilityCommand.Tests;
+namespace WormholeWorlds.Tests;
 
 public sealed class SurveyTelemetryTests
 {

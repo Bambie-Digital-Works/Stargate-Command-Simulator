@@ -39,7 +39,7 @@ Scenes own layout, visual state, focus order, and signal wiring. A scene may cal
 
 ## Conventions
 
-- Namespace segments mirror folders beneath `src/`, rooted at `FacilityCommand`.
+- Namespace segments mirror folders beneath `src/`, rooted at `WormholeWorlds`.
 - One public C# type per file; the filename matches the type name.
 - Godot node scripts use `partial` classes as required by the engine.
 - Content uses stable identifiers rather than scene paths or display names.

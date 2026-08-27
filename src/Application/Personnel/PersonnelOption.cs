@@ -1,4 +1,4 @@
-namespace FacilityCommand.Application.Personnel;
+namespace WormholeWorlds.Application.Personnel;
 
 public sealed record PersonnelOption(
     string Id,

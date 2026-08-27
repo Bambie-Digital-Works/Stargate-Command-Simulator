@@ -1,4 +1,4 @@
-namespace FacilityCommand.Application.Replay;
+namespace WormholeWorlds.Application.Replay;
 
 public sealed record ReplayRecord(
     long Sequence,

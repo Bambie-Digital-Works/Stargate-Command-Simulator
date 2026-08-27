@@ -1,6 +1,6 @@
-using FacilityCommand.Core.Shift;
+using WormholeWorlds.Core.Shift;
 
-namespace FacilityCommand.Application.Shift;
+namespace WormholeWorlds.Application.Shift;
 
 public sealed record ShiftReviewReadModel(
     string OutcomeCategoryLabel,

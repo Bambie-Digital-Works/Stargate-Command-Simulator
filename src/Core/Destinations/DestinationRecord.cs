@@ -1,4 +1,4 @@
-namespace FacilityCommand.Core.Destinations;
+namespace WormholeWorlds.Core.Destinations;
 
 public sealed record DestinationRecord(
     string Id,

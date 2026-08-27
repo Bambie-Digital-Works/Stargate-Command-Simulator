@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace FacilityCommand.Tools.AssetLedgerValidator;
+namespace WormholeWorlds.Tools.AssetLedgerValidator;
 
 public sealed record AssetLedger(
     [property: JsonPropertyName("schemaVersion")] int SchemaVersion,

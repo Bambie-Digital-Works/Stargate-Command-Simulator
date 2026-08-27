@@ -1,7 +1,7 @@
 using System.Text.Json;
-using FacilityCommand.Core.Incidents;
+using WormholeWorlds.Core.Incidents;
 
-namespace FacilityCommand.Infrastructure.Content;
+namespace WormholeWorlds.Infrastructure.Content;
 
 public sealed class IncidentCatalogLoader
 {

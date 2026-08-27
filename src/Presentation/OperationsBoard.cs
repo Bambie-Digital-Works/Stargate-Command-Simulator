@@ -1,8 +1,8 @@
-using FacilityCommand.Application.Operations;
-using FacilityCommand.Core.Incidents;
 using Godot;
+using WormholeWorlds.Application.Operations;
+using WormholeWorlds.Core.Incidents;
 
-namespace FacilityCommand.Presentation;
+namespace WormholeWorlds.Presentation;
 
 public partial class OperationsBoard : PanelContainer
 {
@@ -18,12 +18,13 @@ public partial class OperationsBoard : PanelContainer
     private Label _surveyLabel = null!;
     private Label _incidentLabel = null!;
     private Label _incidentObjectiveLabel = null!;
+    private Label _incidentGuidanceLabel = null!;
     private Label _alarmsLabel = null!;
     private Button _transitControlButton = null!;
     private Button _surveyTelemetryButton = null!;
     private Button _returnControlButton = null!;
     private Button _expeditionRosterButton = null!;
-    private Button _resolveCoolingFaultButton = null!;
+    private Button _systemsBoardButton = null!;
     private Button _endShiftButton = null!;
     private OperationsBoardService? _operations;
 
@@ -44,19 +45,20 @@ public partial class OperationsBoard : PanelContainer
         _surveyLabel = GetNode<Label>("Margin/Layout/StatusGrid/SurveyValue");
         _incidentLabel = GetNode<Label>("Margin/Layout/StatusGrid/IncidentValue");
         _incidentObjectiveLabel = GetNode<Label>("Margin/Layout/IncidentObjective");
+        _incidentGuidanceLabel = GetNode<Label>("Margin/Layout/IncidentGuidance");
         _alarmsLabel = GetNode<Label>("Margin/Layout/Alarms");
         _transitControlButton = GetNode<Button>("Margin/Layout/Navigation/TransitControlButton");
         _surveyTelemetryButton = GetNode<Button>("Margin/Layout/Navigation/SurveyTelemetryButton");
         _returnControlButton = GetNode<Button>("Margin/Layout/Navigation/ReturnControlButton");
         _expeditionRosterButton = GetNode<Button>("Margin/Layout/Navigation/ExpeditionRosterButton");
-        _resolveCoolingFaultButton = GetNode<Button>("Margin/Layout/Navigation/ResolveCoolingFaultButton");
+        _systemsBoardButton = GetNode<Button>("Margin/Layout/Navigation/SystemsBoardButton");
         _endShiftButton = GetNode<Button>("Margin/Layout/Navigation/EndShiftButton");
 
         _transitControlButton.Pressed += () => ScreenRequested?.Invoke(OperatorConsoleScreen.TransitControl);
         _surveyTelemetryButton.Pressed += () => ScreenRequested?.Invoke(OperatorConsoleScreen.SurveyTelemetry);
         _returnControlButton.Pressed += () => ScreenRequested?.Invoke(OperatorConsoleScreen.ReturnControl);
         _expeditionRosterButton.Pressed += () => ScreenRequested?.Invoke(OperatorConsoleScreen.ExpeditionRoster);
-        _resolveCoolingFaultButton.Pressed += OnResolveCoolingFaultPressed;
+        _systemsBoardButton.Pressed += () => ScreenRequested?.Invoke(OperatorConsoleScreen.SystemsBoard);
         _endShiftButton.Pressed += OnEndShiftPressed;
     }
 
@@ -91,26 +93,13 @@ public partial class OperationsBoard : PanelContainer
         _surveyLabel.Text = model.SurveyTelemetrySummary;
         _incidentLabel.Text = model.IncidentSummary;
         _incidentObjectiveLabel.Text = model.IncidentObjective;
+        _incidentGuidanceLabel.Text = $"Operator guidance: {model.IncidentGuidance}";
         _alarmsLabel.Text = model.ActiveAlarms.Count == 0
             ? "Active alarms\nNone"
             : "Active alarms\n" + string.Join(
                 '\n',
                 model.ActiveAlarms.Select(alarm => $"[{alarm.SeverityLabel}] {alarm.Code}: {alarm.Message}"));
-        _resolveCoolingFaultButton.Disabled =
-            model.IncidentSummary.Contains("cooling", StringComparison.OrdinalIgnoreCase) == false
-            && model.IncidentObjective.Contains("cooling", StringComparison.OrdinalIgnoreCase) == false;
         _endShiftButton.Disabled = !model.CanEndShift;
-    }
-
-    private void OnResolveCoolingFaultPressed()
-    {
-        if (_operations is null)
-        {
-            return;
-        }
-
-        _operations.ResolveCoolingFault();
-        Refresh();
     }
 
     private void OnEndShiftPressed()

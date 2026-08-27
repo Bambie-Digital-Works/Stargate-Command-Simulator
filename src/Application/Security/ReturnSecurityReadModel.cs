@@ -1,6 +1,6 @@
-using FacilityCommand.Core.Security;
+using WormholeWorlds.Core.Security;
 
-namespace FacilityCommand.Application.Security;
+namespace WormholeWorlds.Application.Security;
 
 public sealed record ReturnSecurityReadModel(
     ContainmentShutterState ShutterState,

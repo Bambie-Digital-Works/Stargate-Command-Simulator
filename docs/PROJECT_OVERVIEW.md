@@ -4,7 +4,7 @@
 
 Create an original Windows operations-room game in which the player commands a secret underground Command Facility built around an experimental Transit Array. The interface is the game: players interpret telemetry, follow procedures, coordinate personnel, and choose when incomplete information justifies taking a risk.
 
-“Stargate Command Simulator” is a working title only. Production content will not use protected franchise terminology, symbols, lore, characters, production designs, audio, or other distinctive assets.
+Wormhole Worlds Simulator is the approved beta title. Production content does not use protected franchise terminology, symbols, lore, characters, production designs, audio, or other distinctive assets.
 
 ## Audience and format
 
@@ -15,7 +15,7 @@ Create an original Windows operations-room game in which the player commands a s
 
 ## Vertical slice
 
-The `0.3.0` vertical slice contains one complete shift using the approved names in the [production terminology guide](TERMINOLOGY.md):
+The `0.8.0-beta.1` vertical slice contains one complete shift using the approved names in the [production terminology guide](TERMINOLOGY.md):
 
 - an Operations Board;
 - Transit Control;
@@ -50,7 +50,7 @@ The baseline includes scalable UI, high-contrast and colour-vision-safe states, 
 |---|---|
 | `0.1.0` Prototype | Transit Array state model, Operations Board, Transit Control, Return Control, Containment Shutter, and Expedition Roster are interactable. |
 | `0.3.0` Vertical Slice | One polished shift, five incidents, Survey Telemetry, persistence, Shift Review, original placeholder identity, and accessibility baseline are playable. |
-| `0.8.0` Beta Foundation | Content and save formats are stabilized; signed Windows release candidates, preview/stable channels, migration tests, and rollback procedures exist. |
+| `0.8.0` Beta Foundation | Content and save formats are stabilized; hash-verified Windows release candidates, preview/stable channels, migration tests, rollback procedures, and optional signing support exist. |
 | `1.0.0` Stable Release | Original title and branding are cleared; release content, compatibility QA, packaging, support, and legal/asset reviews are complete. |
 
 Product versions follow Semantic Versioning. Windows packages use a compatible four-part numeric mapping, while every build also records its CI build number, Git commit, content schema, save schema, UTC build time, and release channel.

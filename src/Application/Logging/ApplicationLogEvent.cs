@@ -1,4 +1,4 @@
-namespace FacilityCommand.Application.Logging;
+namespace WormholeWorlds.Application.Logging;
 
 public sealed record ApplicationLogEvent(
     DateTimeOffset TimestampUtc,

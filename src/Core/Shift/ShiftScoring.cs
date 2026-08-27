@@ -1,6 +1,6 @@
-using FacilityCommand.Core.Incidents;
+using WormholeWorlds.Core.Incidents;
 
-namespace FacilityCommand.Core.Shift;
+namespace WormholeWorlds.Core.Shift;
 
 /// <summary>
 /// Transparent scoring from recorded debrief facts only — no hidden judgments.

@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace FacilityCommand.Core.Destinations;
+namespace WormholeWorlds.Core.Destinations;
 
 public sealed partial class DestinationRegistry
 {

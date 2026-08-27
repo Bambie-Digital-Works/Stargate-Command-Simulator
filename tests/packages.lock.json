@@ -103,7 +103,7 @@
       "assetledgervalidator": {
         "type": "Project"
       },
-      "facilitycommand": {
+      "wormholeworldssimulator": {
         "type": "Project",
         "dependencies": {
           "GodotSharp": "[4.7.2, )",

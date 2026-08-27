@@ -1,8 +1,8 @@
-using FacilityCommand.Core.Destinations;
-using FacilityCommand.Core.Transit;
-using FacilityCommand.Infrastructure.Content;
+using WormholeWorlds.Core.Destinations;
+using WormholeWorlds.Core.Transit;
+using WormholeWorlds.Infrastructure.Content;
 
-namespace FacilityCommand.Tests;
+namespace WormholeWorlds.Tests;
 
 public sealed class OutgoingConnectionTests
 {

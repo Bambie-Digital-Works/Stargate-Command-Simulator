@@ -136,6 +136,12 @@ layout_mode = 2
 text = "Shift incident objective"
 autowrap_mode = 3
 
+[node name="IncidentGuidance" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.286275, 0.752941, 0.827451, 1)
+text = "Operator guidance"
+autowrap_mode = 3
+
 [node name="Alarms" type="Label" parent="Margin/Layout"]
 layout_mode = 2
 text = "Active alarms\nNone"
@@ -161,9 +167,9 @@ text = "Open Return Control"
 layout_mode = 2
 text = "Open Expedition Roster"
 
-[node name="ResolveCoolingFaultButton" type="Button" parent="Margin/Layout/Navigation"]
+[node name="SystemsBoardButton" type="Button" parent="Margin/Layout/Navigation"]
 layout_mode = 2
-text = "Clear cooling fault"
+text = "Open Systems Board"
 
 [node name="EndShiftButton" type="Button" parent="Margin/Layout/Navigation"]
 layout_mode = 2

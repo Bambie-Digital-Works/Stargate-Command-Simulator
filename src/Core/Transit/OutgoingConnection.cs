@@ -1,6 +1,6 @@
-using FacilityCommand.Core.Destinations;
+using WormholeWorlds.Core.Destinations;
 
-namespace FacilityCommand.Core.Transit;
+namespace WormholeWorlds.Core.Transit;
 
 public sealed class OutgoingConnection
 {

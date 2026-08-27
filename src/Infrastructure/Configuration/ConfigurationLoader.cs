@@ -1,7 +1,7 @@
 using System.Text.Json;
-using FacilityCommand.Application.Configuration;
+using WormholeWorlds.Application.Configuration;
 
-namespace FacilityCommand.Infrastructure.Configuration;
+namespace WormholeWorlds.Infrastructure.Configuration;
 
 public sealed class ConfigurationLoader
 {

@@ -1,9 +1,9 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
-using FacilityCommand.Application.Diagnostics;
 using Godot;
+using WormholeWorlds.Application.Diagnostics;
 
-namespace FacilityCommand.Infrastructure.Diagnostics;
+namespace WormholeWorlds.Infrastructure.Diagnostics;
 
 public sealed class AssemblyBuildMetadataProvider : IBuildMetadataProvider
 {
@@ -85,4 +85,3 @@ public sealed record RuntimeBuildContext(
     string RuntimeVersion,
     string OperatingSystem,
     string Architecture);
-

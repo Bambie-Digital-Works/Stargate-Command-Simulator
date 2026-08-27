@@ -1,4 +1,4 @@
-namespace FacilityCommand.Application.Operations;
+namespace WormholeWorlds.Application.Operations;
 
 public sealed record OperationsAlarm(
     string Code,

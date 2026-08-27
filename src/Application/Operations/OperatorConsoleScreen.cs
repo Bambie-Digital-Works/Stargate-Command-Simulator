@@ -1,4 +1,4 @@
-namespace FacilityCommand.Application.Operations;
+namespace WormholeWorlds.Application.Operations;
 
 public enum OperatorConsoleScreen
 {
@@ -7,6 +7,7 @@ public enum OperatorConsoleScreen
     SurveyTelemetry,
     ReturnControl,
     ExpeditionRoster,
+    SystemsBoard,
     ShiftBrief,
     ShiftReview,
 }

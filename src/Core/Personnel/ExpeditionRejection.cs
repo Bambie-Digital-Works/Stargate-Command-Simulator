@@ -1,3 +1,3 @@
-namespace FacilityCommand.Core.Personnel;
+namespace WormholeWorlds.Core.Personnel;
 
 public sealed record ExpeditionRejection(string ReasonCode, string CorrectiveAction);

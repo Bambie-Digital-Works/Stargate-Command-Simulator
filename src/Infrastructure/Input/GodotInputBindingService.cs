@@ -1,8 +1,8 @@
-using FacilityCommand.Application.Input;
-using FacilityCommand.Application.Logging;
 using Godot;
+using WormholeWorlds.Application.Input;
+using WormholeWorlds.Application.Logging;
 
-namespace FacilityCommand.Infrastructure.Input;
+namespace WormholeWorlds.Infrastructure.Input;
 
 public sealed class GodotInputBindingService
 {
@@ -194,4 +194,3 @@ public sealed class GodotInputBindingService
         _ => "Unknown",
     };
 }
-

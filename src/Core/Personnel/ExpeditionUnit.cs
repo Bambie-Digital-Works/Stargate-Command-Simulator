@@ -1,6 +1,6 @@
-using FacilityCommand.Core.Transit;
+using WormholeWorlds.Core.Transit;
 
-namespace FacilityCommand.Core.Personnel;
+namespace WormholeWorlds.Core.Personnel;
 
 public sealed class ExpeditionUnit
 {

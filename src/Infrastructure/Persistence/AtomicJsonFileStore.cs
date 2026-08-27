@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json;
 
-namespace FacilityCommand.Infrastructure.Persistence;
+namespace WormholeWorlds.Infrastructure.Persistence;
 
 /// <summary>
 /// Temp-write, validate, backup-primary, then atomic replace.
@@ -23,7 +23,7 @@ public static class AtomicJsonFileStore
 
         if (!validateJson(json))
         {
-            throw new InvalidDataException("Campaign save document failed in-memory validation.");
+            throw new InvalidDataException("JSON document failed in-memory validation.");
         }
 
         string temporary = fullPath + ".tmp";
@@ -57,7 +57,7 @@ public static class AtomicJsonFileStore
             File.Copy(path, quarantinePath, overwrite: true);
             return quarantinePath;
         }
-        catch (IOException)
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
         {
             return null;
         }
@@ -81,7 +81,7 @@ public static class AtomicJsonFileStore
         {
             File.Delete(path);
         }
-        catch (IOException)
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
         {
             // Best-effort cleanup of a failed temp write.
         }

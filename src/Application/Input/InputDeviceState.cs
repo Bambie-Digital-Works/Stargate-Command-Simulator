@@ -1,4 +1,4 @@
-namespace FacilityCommand.Application.Input;
+namespace WormholeWorlds.Application.Input;
 
 public sealed class InputDeviceState
 {

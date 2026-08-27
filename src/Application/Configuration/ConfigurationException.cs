@@ -1,4 +1,4 @@
-namespace FacilityCommand.Application.Configuration;
+namespace WormholeWorlds.Application.Configuration;
 
 public sealed class ConfigurationException : Exception
 {

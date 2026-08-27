@@ -1,7 +1,7 @@
-using FacilityCommand.Application.Simulation;
-using FacilityCommand.Core.Transit;
+using WormholeWorlds.Application.Simulation;
+using WormholeWorlds.Core.Transit;
 
-namespace FacilityCommand.Infrastructure.Simulation;
+namespace WormholeWorlds.Infrastructure.Simulation;
 
 public sealed class ManualSimulationClock : ISimulationClock
 {

@@ -4,14 +4,19 @@
     <LangVersion>12</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>FacilityCommand</RootNamespace>
-    <AssemblyName>FacilityCommand</AssemblyName>
+    <RootNamespace>WormholeWorlds</RootNamespace>
+    <AssemblyName>WormholeWorldsSimulator</AssemblyName>
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <NuGetLockFilePath Condition="'$(Configuration)' == 'ExportRelease'">$(BaseIntermediateOutputPath)export-packages.lock.json</NuGetLockFilePath>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <VersionPrefix>0.1.0</VersionPrefix>
-    <VersionSuffix Condition="'$(VersionSuffix)' == ''">dev</VersionSuffix>
+    <VersionPrefix>0.8.0</VersionPrefix>
+    <VersionSuffix Condition="'$(VersionSuffix)' == ''">beta.1</VersionSuffix>
+    <AssemblyVersion>0.8.0.0</AssemblyVersion>
+    <FileVersion Condition="'$(FileVersion)' == ''">0.8.0.1</FileVersion>
+    <Product>Wormhole Worlds Simulator</Product>
+    <Company>Bambie Digital Works</Company>
+    <Description>Original command-centre simulation game.</Description>
     <BuildChannel Condition="'$(BuildChannel)' == ''">development</BuildChannel>
     <BuildId Condition="'$(BuildId)' == ''">local</BuildId>
     <CommitSha Condition="'$(CommitSha)' == ''">unknown</CommitSha>
@@ -29,4 +34,3 @@
     <AssemblyMetadata Include="BuildUtc" Value="$(BuildUtc)" />
   </ItemGroup>
 </Project>
-

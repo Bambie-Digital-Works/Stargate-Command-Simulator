@@ -1,10 +1,10 @@
-using FacilityCommand.Application.Personnel;
-using FacilityCommand.Application.Simulation;
-using FacilityCommand.Application.Transit;
-using FacilityCommand.Core.Personnel;
 using Godot;
+using WormholeWorlds.Application.Personnel;
+using WormholeWorlds.Application.Simulation;
+using WormholeWorlds.Application.Transit;
+using WormholeWorlds.Core.Personnel;
 
-namespace FacilityCommand.Presentation;
+namespace WormholeWorlds.Presentation;
 
 public partial class ExpeditionRoster : PanelContainer
 {

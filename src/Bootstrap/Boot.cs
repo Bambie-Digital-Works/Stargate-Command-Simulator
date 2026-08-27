@@ -1,29 +1,33 @@
-using FacilityCommand.Application.Configuration;
-using FacilityCommand.Application.Incidents;
-using FacilityCommand.Application.Logging;
-using FacilityCommand.Application.Operations;
-using FacilityCommand.Application.Personnel;
-using FacilityCommand.Application.Security;
-using FacilityCommand.Application.Shift;
-using FacilityCommand.Application.Survey;
-using FacilityCommand.Application.Transit;
-using FacilityCommand.Core.Destinations;
-using FacilityCommand.Core.Incidents;
-using FacilityCommand.Core.Security;
-using FacilityCommand.Core.Shift;
-using FacilityCommand.Core.Survey;
-using FacilityCommand.Core.Transit;
-using FacilityCommand.Infrastructure.Configuration;
-using FacilityCommand.Infrastructure.Content;
-using FacilityCommand.Infrastructure.Diagnostics;
-using FacilityCommand.Infrastructure.Input;
-using FacilityCommand.Infrastructure.Logging;
-using FacilityCommand.Infrastructure.Persistence;
-using FacilityCommand.Infrastructure.Simulation;
-using FacilityCommand.Presentation;
 using Godot;
+using WormholeWorlds.Application.Accessibility;
+using WormholeWorlds.Application.Configuration;
+using WormholeWorlds.Application.Incidents;
+using WormholeWorlds.Application.Logging;
+using WormholeWorlds.Application.Operations;
+using WormholeWorlds.Application.Personnel;
+using WormholeWorlds.Application.Security;
+using WormholeWorlds.Application.Shift;
+using WormholeWorlds.Application.Survey;
+using WormholeWorlds.Application.Systems;
+using WormholeWorlds.Application.Transit;
+using WormholeWorlds.Core.Destinations;
+using WormholeWorlds.Core.Incidents;
+using WormholeWorlds.Core.Security;
+using WormholeWorlds.Core.Shift;
+using WormholeWorlds.Core.Survey;
+using WormholeWorlds.Core.Transit;
+using WormholeWorlds.Infrastructure.Accessibility;
+using WormholeWorlds.Infrastructure.Configuration;
+using WormholeWorlds.Infrastructure.Content;
+using WormholeWorlds.Infrastructure.Diagnostics;
+using WormholeWorlds.Infrastructure.Input;
+using WormholeWorlds.Infrastructure.Logging;
+using WormholeWorlds.Infrastructure.Persistence;
+using WormholeWorlds.Infrastructure.Simulation;
+using WormholeWorlds.Infrastructure.Updates;
+using WormholeWorlds.Presentation;
 
-namespace FacilityCommand.Bootstrap;
+namespace WormholeWorlds.Bootstrap;
 
 /// <summary>
 /// Composition root for the executable. It may assemble application services and
@@ -48,6 +52,16 @@ public partial class Boot : Node
 
         try
         {
+            string currentUserDirectory = ProjectSettings.GlobalizePath("user://");
+            string legacyUserDirectory = Path.Combine(
+                System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData),
+                "Godot",
+                "app_userdata",
+                "Stargate Command Simulator");
+            UserDataMigrationResult migration = new UserDataMigration().Migrate(
+                currentUserDirectory,
+                legacyUserDirectory);
+
             ConfigurationLoader configurationLoader = new();
             string defaultsJson = Godot.FileAccess.GetFileAsString("res://config/defaults.json");
             string? userJson = Godot.FileAccess.FileExists("user://settings.json")
@@ -63,6 +77,21 @@ public partial class Boot : Node
                 configuration.Logging.MaxFiles,
                 configuration.Logging.MaxFileBytes,
                 configuration.Diagnostics.RecentLogEntries);
+
+            if (migration.MigratedFiles.Count > 0 || migration.Warnings.Count > 0)
+            {
+                logger.Log(
+                    migration.Warnings.Count == 0 ? ApplicationLogLevel.Information : ApplicationLogLevel.Warning,
+                    "application.user-data-migration",
+                    migration.Warnings.Count == 0
+                        ? $"Imported {migration.MigratedFiles.Count} legacy player data files."
+                        : "Some legacy player data files could not be imported.",
+                    new Dictionary<string, string>
+                    {
+                        ["migratedCount"] = migration.MigratedFiles.Count.ToString(),
+                        ["warningCount"] = migration.Warnings.Count.ToString(),
+                    });
+            }
 
             InputBindingStore inputBindingStore = new(ProjectSettings.GlobalizePath("user://input_bindings.v1.json"));
             GodotInputBindingService inputBindings = new(inputBindingStore, logger);
@@ -83,11 +112,27 @@ public partial class Boot : Node
             TransitSimulationService transit = new(outgoing, destinations, resources);
             ReturnSecurityService security = new(new ReturnCredentialVerifier(), new ContainmentShutter());
             ManualSimulationClock clock = new();
+            AccessibilitySettingsStore accessibilityStore = new(
+                ProjectSettings.GlobalizePath("user://accessibility_settings.v1.json"));
+            AccessibilityLoadResult accessibilityLoad = accessibilityStore.LoadOrDefault();
+            AccessibilityPreferences accessibility = accessibilityLoad.Preferences;
+            clock.SetTimeScale(accessibility.TimePressureScale);
+            System.Net.Http.HttpClient updateHttpClient = new() { Timeout = TimeSpan.FromSeconds(20) };
+            GitHubReleaseFeedClient releaseFeed = new(
+                updateHttpClient,
+                "Bambie-Digital-Works",
+                "Stargate-Command-Simulator");
+            UpdateCheckCoordinator updateCoordinator = new(
+                releaseFeed,
+                ProjectSettings.GlobalizePath("user://update_check.v1.json"));
+            VerifiedInstallerDownloader installerDownloader = new(updateHttpClient);
+            WindowsInstallerLauncher installerLauncher = new();
             ExpeditionRosterService roster = ExpeditionRosterService.CreateDefault(clock);
             SurveyTelemetryService survey = new(new SurveyDrone(), surveyCatalog, roster, transit, clock);
             roster.BindSurvey(survey);
             ShiftIncidentService incidents = new(incidentCatalog, transit, security, roster, survey, resources);
-            OperationsBoardService operations = new(transit, security, roster, survey, incidents, clock, resources);
+            SystemsBoardService systems = new(resources, incidents);
+            OperationsBoardService operations = new(transit, security, roster, survey, incidents, clock, resources, systems);
             CampaignStateStore campaignStore = new(
                 ProjectSettings.GlobalizePath("user://campaign_state.json"),
                 metadata.SaveSchemaVersion);
@@ -126,7 +171,19 @@ public partial class Boot : Node
 
             shell.Name = "OperatorShell";
             AddChild(shell);
-            shell.Initialize(metadata, configuration, logger, inputBindings, operations);
+            shell.Initialize(
+                metadata,
+                configuration,
+                logger,
+                inputBindings,
+                operations,
+                accessibilityStore,
+                accessibility,
+                accessibilityLoad.RecoveryWarning,
+                updateCoordinator,
+                installerDownloader,
+                installerLauncher,
+                ProjectSettings.GlobalizePath("user://updates"));
 
             GD.Print("Boot complete: operator shell is ready.");
         }

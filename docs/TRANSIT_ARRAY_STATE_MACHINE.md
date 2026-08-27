@@ -1,6 +1,6 @@
 # Transit Array state machine
 
-This document is the authoritative transition specification for the deterministic Core state machine introduced by issue #17. The implementation lives in `FacilityCommand.Core.Transit` and has no Godot, wall-clock, storage, or presentation dependency.
+This document is the authoritative transition specification for the deterministic Core state machine introduced by issue #17. The implementation lives in `WormholeWorlds.Core.Transit` and has no Godot, wall-clock, storage, or presentation dependency.
 
 ## Phases and transitions
 

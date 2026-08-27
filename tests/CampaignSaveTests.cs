@@ -1,7 +1,7 @@
-using FacilityCommand.Core.Shift;
-using FacilityCommand.Infrastructure.Persistence;
+using WormholeWorlds.Core.Shift;
+using WormholeWorlds.Infrastructure.Persistence;
 
-namespace FacilityCommand.Tests;
+namespace WormholeWorlds.Tests;
 
 public sealed class CampaignSaveTests
 {

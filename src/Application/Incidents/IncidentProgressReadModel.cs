@@ -1,6 +1,6 @@
-using FacilityCommand.Core.Incidents;
+using WormholeWorlds.Core.Incidents;
 
-namespace FacilityCommand.Application.Incidents;
+namespace WormholeWorlds.Application.Incidents;
 
 public sealed record IncidentProgressReadModel(
     string? ActiveIncidentId,

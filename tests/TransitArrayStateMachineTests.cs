@@ -1,6 +1,6 @@
-using FacilityCommand.Core.Transit;
+using WormholeWorlds.Core.Transit;
 
-namespace FacilityCommand.Tests;
+namespace WormholeWorlds.Tests;
 
 public sealed class TransitArrayStateMachineTests
 {

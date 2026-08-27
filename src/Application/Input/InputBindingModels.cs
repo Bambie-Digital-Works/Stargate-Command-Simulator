@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace FacilityCommand.Application.Input;
+namespace WormholeWorlds.Application.Input;
 
 public enum InputDeviceKind
 {

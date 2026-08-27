@@ -1,6 +1,6 @@
 using Godot;
 
-namespace FacilityCommand.Presentation;
+namespace WormholeWorlds.Presentation;
 
 public partial class StartupFailurePanel : Control
 {
