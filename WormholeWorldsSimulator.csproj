@@ -14,9 +14,9 @@
     <VersionSuffix Condition="'$(VersionSuffix)' == ''">beta.1</VersionSuffix>
     <AssemblyVersion>0.8.0.0</AssemblyVersion>
     <FileVersion Condition="'$(FileVersion)' == ''">0.8.0.1</FileVersion>
-    <Product>Wormhole Worlds Simulator</Product>
+    <Product>Wormhole Worlds</Product>
     <Company>Bambie Digital Works</Company>
-    <Description>Original command-centre simulation game.</Description>
+    <Description>Wormhole Worlds is an original command-centre simulation game.</Description>
     <BuildChannel Condition="'$(BuildChannel)' == ''">development</BuildChannel>
     <BuildId Condition="'$(BuildId)' == ''">local</BuildId>
     <CommitSha Condition="'$(CommitSha)' == ''">unknown</CommitSha>

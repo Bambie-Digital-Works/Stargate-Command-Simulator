@@ -142,6 +142,18 @@ theme_override_colors/font_color = Color(0.286275, 0.752941, 0.827451, 1)
 text = "Operator guidance"
 autowrap_mode = 3
 
+[node name="MissionStatus" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.980392, 0.807843, 0.376471, 1)
+text = "Mission Board: Mission Board ready."
+autowrap_mode = 3
+
+[node name="FacilityStatus" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.584314, 0.658824, 0.678431, 1)
+text = "Facility nominal."
+autowrap_mode = 3
+
 [node name="Alarms" type="Label" parent="Margin/Layout"]
 layout_mode = 2
 text = "Active alarms\nNone"
@@ -170,6 +182,10 @@ text = "Open Expedition Roster"
 [node name="SystemsBoardButton" type="Button" parent="Margin/Layout/Navigation"]
 layout_mode = 2
 text = "Open Systems Board"
+
+[node name="MissionControlButton" type="Button" parent="Margin/Layout/Navigation"]
+layout_mode = 2
+text = "Open Mission Control"
 
 [node name="EndShiftButton" type="Button" parent="Margin/Layout/Navigation"]
 layout_mode = 2

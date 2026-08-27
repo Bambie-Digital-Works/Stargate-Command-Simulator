@@ -15,7 +15,7 @@ archive are never rebuilt as part of channel promotion.
   It is never overwritten.
 
 The first public beta is
-[`v0.8.0-beta.1`](https://github.com/Bambie-Digital-Works/Stargate-Command-Simulator/releases/tag/v0.8.0-beta.1).
+[`v0.8.0-beta.1`](https://github.com/Bambie-Digital-Works/Wormhole-Worlds/releases/tag/v0.8.0-beta.1).
 It is a preview release and is intentionally unsigned; the release page
 contains the installer, portable archive, manifests, notes, notices, and
 `SHA256SUMS.txt`.

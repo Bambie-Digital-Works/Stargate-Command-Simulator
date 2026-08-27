@@ -19,12 +19,15 @@ public partial class OperationsBoard : PanelContainer
     private Label _incidentLabel = null!;
     private Label _incidentObjectiveLabel = null!;
     private Label _incidentGuidanceLabel = null!;
+    private Label _missionLabel = null!;
+    private Label _facilityLabel = null!;
     private Label _alarmsLabel = null!;
     private Button _transitControlButton = null!;
     private Button _surveyTelemetryButton = null!;
     private Button _returnControlButton = null!;
     private Button _expeditionRosterButton = null!;
     private Button _systemsBoardButton = null!;
+    private Button _missionControlButton = null!;
     private Button _endShiftButton = null!;
     private OperationsBoardService? _operations;
 
@@ -46,12 +49,15 @@ public partial class OperationsBoard : PanelContainer
         _incidentLabel = GetNode<Label>("Margin/Layout/StatusGrid/IncidentValue");
         _incidentObjectiveLabel = GetNode<Label>("Margin/Layout/IncidentObjective");
         _incidentGuidanceLabel = GetNode<Label>("Margin/Layout/IncidentGuidance");
+        _missionLabel = GetNode<Label>("Margin/Layout/MissionStatus");
+        _facilityLabel = GetNode<Label>("Margin/Layout/FacilityStatus");
         _alarmsLabel = GetNode<Label>("Margin/Layout/Alarms");
         _transitControlButton = GetNode<Button>("Margin/Layout/Navigation/TransitControlButton");
         _surveyTelemetryButton = GetNode<Button>("Margin/Layout/Navigation/SurveyTelemetryButton");
         _returnControlButton = GetNode<Button>("Margin/Layout/Navigation/ReturnControlButton");
         _expeditionRosterButton = GetNode<Button>("Margin/Layout/Navigation/ExpeditionRosterButton");
         _systemsBoardButton = GetNode<Button>("Margin/Layout/Navigation/SystemsBoardButton");
+        _missionControlButton = GetNode<Button>("Margin/Layout/Navigation/MissionControlButton");
         _endShiftButton = GetNode<Button>("Margin/Layout/Navigation/EndShiftButton");
 
         _transitControlButton.Pressed += () => ScreenRequested?.Invoke(OperatorConsoleScreen.TransitControl);
@@ -59,6 +65,7 @@ public partial class OperationsBoard : PanelContainer
         _returnControlButton.Pressed += () => ScreenRequested?.Invoke(OperatorConsoleScreen.ReturnControl);
         _expeditionRosterButton.Pressed += () => ScreenRequested?.Invoke(OperatorConsoleScreen.ExpeditionRoster);
         _systemsBoardButton.Pressed += () => ScreenRequested?.Invoke(OperatorConsoleScreen.SystemsBoard);
+        _missionControlButton.Pressed += () => ScreenRequested?.Invoke(OperatorConsoleScreen.MissionControl);
         _endShiftButton.Pressed += OnEndShiftPressed;
     }
 
@@ -94,6 +101,8 @@ public partial class OperationsBoard : PanelContainer
         _incidentLabel.Text = model.IncidentSummary;
         _incidentObjectiveLabel.Text = model.IncidentObjective;
         _incidentGuidanceLabel.Text = $"Operator guidance: {model.IncidentGuidance}";
+        _missionLabel.Text = $"Mission Board: {model.MissionSummary}";
+        _facilityLabel.Text = $"{model.FacilitySummary}\n{model.ConcurrentIncidentSummary}";
         _alarmsLabel.Text = model.ActiveAlarms.Count == 0
             ? "Active alarms\nNone"
             : "Active alarms\n" + string.Join(

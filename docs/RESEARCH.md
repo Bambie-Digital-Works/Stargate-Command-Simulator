@@ -1,6 +1,6 @@
-# Wormhole Worlds Simulator — research and production brief
+# Wormhole Worlds — research and production brief
 
-> Wormhole Worlds Simulator is the original-IP beta title. Television and fan-game references in this document are research sources only, not production assets or a claim of affiliation or licence.
+> Wormhole Worlds is the original-IP beta title. Television and fan-game references in this document are research sources only, not production assets or a claim of affiliation or licence.
 
 Research terms on this page are reference-only. Production specifications, code, content, and UI must use the approved [production terminology](TERMINOLOGY.md).
 
@@ -67,6 +67,45 @@ Do not copy their interfaces; study the interaction patterns.
 - **Keep Talking and Nobody Explodes**: good model for an optional two-player mode—one operator at the console, one using a procedures manual.
 
 The design opportunity is to combine a believable workplace simulator with campaign consequences. A “shift” of 20–35 minutes is a sensible initial target. Between shifts, unlock new protocols and equipment rather than merely larger numbers.
+
+### Expanded source study
+
+The following SG-1 references were reviewed on 2026-08-27 to turn the
+television premise into original systems rather than copied fiction:
+
+- **“Foothold”** supports identity uncertainty, compromised personnel, sensor
+  countermeasures, security-room monitoring, lockdown, and the possibility that
+  an infiltrator learns the facility layout. Use these as procedural security
+  incidents with original factions and technologies.
+- **“Proving Ground”** supports recurring training exercises, candidate
+  assessment, access permissions, simulated failures, and the human cost of
+  deciding whether to leave a team member behind. Use this for onboarding and
+  expedition qualification.
+- **“A Matter of Time”** supports a connection that will not disengage,
+  capacitor depletion, time distortion, evacuation, and a two-person
+  destructive failsafe. Use this as a rare high-severity facility crisis.
+- **“Watergate”** supports competing gate operators, a remote facility,
+  international technology exchange, a submerged destination, and missions
+  affected by another active connection. Use this for diplomacy and campaign
+  state, not for copied governments or episode plot.
+
+The requested simulator references reinforce the same interaction pattern:
+AISNSim treats the fictional operating system as the play space and unlocks
+additional screens over time; TSACS shows the value of modular panels,
+address-book data, diagnostics, logs, and external content configuration; and
+SGCSim places the player in a technician role where probing, dispatching, and
+barrier decisions form the core loop. The Stargate Network visual study
+supports a dark navy/black atmosphere with restrained gold and cyan accents.
+Wormhole Worlds uses these as high-level interaction and mood references only;
+all shipped terminology, layouts, marks, art, audio, and lore remain original.
+
+Sources: [“Foothold”](https://www.gateworld.net/sg1/s3/foothold/),
+[“Proving Ground”](https://www.gateworld.net/sg1/s5/proving-ground/),
+[“A Matter of Time”](https://www.gateworld.net/sg1/s2/a-matter-of-time/),
+[“Watergate”](https://www.gateworld.net/sg1/s4/watergate/),
+[AISNSim](https://ddobs.com/aisnsim/), [TSACS](https://www.tsacs.com/),
+[SGCSim](https://sgcsim.software.informer.com/5.1/), and
+[Stargate Network](https://stargate-network.com/).
 
 ## Content plan
 
@@ -184,7 +223,7 @@ MSIX provides clean uninstall, differential downloads, and Store-managed updates
 
 ## Decisions established after research
 
-1. Develop original science-fiction IP under the Wormhole Worlds Simulator beta title; retain professional trademark review before a commercial stable release.
+1. Develop original science-fiction IP under the Wormhole Worlds beta title; retain professional trademark review before a commercial stable release.
 2. Build a UI-first desktop simulation rather than an explorable 3D base for the initial release.
 3. Use Godot 4 with C# and target Windows first; choose storefront packaging after the vertical slice.
 4. Implement the five vertical-slice incidents as deterministic, testable event/state models before producing final art.

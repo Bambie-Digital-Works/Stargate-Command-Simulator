@@ -104,8 +104,9 @@ public sealed class OperationsBoardTests
         Assert.Equal(OperatorConsoleScreen.ReturnControl, service.CycleScreen(1));
         Assert.Equal(OperatorConsoleScreen.ExpeditionRoster, service.CycleScreen(1));
         Assert.Equal(OperatorConsoleScreen.SystemsBoard, service.CycleScreen(1));
+        Assert.Equal(OperatorConsoleScreen.MissionControl, service.CycleScreen(1));
         Assert.Equal(OperatorConsoleScreen.OperationsBoard, service.CycleScreen(1));
-        Assert.Equal(OperatorConsoleScreen.SystemsBoard, service.CycleScreen(-1));
+        Assert.Equal(OperatorConsoleScreen.MissionControl, service.CycleScreen(-1));
     }
 
     private static OperationsBoardService CreateService(

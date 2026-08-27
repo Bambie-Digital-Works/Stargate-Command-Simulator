@@ -54,7 +54,7 @@ $tagCommit = & $git -C $repositoryRoot rev-parse --verify "refs/tags/$Destinatio
 if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($tagCommit)) {
     throw "Create and push immutable tag $DestinationTag before promotion."
 }
-& $gh release view $DestinationTag --repo 'Bambie-Digital-Works/Stargate-Command-Simulator' *> $null
+& $gh release view $DestinationTag --repo 'Bambie-Digital-Works/Wormhole-Worlds' *> $null
 if ($LASTEXITCODE -eq 0) {
     throw "Release $DestinationTag already exists; promotion refuses to replace it."
 }
@@ -71,7 +71,7 @@ try {
         channel = $Channel
         version = $manifest.version
         architecture = $manifest.architecture
-        releasePage = "https://github.com/Bambie-Digital-Works/Stargate-Command-Simulator/releases/tag/$DestinationTag"
+        releasePage = "https://github.com/Bambie-Digital-Works/Wormhole-Worlds/releases/tag/$DestinationTag"
         installer = [ordered]@{
             fileName = $installerName
             sizeBytes = (Get-Item -LiteralPath $installerPath).Length
@@ -90,11 +90,11 @@ try {
     $hashLines | Set-Content -LiteralPath (Join-Path $promotionPath 'SHA256SUMS.txt') -Encoding ascii
 
     $assets = Get-ChildItem -LiteralPath $promotionPath -File | ForEach-Object FullName
-    $title = "Wormhole Worlds Simulator $($manifest.version) $Channel"
+    $title = "Wormhole Worlds $($manifest.version) $Channel"
     $arguments = @(
         'release', 'create', $DestinationTag
     ) + $assets + @(
-        '--repo', 'Bambie-Digital-Works/Stargate-Command-Simulator',
+        '--repo', 'Bambie-Digital-Works/Wormhole-Worlds',
         '--verify-tag',
         '--title', $title,
         '--notes-file', (Join-Path $sourcePath 'RELEASE_NOTES.md')

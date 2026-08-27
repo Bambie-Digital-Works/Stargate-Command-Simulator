@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "missions": [
+    {
+      "id": "aurora_reconnaissance",
+      "displayName": "Aurora reconnaissance",
+      "summary": "Confirm whether the newly charted valley can support a future research outpost.",
+      "destinationId": "survey_site_aurora",
+      "objective": "Complete a terrain and atmosphere survey, then return with a confidence-rated report.",
+      "requiredSpecialties": ["Commander", "Engineer", "Security"],
+      "riskRating": 2,
+      "fieldDurationMilliseconds": 90000,
+      "contactFaction": "Uncontacted"
+    },
+    {
+      "id": "kestrel_relay_repair",
+      "displayName": "Kestrel relay repair",
+      "summary": "Restore a silent relay before the facility loses its long-range route data.",
+      "destinationId": "relay_station_kestrel",
+      "objective": "Stabilize the relay, recover its route archive, and extract before the power reserve fails.",
+      "requiredSpecialties": ["Commander", "Engineer", "Security"],
+      "riskRating": 3,
+      "fieldDurationMilliseconds": 120000,
+      "contactFaction": "Relay Custodians"
+    },
+    {
+      "id": "aurora_medical_contact",
+      "displayName": "Aurora medical contact",
+      "summary": "Respond to a weak emergency signal from a settlement near the survey site.",
+      "destinationId": "survey_site_aurora",
+      "objective": "Establish contact, treat the injured, and record consent for future assistance.",
+      "requiredSpecialties": ["Commander", "Medic", "Security"],
+      "riskRating": 4,
+      "fieldDurationMilliseconds": 150000,
+      "contactFaction": "Aurora Settlers"
+    },
+    {
+      "id": "kestrel_artifact_recovery",
+      "displayName": "Kestrel archive recovery",
+      "summary": "Recover a damaged archive module without exposing the team to an unknown signal.",
+      "destinationId": "relay_station_kestrel",
+      "objective": "Isolate the signal, recover the module, and return it for controlled analysis.",
+      "requiredSpecialties": ["Commander", "Engineer", "Security"],
+      "riskRating": 5,
+      "fieldDurationMilliseconds": 180000,
+      "contactFaction": "Relay Custodians"
+    },
+    {
+      "id": "aurora_emergency_extraction",
+      "displayName": "Aurora emergency extraction",
+      "summary": "Extract a stranded survey crew while an environmental event closes the route.",
+      "destinationId": "survey_site_aurora",
+      "objective": "Locate the crew, establish a safe return window, and extract everyone accounted for.",
+      "requiredSpecialties": ["Commander", "Medic", "Engineer", "Security"],
+      "riskRating": 5,
+      "fieldDurationMilliseconds": 210000,
+      "contactFaction": "Wormhole Worlds Survey Service"
+    }
+  ]
+}
