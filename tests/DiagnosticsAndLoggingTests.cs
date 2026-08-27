@@ -1,4 +1,5 @@
 using System.Text.Json;
+using WormholeWorlds.Application.Diagnostics;
 using WormholeWorlds.Application.Logging;
 using WormholeWorlds.Infrastructure.Diagnostics;
 using WormholeWorlds.Infrastructure.Logging;
@@ -81,5 +82,50 @@ public sealed class DiagnosticsAndLoggingTests
         {
             using JsonDocument _ = JsonDocument.Parse(line);
         }
+    }
+
+    [Fact]
+    public void DiagnosticReportExportContainsOnlyBuildIdentityAndSanitizedRecentEvents()
+    {
+        using TestDirectory directory = new();
+        var metadata = new BuildMetadata(
+            "0.8.0-beta.1",
+            "preview",
+            "42",
+            "abc123",
+            1,
+            2,
+            DateTimeOffset.UnixEpoch,
+            "4.7.2.stable.mono",
+            ".NET 8.0",
+            "Windows",
+            "x64");
+        var logger = new JsonLinesApplicationLogger(
+            directory.Path,
+            ApplicationLogLevel.Debug,
+            maxFiles: 2,
+            maxFileBytes: 65536,
+            recentCapacity: 10,
+            new SensitiveDataSanitizer("Alice"));
+        logger.Log(
+            ApplicationLogLevel.Warning,
+            "diagnostic.warning",
+            @"password=secret at C:\Users\Alice\save.json",
+            new Dictionary<string, string>
+            {
+                ["component"] = "save",
+                ["rawPayload"] = "save contents",
+            });
+
+        DiagnosticReport report = DiagnosticReport.Create(metadata, logger.Recent);
+        string path = new DiagnosticReportWriter().Write(directory.Path, report);
+        string json = File.ReadAllText(path);
+
+        Assert.Contains("0.8.0-beta.1", json, StringComparison.Ordinal);
+        Assert.Contains("diagnostic.warning", json, StringComparison.Ordinal);
+        Assert.DoesNotContain("secret", json, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("Alice", json, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("save contents", json, StringComparison.OrdinalIgnoreCase);
+        using JsonDocument _ = JsonDocument.Parse(json);
     }
 }
