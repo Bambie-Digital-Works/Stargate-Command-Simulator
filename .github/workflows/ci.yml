@@ -126,5 +126,5 @@ jobs:
             (Get-ChildItem -LiteralPath '${{ steps.release.outputs.release_path }}' -File | ForEach-Object FullName) `
             --prerelease `
             --verify-tag `
-            --title 'Wormhole Worlds Simulator 0.8.0-beta.1' `
+            --title 'Wormhole Worlds 0.8.0-beta.1' `
             --notes-file 'docs/RELEASE_NOTES_0.8.0-beta.1.md'

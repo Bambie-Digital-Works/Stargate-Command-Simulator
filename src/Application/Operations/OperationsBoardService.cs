@@ -1,4 +1,6 @@
+using WormholeWorlds.Application.Facility;
 using WormholeWorlds.Application.Incidents;
+using WormholeWorlds.Application.Missions;
 using WormholeWorlds.Application.Personnel;
 using WormholeWorlds.Application.Security;
 using WormholeWorlds.Application.Shift;
@@ -7,6 +9,7 @@ using WormholeWorlds.Application.Survey;
 using WormholeWorlds.Application.Systems;
 using WormholeWorlds.Application.Transit;
 using WormholeWorlds.Core.Incidents;
+using WormholeWorlds.Core.Missions;
 using WormholeWorlds.Core.Security;
 using WormholeWorlds.Core.Transit;
 
@@ -22,6 +25,9 @@ public sealed class OperationsBoardService
     private readonly ISimulationClock _clock;
     private readonly FacilityResourcePool _resources;
     private readonly SystemsBoardService _systems;
+    private readonly MissionService _missions;
+    private readonly CommandFacilityService _facility;
+    private readonly ConcurrentIncidentDirector _incidentDirector;
     private OperatorConsoleScreen _activeScreen = OperatorConsoleScreen.ShiftBrief;
     private ShiftLifecycleService? _lifecycle;
 
@@ -41,7 +47,10 @@ public sealed class OperationsBoardService
             incidents,
             clock,
             resources,
-            new SystemsBoardService(resources, incidents))
+            new SystemsBoardService(resources, incidents),
+            MissionService.CreateDefault(clock),
+            CommandFacilityService.CreateDefault(),
+            new ConcurrentIncidentDirector(clock))
     {
     }
 
@@ -54,6 +63,58 @@ public sealed class OperationsBoardService
         ISimulationClock clock,
         FacilityResourcePool resources,
         SystemsBoardService systems)
+        : this(
+            transit,
+            security,
+            roster,
+            survey,
+            incidents,
+            clock,
+            resources,
+            systems,
+            MissionService.CreateDefault(clock),
+            CommandFacilityService.CreateDefault(),
+            new ConcurrentIncidentDirector(clock))
+    {
+    }
+
+    public OperationsBoardService(
+        TransitSimulationService transit,
+        ReturnSecurityService security,
+        ExpeditionRosterService roster,
+        SurveyTelemetryService survey,
+        ShiftIncidentService incidents,
+        ISimulationClock clock,
+        FacilityResourcePool resources,
+        SystemsBoardService systems,
+        MissionService missions)
+        : this(
+            transit,
+            security,
+            roster,
+            survey,
+            incidents,
+            clock,
+            resources,
+            systems,
+            missions,
+            CommandFacilityService.CreateDefault(),
+            new ConcurrentIncidentDirector(clock))
+    {
+    }
+
+    public OperationsBoardService(
+        TransitSimulationService transit,
+        ReturnSecurityService security,
+        ExpeditionRosterService roster,
+        SurveyTelemetryService survey,
+        ShiftIncidentService incidents,
+        ISimulationClock clock,
+        FacilityResourcePool resources,
+        SystemsBoardService systems,
+        MissionService missions,
+        CommandFacilityService facility,
+        ConcurrentIncidentDirector incidentDirector)
     {
         _transit = transit;
         _security = security;
@@ -63,6 +124,9 @@ public sealed class OperationsBoardService
         _clock = clock;
         _resources = resources;
         _systems = systems;
+        _missions = missions;
+        _facility = facility;
+        _incidentDirector = incidentDirector;
     }
 
     public OperatorConsoleScreen ActiveScreen => _activeScreen;
@@ -83,6 +147,12 @@ public sealed class OperationsBoardService
 
     public SystemsBoardService Systems => _systems;
 
+    public MissionService Missions => _missions;
+
+    public CommandFacilityService Facility => _facility;
+
+    public ConcurrentIncidentDirector IncidentDirector => _incidentDirector;
+
     public IReadOnlyList<OperatorConsoleScreen> NavigationOrder { get; } =
     [
         OperatorConsoleScreen.OperationsBoard,
@@ -91,6 +161,7 @@ public sealed class OperationsBoardService
         OperatorConsoleScreen.ReturnControl,
         OperatorConsoleScreen.ExpeditionRoster,
         OperatorConsoleScreen.SystemsBoard,
+        OperatorConsoleScreen.MissionControl,
     ];
 
     public void BindLifecycle(ShiftLifecycleService lifecycle) => _lifecycle = lifecycle;
@@ -127,6 +198,9 @@ public sealed class OperationsBoardService
         ExpeditionRosterReadModel roster = _roster.GetReadModel(transitSnapshot);
         SurveyTelemetryReadModel survey = _survey.GetReadModel();
         IncidentProgressReadModel incidents = _incidents.GetReadModel();
+        MissionReadModel mission = _missions.GetReadModel();
+        CommandFacilityReadModel facility = _facility.GetReadModel();
+        IncidentDirectorReadModel concurrentIncidents = _incidentDirector.GetReadModel();
         List<OperationsAlarm> alarms = BuildAlarms(transit.Phase, security, survey, incidents);
         _systems.RecordActiveAlarms(alarms);
         string announcement = BuildAnnouncement(transit, security, survey, incidents, alarms);
@@ -154,10 +228,28 @@ public sealed class OperationsBoardService
             alarms,
             announcement,
             _activeScreen,
-            incidents.SequenceComplete && _lifecycle?.Phase == Core.Shift.ShiftPhase.InProgress);
+            incidents.SequenceComplete && _lifecycle?.Phase == Core.Shift.ShiftPhase.InProgress,
+            mission.StatusSummary,
+            facility.Summary,
+            concurrentIncidents.PrioritySummary);
     }
 
     public IncidentOperationResult ResolveCoolingFault() => _incidents.ResolveCoolingFault();
+
+    public MissionOperationResult StartMission(string missionId) =>
+        _missions.Start(
+            missionId,
+            _roster.Snapshot,
+            _transit.GetTransitArraySnapshot(),
+            _transit.GetTransitControl().DestinationId);
+
+    public MissionOperationResult AdvanceMission(long elapsedMilliseconds) =>
+        _missions.AdvanceFieldWork(elapsedMilliseconds);
+
+    public MissionOperationResult CompleteMissionReturn(bool successful, string outcomeSummary) =>
+        _missions.CompleteReturn(successful, outcomeSummary);
+
+    public MissionOperationResult AbortMission(string reason) => _missions.Abort(reason);
 
     public ShiftOperationResult EndShift() =>
         _lifecycle?.EndShift()

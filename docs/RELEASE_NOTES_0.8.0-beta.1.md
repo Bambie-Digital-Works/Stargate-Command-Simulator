@@ -1,4 +1,4 @@
-# Wormhole Worlds Simulator 0.8.0-beta.1
+# Wormhole Worlds 0.8.0-beta.1
 
 This is the first public Windows beta of the original command-centre simulation formerly developed under a temporary franchise-adjacent working title.
 

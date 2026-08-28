@@ -10,7 +10,7 @@ Repository visibility is not an open-source licence. No permission is granted be
 
 ## Product title and franchise boundary
 
-“Wormhole Worlds Simulator” is the beta product title. The product is an original science-fiction command-centre simulation and uses original terminology, symbols, lore, interfaces, characters, artwork, and audio.
+“Wormhole Worlds” is the beta product title. The product is an original science-fiction command-centre simulation and uses original terminology, symbols, lore, interfaces, characters, artwork, and audio.
 
 This project is not affiliated with, endorsed by, sponsored by, or licensed by Amazon, Metro-Goldwyn-Mayer, or any other owner of the Stargate franchise. No ownership is claimed over Stargate names, trademarks, characters, stories, symbols, production designs, footage, music, sound effects, or other franchise material. References to Stargate in the research documentation identify sources of design study and do not grant a right to reproduce them in the game.
 

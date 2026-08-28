@@ -61,7 +61,7 @@ Copy-Item -LiteralPath (Join-Path $repositoryRoot 'NOTICE.md') -Destination (Joi
 Copy-Item -LiteralPath (Join-Path $repositoryRoot 'LICENSE') -Destination (Join-Path $appDirectory 'LICENSE.txt')
 
 $portablePath = Join-Path $outputPath $portableName
-Compress-Archive -Path (Join-Path $appDirectory '*') -DestinationPath $portablePath -CompressionLevel Optimal
+Compress-Archive -Path (Join-Path $appDirectory '*') -DestinationPath $portablePath -CompressionLevel Optimal -Force
 
 $compilerArguments = @(
     "/DAppSource=$appDirectory",
@@ -92,7 +92,7 @@ $updateManifest = [ordered]@{
     channel = 'preview'
     version = $productVersion
     architecture = 'x86_64'
-    releasePage = "https://github.com/Bambie-Digital-Works/Stargate-Command-Simulator/releases/tag/v$productVersion"
+    releasePage = "https://github.com/Bambie-Digital-Works/Wormhole-Worlds/releases/tag/v$productVersion"
     installer = [ordered]@{
         fileName = [IO.Path]::GetFileName($installerPath)
         sizeBytes = (Get-Item -LiteralPath $installerPath).Length

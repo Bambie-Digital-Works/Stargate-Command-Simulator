@@ -4,7 +4,7 @@
 
 Create an original Windows operations-room game in which the player commands a secret underground Command Facility built around an experimental Transit Array. The interface is the game: players interpret telemetry, follow procedures, coordinate personnel, and choose when incomplete information justifies taking a risk.
 
-Wormhole Worlds Simulator is the approved beta title. Production content does not use protected franchise terminology, symbols, lore, characters, production designs, audio, or other distinctive assets.
+Wormhole Worlds is the approved beta title. Production content does not use protected franchise terminology, symbols, lore, characters, production designs, audio, or other distinctive assets.
 
 ## Audience and format
 
@@ -23,6 +23,7 @@ The `0.8.0-beta.1` vertical slice contains one complete shift using the approved
 - Survey Telemetry;
 - an Expedition Roster and dispatch workflow;
 - a Systems Board; and
+- Mission Control for data-driven field operations; and
 - Shift Brief and chronological Shift Review screens.
 
 The slice demonstrates five escalating incidents: routine reconnaissance, a friendly return with a damaged Return Credential, an unscheduled incoming Transit Link with spoofed credentials, contradictory Survey Drone telemetry, and a combined medical emergency and cooling-system fault.
@@ -35,6 +36,8 @@ The slice demonstrates five escalating incidents: routine reconnaissance, a frie
 - Barrier and containment controls whose timing has irreversible consequences.
 - Survey Drone telemetry for atmosphere, radiation, biology, terrain, video, and signal quality.
 - Personnel specialties, fatigue, equipment, injuries, mission clocks, and availability.
+- Data-driven missions with field progress, extraction, return outcomes, and persistent discoveries.
+- Facility engineering, security zones, intelligence records, faction trust, and concurrent incident priorities.
 - Seeded incidents and an event log that can reproduce a shift for testing and support.
 - Versioned, atomic saves with backups and forward migrations.
 

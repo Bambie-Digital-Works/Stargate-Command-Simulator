@@ -20,14 +20,14 @@ $iscc = (Resolve-Path -LiteralPath (Join-Path $repositoryRoot $IsccPath)).Path
 $app = (Resolve-Path -LiteralPath (Join-Path $repositoryRoot $AppSource)).Path
 $testRoot = [IO.Path]::GetFullPath((Join-Path $repositoryRoot $TestDirectory))
 $distRoot = [IO.Path]::GetFullPath((Join-Path $repositoryRoot 'dist'))
-$versionKey = 'HKCU:\Software\Bambie Digital Works\Wormhole Worlds Simulator'
+$versionKey = 'HKCU:\Software\Bambie Digital Works\Wormhole Worlds'
 $uninstallKey = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\{999D88AD-B8FD-4441-AEDD-0F033B22F5C4}_is1'
 
 if (-not $testRoot.StartsWith($distRoot + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) {
     throw 'Installer test directory must remain beneath the repository dist directory.'
 }
 if ((Test-Path -LiteralPath $versionKey) -or (Test-Path -LiteralPath $uninstallKey)) {
-    throw 'A Wormhole Worlds Simulator installation already exists. The isolated installer matrix will not replace it.'
+    throw 'A Wormhole Worlds installation already exists. The isolated installer matrix will not replace it.'
 }
 
 function Invoke-Installer {

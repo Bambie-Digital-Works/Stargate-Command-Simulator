@@ -1,8 +1,8 @@
-# Wormhole Worlds Simulator
+# Wormhole Worlds
 
-> Wormhole Worlds Simulator is an original, independent game project. It is not affiliated with, endorsed by, sponsored by, or licensed by Amazon, Metro-Goldwyn-Mayer, or any other owner of the Stargate franchise.
+> Wormhole Worlds is an original, independent game project. It is not affiliated with, endorsed by, sponsored by, or licensed by Amazon, Metro-Goldwyn-Mayer, or any other owner of the Stargate franchise.
 
-Wormhole Worlds Simulator is a Windows command-centre simulation game. The player operates an underground interstellar transit facility: scheduling Expedition Units, establishing Transit Links, reviewing Survey Drone telemetry, authenticating returnees, controlling the Containment Shutter, and responding to overlapping technical, medical, and security incidents.
+Wormhole Worlds is a Windows command-centre simulation game. The player operates an underground interstellar transit facility: scheduling Expedition Units, establishing Transit Links, reviewing Survey Drone telemetry, authenticating returnees, controlling the Containment Shutter, and responding to overlapping technical, medical, and security incidents.
 
 The project is at **v0.8.0-beta.1**. This first beta contains the focused, UI-first vertical slice rather than an explorable 3D base.
 
@@ -43,6 +43,8 @@ The project is at **v0.8.0-beta.1**. This first beta contains the focused, UI-fi
 
 See the [project overview](docs/PROJECT_OVERVIEW.md) for the vertical-slice definition, the [production terminology guide](docs/TERMINOLOGY.md) for approved names, and the [research and production brief](docs/RESEARCH.md) for design references, comparable games, visual-source guidance, and Windows release practices.
 
+Mission workflows are specified in the [mission lifecycle rules](docs/MISSION_LIFECYCLE_RULES.md), while facility engineering, security, intelligence, diplomacy, and concurrent incident behavior are covered by the [facility operations rules](docs/FACILITY_OPERATIONS_RULES.md).
+
 Developers should start with the [architecture](docs/ARCHITECTURE.md) and [development setup](docs/DEVELOPMENT.md) documents. The repository pins the Godot .NET and .NET SDK versions needed to open and build the project.
 
 All retained visual and audio material follows the [asset policy](docs/ASSET_POLICY.md) and must pass the version-controlled licence-ledger validation before distribution.
@@ -55,6 +57,6 @@ Issue feedback is welcome, but unsolicited source code, pull requests, art, audi
 
 ## Status
 
-The **v0.8.0-beta.1** build includes the complete five-incident vertical slice, Systems Board, accessibility settings, preview update checks, and Windows installer/release tooling. Download published builds from [GitHub Releases](https://github.com/Bambie-Digital-Works/Stargate-Command-Simulator/releases), or follow the [development setup](docs/DEVELOPMENT.md) to build and verify locally.
+The **v0.8.0-beta.1** build includes the complete five-incident vertical slice, Systems Board, Mission Control, accessibility settings, preview update checks, and Windows installer/release tooling. Download published builds from [GitHub Releases](https://github.com/Bambie-Digital-Works/Wormhole-Worlds/releases), or follow the [development setup](docs/DEVELOPMENT.md) to build and verify locally.
 
 The beta is currently unsigned, so Windows SmartScreen may warn. Verify the installer against the published `SHA256SUMS.txt` before running it.

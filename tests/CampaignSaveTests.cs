@@ -124,6 +124,28 @@ public sealed class CampaignSaveTests
     }
 
     [Fact]
+    public void InvalidTimestampAndUnknownFieldsAreRejectedAndQuarantined()
+    {
+        using TempSavePath temp = new();
+        File.WriteAllText(
+            temp.Path,
+            """
+            {
+              "saveSchemaVersion": 2,
+              "writtenAtUtc": "not-a-timestamp",
+              "unexpected": true,
+              "consequences": []
+            }
+            """);
+
+        CampaignSaveLoadResult result = new CampaignStateStore(temp.Path).Load();
+
+        Assert.True(result.UsedDefaults);
+        Assert.Contains("validation", result.RecoveryGuidance, StringComparison.OrdinalIgnoreCase);
+        Assert.NotNull(result.QuarantinePath);
+    }
+
+    [Fact]
     public void SaveCreatesBakAndRoundTrips()
     {
         using TempSavePath temp = new();

@@ -28,6 +28,7 @@ This guide is the source of truth for player-facing and production-facing names.
 | Remote-data screen | **Survey Telemetry** | `survey_telemetry` | The display for drone video, atmosphere, radiation, biology, terrain, and signal confidence. |
 | Personnel screen | **Expedition Roster** | `expedition_roster` | The workflow for readiness, specialties, fatigue, equipment, dispatch, and recall. |
 | Engineering/status screen | **Systems Board** | `systems_board` | The view of power, cooling, alarms, faults, and repair state. |
+| Mission planning and field screen | **Mission Control** | `mission_control` | The workflow for selecting a mission, tracking field progress, and authorizing return. |
 | Pre-shift information | **Shift Brief** | `shift_brief` | The operational objectives, known risks, readiness, and constraints shown before play. |
 | Post-shift report | **Shift Review** | `shift_review` | The chronological outcome, scoring, consequences, and persistent changes shown after play. |
 
@@ -44,7 +45,7 @@ The following terms identify franchise research and must not appear as productio
 - `chevron` when used for a sequence lock; and
 - franchise team designations, glyphs, symbols, names, lore, or quotations.
 
-“Wormhole Worlds Simulator” is the approved beta product and repository title. The historical repository slug may remain visible until the external repository rename completes; neither identifier authorizes franchise material.
+“Wormhole Worlds” is the approved beta product and repository title. The historical repository slug may remain visible until the external repository rename completes; neither identifier authorizes franchise material.
 
 ## Usage rules
 

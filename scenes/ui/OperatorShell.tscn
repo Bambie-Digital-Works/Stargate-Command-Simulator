@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3]
+[gd_scene load_steps=17 format=3]
 
 [ext_resource type="Script" path="res://src/Presentation/OperatorShell.cs" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/ui/DiagnosticsOverlay.tscn" id="2_diagnostics"]
@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/AccessibilityPanel.tscn" id="14_accessibility"]
 [ext_resource type="PackedScene" path="res://scenes/ui/UpdatePanel.tscn" id="15_updates"]
 [ext_resource type="Script" path="res://src/Presentation/OperatorAudioCuePlayer.cs" id="16_audio"]
+[ext_resource type="PackedScene" path="res://scenes/ui/MissionControl.tscn" id="17_missions"]
 
 [node name="OperatorShell" type="Control"]
 layout_mode = 3
@@ -180,6 +181,15 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="SystemsBoardPanel" parent="SafeArea/Layout/Workspace/NavigationHost" instance=ExtResource("13_systems")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MissionControlPanel" parent="SafeArea/Layout/Workspace/NavigationHost" instance=ExtResource("17_missions")]
 visible = false
 layout_mode = 1
 anchors_preset = 15

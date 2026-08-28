@@ -3,6 +3,7 @@ using WormholeWorlds.Application.Accessibility;
 using WormholeWorlds.Application.Configuration;
 using WormholeWorlds.Application.Incidents;
 using WormholeWorlds.Application.Logging;
+using WormholeWorlds.Application.Missions;
 using WormholeWorlds.Application.Operations;
 using WormholeWorlds.Application.Personnel;
 using WormholeWorlds.Application.Security;
@@ -12,6 +13,7 @@ using WormholeWorlds.Application.Systems;
 using WormholeWorlds.Application.Transit;
 using WormholeWorlds.Core.Destinations;
 using WormholeWorlds.Core.Incidents;
+using WormholeWorlds.Core.Missions;
 using WormholeWorlds.Core.Security;
 using WormholeWorlds.Core.Shift;
 using WormholeWorlds.Core.Survey;
@@ -105,6 +107,8 @@ public partial class Boot : Node
             IncidentCatalog incidentCatalog = new IncidentCatalogLoader().Load(incidentsJson);
             string briefJson = Godot.FileAccess.GetFileAsString("res://content/shift_brief.v1.json");
             ShiftBriefDefinition shiftBrief = new ShiftBriefLoader().Load(briefJson);
+            string missionsJson = Godot.FileAccess.GetFileAsString("res://content/missions.v1.json");
+            MissionCatalog missionCatalog = new MissionCatalogLoader().Load(missionsJson);
             FacilityResourcePool resources = new(
                 configuration.Simulation.AvailablePowerUnits,
                 configuration.Simulation.AvailableCoolingUnits);
@@ -112,6 +116,7 @@ public partial class Boot : Node
             TransitSimulationService transit = new(outgoing, destinations, resources);
             ReturnSecurityService security = new(new ReturnCredentialVerifier(), new ContainmentShutter());
             ManualSimulationClock clock = new();
+            MissionService missions = new(missionCatalog, clock);
             AccessibilitySettingsStore accessibilityStore = new(
                 ProjectSettings.GlobalizePath("user://accessibility_settings.v1.json"));
             AccessibilityLoadResult accessibilityLoad = accessibilityStore.LoadOrDefault();
@@ -121,7 +126,7 @@ public partial class Boot : Node
             GitHubReleaseFeedClient releaseFeed = new(
                 updateHttpClient,
                 "Bambie-Digital-Works",
-                "Stargate-Command-Simulator");
+                "Wormhole-Worlds");
             UpdateCheckCoordinator updateCoordinator = new(
                 releaseFeed,
                 ProjectSettings.GlobalizePath("user://update_check.v1.json"));
@@ -132,7 +137,16 @@ public partial class Boot : Node
             roster.BindSurvey(survey);
             ShiftIncidentService incidents = new(incidentCatalog, transit, security, roster, survey, resources);
             SystemsBoardService systems = new(resources, incidents);
-            OperationsBoardService operations = new(transit, security, roster, survey, incidents, clock, resources, systems);
+            OperationsBoardService operations = new(
+                transit,
+                security,
+                roster,
+                survey,
+                incidents,
+                clock,
+                resources,
+                systems,
+                missions);
             CampaignStateStore campaignStore = new(
                 ProjectSettings.GlobalizePath("user://campaign_state.json"),
                 metadata.SaveSchemaVersion);

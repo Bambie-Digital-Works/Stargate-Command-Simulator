@@ -52,7 +52,7 @@ public sealed class GitHubReleaseFeedClient : IReleaseFeedClient
                 .FirstOrDefault();
 
             return newest is null
-                ? new UpdateCheckResult(UpdateCheckStatus.UpToDate, "Wormhole Worlds Simulator is up to date.")
+                ? new UpdateCheckResult(UpdateCheckStatus.UpToDate, "Wormhole Worlds is up to date.")
                 : new UpdateCheckResult(
                     UpdateCheckStatus.UpdateAvailable,
                     $"Version {newest.Version} is available.",

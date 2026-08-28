@@ -37,6 +37,7 @@ public partial class OperatorShell : Control
     private ReturnControl _returnControlPanel = null!;
     private ExpeditionRoster _expeditionRosterPanel = null!;
     private SystemsBoard _systemsBoardPanel = null!;
+    private MissionControl _missionControlPanel = null!;
     private OperationsBoardService? _operations;
     private AccessibilityPreferences _accessibility = AccessibilityPreferences.Default;
     private string? _lastAlarmAnnouncement;
@@ -65,6 +66,7 @@ public partial class OperatorShell : Control
         _returnControlPanel = GetNode<ReturnControl>("SafeArea/Layout/Workspace/NavigationHost/ReturnControlPanel");
         _expeditionRosterPanel = GetNode<ExpeditionRoster>("SafeArea/Layout/Workspace/NavigationHost/ExpeditionRosterPanel");
         _systemsBoardPanel = GetNode<SystemsBoard>("SafeArea/Layout/Workspace/NavigationHost/SystemsBoardPanel");
+        _missionControlPanel = GetNode<MissionControl>("SafeArea/Layout/Workspace/NavigationHost/MissionControlPanel");
 
         _diagnosticsButton.Pressed += ToggleDiagnostics;
         _inputSettingsButton.Pressed += ShowInputSettings;
@@ -98,6 +100,8 @@ public partial class OperatorShell : Control
         _expeditionRosterPanel.StateChanged += RefreshShellStatus;
         _systemsBoardPanel.BackRequested += () => NavigateTo(OperatorConsoleScreen.OperationsBoard);
         _systemsBoardPanel.StateChanged += RefreshShellStatus;
+        _missionControlPanel.BackRequested += () => NavigateTo(OperatorConsoleScreen.OperationsBoard);
+        _missionControlPanel.StateChanged += RefreshShellStatus;
         _diagnosticsButton.GrabFocus();
     }
 
@@ -214,6 +218,7 @@ public partial class OperatorShell : Control
         _returnControlPanel.Initialize(operations.Security, operations.Transit, operations.Clock);
         _expeditionRosterPanel.Initialize(operations.Roster, operations.Transit, operations.Clock);
         _systemsBoardPanel.Initialize(operations.Systems);
+        _missionControlPanel.Initialize(operations);
         _titleLabel.Text = "Shift Brief";
         ApplyScreen(operations.ActiveScreen, grabFocus: false);
         UpdateDiagnosticsButtonText();
@@ -246,6 +251,7 @@ public partial class OperatorShell : Control
         _returnControlPanel.Visible = screen == OperatorConsoleScreen.ReturnControl;
         _expeditionRosterPanel.Visible = screen == OperatorConsoleScreen.ExpeditionRoster;
         _systemsBoardPanel.Visible = screen == OperatorConsoleScreen.SystemsBoard;
+        _missionControlPanel.Visible = screen == OperatorConsoleScreen.MissionControl;
 
         if (screen == OperatorConsoleScreen.ShiftBrief)
         {
@@ -279,6 +285,10 @@ public partial class OperatorShell : Control
         {
             _systemsBoardPanel.Refresh();
         }
+        else if (screen == OperatorConsoleScreen.MissionControl)
+        {
+            _missionControlPanel.Refresh();
+        }
 
         RefreshShellStatus();
         _titleLabel.Text = screen switch
@@ -291,6 +301,7 @@ public partial class OperatorShell : Control
             OperatorConsoleScreen.ReturnControl => "Return Control",
             OperatorConsoleScreen.ExpeditionRoster => "Expedition Roster",
             OperatorConsoleScreen.SystemsBoard => "Systems Board",
+            OperatorConsoleScreen.MissionControl => "Mission Control",
             _ => "Operator systems standing by",
         };
 
@@ -324,6 +335,9 @@ public partial class OperatorShell : Control
                 break;
             case OperatorConsoleScreen.SystemsBoard:
                 _systemsBoardPanel.FocusPrimaryAction();
+                break;
+            case OperatorConsoleScreen.MissionControl:
+                _missionControlPanel.FocusPrimaryAction();
                 break;
         }
     }
@@ -389,6 +403,11 @@ public partial class OperatorShell : Control
         if (_systemsBoardPanel.Visible)
         {
             _systemsBoardPanel.Refresh();
+        }
+
+        if (_missionControlPanel.Visible)
+        {
+            _missionControlPanel.Refresh();
         }
     }
 

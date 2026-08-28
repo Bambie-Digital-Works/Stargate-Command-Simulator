@@ -8,6 +8,7 @@ public enum OperatorConsoleScreen
     ReturnControl,
     ExpeditionRoster,
     SystemsBoard,
+    MissionControl,
     ShiftBrief,
     ShiftReview,
 }

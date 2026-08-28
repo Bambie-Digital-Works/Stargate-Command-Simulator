@@ -16,15 +16,15 @@
 
 [Setup]
 AppId={{999D88AD-B8FD-4441-AEDD-0F033B22F5C4}
-AppName=Wormhole Worlds Simulator
+AppName=Wormhole Worlds
 AppVersion={#NumericVersion}
-AppVerName=Wormhole Worlds Simulator {#ProductVersion}
+AppVerName=Wormhole Worlds {#ProductVersion}
 AppPublisher=Bambie Digital Works
-AppPublisherURL=https://github.com/Bambie-Digital-Works/Stargate-Command-Simulator
-AppSupportURL=https://github.com/Bambie-Digital-Works/Stargate-Command-Simulator/issues
-AppUpdatesURL=https://github.com/Bambie-Digital-Works/Stargate-Command-Simulator/releases
-DefaultDirName={localappdata}\Programs\Wormhole Worlds Simulator
-DefaultGroupName=Wormhole Worlds Simulator
+AppPublisherURL=https://github.com/Bambie-Digital-Works/Wormhole-Worlds
+AppSupportURL=https://github.com/Bambie-Digital-Works/Wormhole-Worlds/issues
+AppUpdatesURL=https://github.com/Bambie-Digital-Works/Wormhole-Worlds/releases
+DefaultDirName={localappdata}\Programs\Wormhole Worlds
+DefaultGroupName=Wormhole Worlds
 DisableProgramGroupPage=yes
 PrivilegesRequired=lowest
 ArchitecturesAllowed=x64compatible
@@ -41,8 +41,8 @@ WizardStyle=modern
 SetupLogging=yes
 UninstallDisplayIcon={app}\WormholeWorldsSimulator.exe
 VersionInfoCompany=Bambie Digital Works
-VersionInfoDescription=Wormhole Worlds Simulator installer
-VersionInfoProductName=Wormhole Worlds Simulator
+VersionInfoDescription=Wormhole Worlds installer
+VersionInfoProductName=Wormhole Worlds
 VersionInfoProductVersion={#NumericVersion}
 VersionInfoVersion={#NumericVersion}
 #ifdef SignToolName
@@ -57,15 +57,15 @@ Name: "desktopicon"; Description: "Create a desktop shortcut"; GroupDescription:
 Source: "{#AppSource}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
-Name: "{group}\Wormhole Worlds Simulator"; Filename: "{app}\WormholeWorldsSimulator.exe"
-Name: "{autodesktop}\Wormhole Worlds Simulator"; Filename: "{app}\WormholeWorldsSimulator.exe"; Tasks: desktopicon
+Name: "{group}\Wormhole Worlds"; Filename: "{app}\WormholeWorldsSimulator.exe"
+Name: "{autodesktop}\Wormhole Worlds"; Filename: "{app}\WormholeWorldsSimulator.exe"; Tasks: desktopicon
 
 [Registry]
-Root: HKCU; Subkey: "Software\Bambie Digital Works\Wormhole Worlds Simulator"; ValueType: string; ValueName: "SemanticVersion"; ValueData: "{#ProductVersion}"; Flags: uninsdeletekey
-Root: HKCU; Subkey: "Software\Bambie Digital Works\Wormhole Worlds Simulator"; ValueType: string; ValueName: "NumericVersion"; ValueData: "{#NumericVersion}"; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Bambie Digital Works\Wormhole Worlds"; ValueType: string; ValueName: "SemanticVersion"; ValueData: "{#ProductVersion}"; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Bambie Digital Works\Wormhole Worlds"; ValueType: string; ValueName: "NumericVersion"; ValueData: "{#NumericVersion}"; Flags: uninsdeletekey
 
 [Run]
-Filename: "{app}\WormholeWorldsSimulator.exe"; Description: "Launch Wormhole Worlds Simulator"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\WormholeWorldsSimulator.exe"; Description: "Launch Wormhole Worlds"; Flags: nowait postinstall skipifsilent
 
 [Code]
 function NextVersionPart(var Value: String): Integer;
@@ -119,7 +119,7 @@ begin
   Result := True;
   if not RegQueryStringValue(
     HKCU,
-    'Software\Bambie Digital Works\Wormhole Worlds Simulator',
+    'Software\Bambie Digital Works\Wormhole Worlds',
     'NumericVersion',
     InstalledVersion) then
     Exit;
@@ -128,7 +128,7 @@ begin
   if Comparison > 0 then
   begin
     MsgBox(
-      'A newer version of Wormhole Worlds Simulator is already installed. This installer will not downgrade it.',
+      'A newer version of Wormhole Worlds is already installed. This installer will not downgrade it.',
       mbError,
       MB_OK);
     Result := False;

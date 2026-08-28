@@ -16,6 +16,11 @@ Bootstrap composes all layers and starts the first scene.
 
 `Core` must not reference another project layer or Godot. `Application` coordinates use cases through interfaces owned by the inner layer. `Infrastructure` implements persistence, clocks, randomness, platform services, and other external concerns. `Presentation` translates input and view state; it does not own simulation rules. `Bootstrap` is the only composition root.
 
+Mission Control, engineering, facility security, intelligence, diplomacy, and the
+concurrent incident director are application services over deterministic core
+records. They may expose read models to the operator shell, but they must not
+reach into one another through Godot nodes or global state.
+
 ## Repository layout
 
 | Path | Responsibility |
@@ -51,6 +56,8 @@ Scenes own layout, visual state, focus order, and signal wiring. A scene may cal
 The deterministic Transit Array phase and safety rules are specified in [the state-machine document](TRANSIT_ARRAY_STATE_MACHINE.md). Core transitions receive explicit simulation timestamps and never read wall-clock time.
 
 Destination validation, sequential locks, and atomic power/cooling behavior are specified in [the outgoing-connection rules](OUTGOING_CONNECTION_RULES.md).
+
+Mission lifecycle transitions are specified in [the mission lifecycle rules](MISSION_LIFECYCLE_RULES.md). Facility engineering, security, intelligence, diplomacy, and concurrent incident behavior are specified in [the facility operations rules](FACILITY_OPERATIONS_RULES.md).
 
 Clock, seeded randomness, and privacy-safe replay contracts are specified in [the determinism and replay document](DETERMINISM_AND_REPLAYS.md).
 

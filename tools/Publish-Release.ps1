@@ -32,9 +32,9 @@ if ([string]::IsNullOrWhiteSpace($existingTag)) {
 
 $assets = Get-ChildItem -LiteralPath $releasePath -File | ForEach-Object FullName
 & $gh release create $Tag @assets `
-    --repo 'Bambie-Digital-Works/Stargate-Command-Simulator' `
+    --repo 'Bambie-Digital-Works/Wormhole-Worlds' `
     --prerelease `
     --verify-tag `
-    --title 'Wormhole Worlds Simulator 0.8.0-beta.1' `
+    --title 'Wormhole Worlds 0.8.0-beta.1' `
     --notes-file (Join-Path $repositoryRoot 'docs/RELEASE_NOTES_0.8.0-beta.1.md')
 if ($LASTEXITCODE -ne 0) { throw 'GitHub prerelease publication failed.' }

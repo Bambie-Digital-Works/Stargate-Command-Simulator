@@ -1,7 +1,9 @@
 using WormholeWorlds.Application.Incidents;
+using WormholeWorlds.Application.Missions;
 using WormholeWorlds.Application.Operations;
 using WormholeWorlds.Application.Personnel;
 using WormholeWorlds.Core.Incidents;
+using WormholeWorlds.Core.Missions;
 using WormholeWorlds.Core.Personnel;
 using WormholeWorlds.Core.Shift;
 using WormholeWorlds.Core.Transit;
@@ -17,6 +19,7 @@ public sealed class ShiftLifecycleService
     private readonly FacilityResourcePool _resources;
     private readonly CampaignStateStore _store;
     private readonly OperationsBoardService _operations;
+    private readonly MissionService _missions;
     private CampaignState _campaign;
     private ShiftPhase _phase = ShiftPhase.Briefing;
     private ShiftReviewSummary? _latestReview;
@@ -29,6 +32,25 @@ public sealed class ShiftLifecycleService
         FacilityResourcePool resources,
         CampaignStateStore store,
         OperationsBoardService operations)
+        : this(
+            brief,
+            incidents,
+            roster,
+            resources,
+            store,
+            operations,
+            operations.Missions)
+    {
+    }
+
+    public ShiftLifecycleService(
+        ShiftBriefDefinition brief,
+        ShiftIncidentService incidents,
+        ExpeditionRosterService roster,
+        FacilityResourcePool resources,
+        CampaignStateStore store,
+        OperationsBoardService operations,
+        MissionService missions)
     {
         _brief = brief;
         _incidents = incidents;
@@ -36,6 +58,7 @@ public sealed class ShiftLifecycleService
         _resources = resources;
         _store = store;
         _operations = operations;
+        _missions = missions;
         CampaignSaveLoadResult load = store.Load();
         _campaign = load.State;
         _persistenceGuidance = load.RecoveryGuidance;
@@ -121,15 +144,23 @@ public sealed class ShiftLifecycleService
                 "Resolve or fail all five vertical-slice incidents before ending the shift.");
         }
 
+        if (_missions.Snapshot.Phase is MissionPhase.InField or MissionPhase.AwaitingReturn)
+        {
+            return ShiftOperationResult.Rejected(
+                "mission_in_progress",
+                "Complete, fail, or abort the active mission before ending the shift.");
+        }
+
         IReadOnlyList<IncidentDebriefFact> facts = _incidents.CollectDebriefFacts();
         List<(string MemberId, string DisplayName)> injured = _roster.Pool
             .Where(member => member.IsInjured)
             .Select(member => (member.Id, member.DisplayName))
             .ToList();
-        IReadOnlyList<CampaignConsequence> consequences = CampaignConsequenceDeriver.Derive(
+        List<CampaignConsequence> consequences = CampaignConsequenceDeriver.Derive(
             facts,
             injured,
-            _resources.CoolingFaultHold > 0);
+            _resources.CoolingFaultHold > 0).ToList();
+        consequences.AddRange(_missions.CollectConsequences());
         ShiftScore score = ShiftScoring.Evaluate(facts);
         _latestReview = new ShiftReviewSummary(facts, score, consequences);
         _campaign = new CampaignState(

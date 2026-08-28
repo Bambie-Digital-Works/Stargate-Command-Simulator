@@ -26,4 +26,7 @@ public sealed record OperationsBoardReadModel(
     IReadOnlyList<OperationsAlarm> ActiveAlarms,
     string AnnouncementSummary,
     OperatorConsoleScreen ActiveScreen,
-    bool CanEndShift);
+    bool CanEndShift,
+    string MissionSummary = "Mission Board ready.",
+    string FacilitySummary = "Facility nominal.",
+    string ConcurrentIncidentSummary = "No concurrent incidents require attention.");
