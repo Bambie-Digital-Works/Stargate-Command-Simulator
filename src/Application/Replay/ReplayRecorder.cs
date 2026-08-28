@@ -29,6 +29,13 @@ public sealed partial class ReplayRecorder
 
     public ReplayRecord Record(TransitArrayCommand command, TransitTransitionResult result)
     {
+        ArgumentNullException.ThrowIfNull(command);
+        ArgumentNullException.ThrowIfNull(result);
+        if (_records.Count > 0 && command.At.Milliseconds < _records[^1].SimulationMilliseconds)
+        {
+            throw new ArgumentException("Replay commands must be recorded in simulation-time order.", nameof(command));
+        }
+
         long sequence = _records.Count + 1L;
         ReplayRecord record = new(
             sequence,
@@ -49,9 +56,9 @@ public sealed partial class ReplayRecorder
         return new ReplayDocument(payload.SchemaVersion, payload.ContentSchemaVersion, payload.Seed, payload.Records, checksum);
     }
 
-    public static bool Verify(ReplayDocument document)
+    public static bool Verify(ReplayDocument? document)
     {
-        if (document.Sha256.Length != 64)
+        if (document is null || !ReplayDocumentValidator.IsValid(document))
         {
             return false;
         }

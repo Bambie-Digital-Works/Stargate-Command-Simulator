@@ -20,5 +20,6 @@
   <ItemGroup>
     <ProjectReference Include="../WormholeWorldsSimulator.csproj" />
     <ProjectReference Include="../tools/AssetLedgerValidator/AssetLedgerValidator.csproj" />
+    <ProjectReference Include="../tools/ContentValidator/ContentValidator.csproj" />
   </ItemGroup>
 </Project>

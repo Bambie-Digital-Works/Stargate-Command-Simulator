@@ -15,7 +15,9 @@ Fields:
 
 Legacy schema 1 used `schemaVersion` instead of `saveSchemaVersion` and omitted `writtenAtUtc`.
 
-## Atomic write
+## Validation and atomic write
+
+Save documents reject unknown fields, invalid schema versions, malformed consequence entries, and invalid `writtenAtUtc` values before they can replace the primary file.
 
 1. Validate serialized document in memory
 2. Write `campaign_state.json.tmp`

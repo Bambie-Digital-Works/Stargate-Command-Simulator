@@ -11,6 +11,7 @@ public sealed class CampaignStateStore
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         WriteIndented = true,
         DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
+        UnmappedMemberHandling = System.Text.Json.Serialization.JsonUnmappedMemberHandling.Disallow,
     };
 
     private readonly string _path;
@@ -49,7 +50,7 @@ public sealed class CampaignStateStore
         {
             json = File.ReadAllText(_path);
         }
-        catch (IOException exception)
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
         {
             return RecoverCorrupt(
                 $"Campaign save could not be read ({exception.Message}). Starting with an empty campaign; restore a .bak or .pre-migrate backup if needed.");
@@ -108,7 +109,7 @@ public sealed class CampaignStateStore
                 document = CampaignSaveMigrator.MigrateToCurrent(root, version, _supportedSchemaVersion);
                 migrated = true;
             }
-            catch (Exception exception) when (exception is InvalidDataException or JsonException)
+            catch (Exception exception) when (exception is InvalidDataException or JsonException or IOException or UnauthorizedAccessException)
             {
                 return RecoverCorrupt(
                     $"Campaign save migration failed ({exception.Message}). The original file was quarantined; restore the .pre-migrate backup if present.");
@@ -262,9 +263,14 @@ public sealed class CampaignStateStore
             }
 
             DateTimeOffset? writtenAt = null;
-            if (!string.IsNullOrWhiteSpace(typed.WrittenAtUtc)
-                && DateTimeOffset.TryParse(typed.WrittenAtUtc, out DateTimeOffset parsedUtc))
+            if (!string.IsNullOrWhiteSpace(typed.WrittenAtUtc))
             {
+                if (!DateTimeOffset.TryParse(typed.WrittenAtUtc, out DateTimeOffset parsedUtc))
+                {
+                    error = "writtenAtUtc is invalid";
+                    return false;
+                }
+
                 writtenAt = parsedUtc;
             }
 

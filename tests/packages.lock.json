@@ -103,6 +103,12 @@
       "assetledgervalidator": {
         "type": "Project"
       },
+      "contentvalidator": {
+        "type": "Project",
+        "dependencies": {
+          "WormholeWorldsSimulator": "[0.8.0-beta.1, )"
+        }
+      },
       "wormholeworldssimulator": {
         "type": "Project",
         "dependencies": {

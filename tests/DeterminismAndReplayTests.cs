@@ -69,6 +69,37 @@ public sealed class DeterminismAndReplayTests
         Assert.False(File.Exists(path + ".tmp"));
     }
 
+    [Fact]
+    public void ReplayStoreRejectsTamperedJsonAndLoadsVerifiedDocuments()
+    {
+        using TestDirectory directory = new();
+        ReplayFileStore store = new(directory.Path);
+        string path = store.Save("verified_run", RecordHappyPath(seed: 17));
+
+        ReplayDocument loaded = store.Load("verified_run");
+
+        Assert.True(ReplayRecorder.Verify(loaded));
+        File.WriteAllText(path, File.ReadAllText(path).Replace("\"seed\":17", "\"seed\":18"));
+        Assert.Throws<InvalidDataException>(() => store.Load("verified_run"));
+    }
+
+    [Fact]
+    public void ReplayRecorderRejectsCommandsOutOfSimulationTimeOrder()
+    {
+        ReplayRecorder recorder = new(1, 3);
+        TransitArrayCommand command = new(TransitArrayCommandKind.PrepareOutgoing, new SimulationInstant(2));
+        TransitArray transitArray = new();
+        recorder.Record(command, transitArray.Execute(command));
+
+        TransitArrayCommand earlierCommand = new(
+            TransitArrayCommandKind.Abort,
+            new SimulationInstant(1));
+
+        Assert.Throws<ArgumentException>(() => recorder.Record(
+            earlierCommand,
+            transitArray.Execute(earlierCommand)));
+    }
+
     private static string[] SelectSequence(ISeededRandomSource random, IReadOnlyList<string> incidents)
     {
         SeededIncidentSelector selector = new(random);

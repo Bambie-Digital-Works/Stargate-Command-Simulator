@@ -61,7 +61,7 @@ Copy-Item -LiteralPath (Join-Path $repositoryRoot 'NOTICE.md') -Destination (Joi
 Copy-Item -LiteralPath (Join-Path $repositoryRoot 'LICENSE') -Destination (Join-Path $appDirectory 'LICENSE.txt')
 
 $portablePath = Join-Path $outputPath $portableName
-Compress-Archive -Path (Join-Path $appDirectory '*') -DestinationPath $portablePath -CompressionLevel Optimal
+Compress-Archive -Path (Join-Path $appDirectory '*') -DestinationPath $portablePath -CompressionLevel Optimal -Force
 
 $compilerArguments = @(
     "/DAppSource=$appDirectory",

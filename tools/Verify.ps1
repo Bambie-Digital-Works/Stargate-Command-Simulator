@@ -36,6 +36,7 @@ try {
     $projects = @(
         'WormholeWorldsSimulator.csproj',
         'tools/AssetLedgerValidator/AssetLedgerValidator.csproj',
+        'tools/ContentValidator/ContentValidator.csproj',
         'tests/WormholeWorlds.Tests.csproj'
     )
 
@@ -52,6 +53,10 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'Automated tests failed.' }
     & $dotnetExecutable run --project tools/AssetLedgerValidator/AssetLedgerValidator.csproj --configuration Release --no-build -- --root .
     if ($LASTEXITCODE -ne 0) { throw 'Asset ledger validation failed.' }
+    & $dotnetExecutable build tools/ContentValidator/ContentValidator.csproj --configuration Release --no-restore
+    if ($LASTEXITCODE -ne 0) { throw 'Content validator build failed.' }
+    & $dotnetExecutable run --project tools/ContentValidator/ContentValidator.csproj --configuration Release --no-build -- --root .
+    if ($LASTEXITCODE -ne 0) { throw 'Content validation failed.' }
 
     & $dotnetExecutable build WormholeWorldsSimulator.csproj --configuration Debug --no-restore
     if ($LASTEXITCODE -ne 0) { throw 'Debug build for the headless smoke test failed.' }
